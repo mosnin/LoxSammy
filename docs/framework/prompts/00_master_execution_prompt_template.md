@@ -25,7 +25,7 @@ In summary:
 6. Infer the route set, feature modules, onboarding flow, dashboard structure, entities, admin needs, and v1 scope
 7. Only after docs are generated, begin implementation
 8. Build in the order defined in docs/framework/internal/09_build_rules_internal.md:
-   foundation → auth → onboarding → shell → dashboard → core features → settings/billing → admin → marketing site → polish
+   foundation → auth → onboarding → shell → dashboard → core features → settings/billing → admin → email templates → marketing site → edge cases/polish
 
 Throughout implementation:
 - Follow the visual design pack (files 10-13) for all authenticated pages

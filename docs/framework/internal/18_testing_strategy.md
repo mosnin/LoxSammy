@@ -141,7 +141,7 @@ Create a test helper that iterates over all protected routes and tests each with
 
 ### Permission Enforcement
 
-For each role defined in the permissions matrix (`06_permissions_matrix.md`):
+For each role defined in the permissions matrix (`06_routes_and_permissions.md`):
 
 - Test what the role CAN access (positive cases)
 - Test what the role CANNOT access (negative cases)
