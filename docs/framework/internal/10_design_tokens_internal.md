@@ -323,6 +323,17 @@ On mobile (below 640px), all modals become full-width with 16px horizontal margi
 | z-overlay | 60 | Backdrop overlays behind modals/drawers |
 | z-command | 70 | Command palette (highest interactive element) |
 
+## Responsive Breakpoints
+
+For the canonical breakpoint scale (shared across internal product, public website, and email), see `15_canonical_breakpoints.md`. That file defines:
+- Breakpoint names and widths (aligned with Tailwind defaults)
+- Layout behavior per breakpoint (grid, sidebar, tables, charts)
+- Sidebar collapse rules
+- Table-to-card conversion rules
+- Chart behavior rules
+
+Do not define breakpoints ad hoc — always reference the canonical scale.
+
 ## Implementation Notes
 
 ### Tailwind Mapping

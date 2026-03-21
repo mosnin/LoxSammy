@@ -46,6 +46,7 @@ Build in this exact order. Do not skip ahead.
 - Role-aware sidebar (hide items user cannot access)
 
 ### Phase 5: Dashboard
+- Identify the appropriate dashboard archetype from `16_dashboard_archetypes.md` (queue, pipeline, analytics, content workspace, operations, monitoring, admin overview)
 - Dashboard page per `03_dashboard_system.md`: summary row, main work area, secondary insights
 - All four states: loading skeleton, empty state with CTA, success with data, error with retry
 - Mobile responsive layout (stacked cards, no horizontal scroll)
@@ -68,17 +69,28 @@ Build in this exact order. Do not skip ahead.
 - All admin actions logged to Admin Record entity
 - Search and filter on user list
 
-### Phase 9: Marketing Site
+### Phase 9: Email Templates
+- Build transactional and product emails per `14_email_system.md`
+- Auth emails (verification, password reset, magic link)
+- Billing emails (receipt, failure, trial ending)
+- Onboarding emails (welcome, activation nudge)
+- Plain text fallbacks for all emails
+
+### Phase 10: Marketing Site
 - Build public pages per `docs/framework/website/` specs
 - Home page with conversion funnel per `saas_home_page_system.md`
+- Page layouts per `public_screen_archetypes.md`
+- Design tokens from `design_system_tokens.md`, components from `public_component_specs.md`
+- Copy and CTA rules from `public_copy_conversion_rules.md`
 - Additional pages per `saas_website_page_system.md` as scoped
-- Design tokens from `design_system_tokens.md`, components from `component_library_spec.md`
 
-### Phase 10: Edge Cases and Polish
+### Phase 11: Edge Cases and Polish
 - Implement edge cases from `docs/project/04_edge_cases.md`
+- Handle all error types per `17_error_state_taxonomy.md`
 - Run through QA checklist from `docs/project/08_qa_checklist.md`
 - Verify acceptance criteria from `docs/project/07_acceptance_criteria.md`
-- Dark mode pass, mobile pass, error handling pass
+- Run automated tests per `18_testing_strategy.md`
+- Dark mode pass, mobile pass, responsive pass per `15_canonical_breakpoints.md`
 
 ## Reuse Rules
 
@@ -94,9 +106,10 @@ Build in this exact order. Do not skip ahead.
 
 ## Responsive Rules
 
+- Follow the canonical breakpoint scale from `15_canonical_breakpoints.md` for all responsive behavior
 - Mobile responsiveness is required from the first page built
 - Desktop-only assumptions are not allowed
-- Dense data views (tables, grids) need explicit mobile behavior defined
+- Dense data views (tables, grids) need explicit mobile behavior defined per `15_canonical_breakpoints.md` table collapse rules
 - Minimum touch target: 44x44px
 - Test at 375px width (iPhone SE) as the baseline
 
