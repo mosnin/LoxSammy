@@ -25,6 +25,7 @@
 | 17 | `17_error_state_taxonomy.md` | 12 error types with component mapping, retry logic, escalation, accessibility, logging | 9, 14 |
 | 18 | `18_testing_strategy.md` | Testing philosophy, 3 layers (unit/integration/E2E), CI integration, test data strategy | 14 |
 | 19 | `19_i18n_posture.md` | English-first for v1, Intl API for formatting, what to prepare for future multilingual | 14 |
+| 20 | `20_subagent_dispatch.md` | Pre-built agent recipes for parallelizing Phases 2, 9, 13, 14 — prompts, file lists, coordination | 2, 9, 13, 14 |
 
 ## Public Website (`docs/framework/website/`)
 
