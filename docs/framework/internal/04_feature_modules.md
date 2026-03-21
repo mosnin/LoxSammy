@@ -1,5 +1,8 @@
 # 04 Feature Modules
 
+> **TL;DR:** Specifies optional plug-in modules (analytics, integrations, API, MCP, webhooks, notifications, usage, activity logs) with routes, layouts, states, and permission rules for each.
+> **Covers:** analytics, integrations, API keys, MCP servers, webhooks, notifications, usage metering, activity logs | **Depends on:** 11, 12, 13, 15, 16 | **Used by:** 09 | **Phase:** 3, 9
+
 ## Purpose
 
 Define the reusable module types that may be attached to different SaaS applications. Each module is optional — only include what the product requires. This file provides enough detail that each module can be built without guessing layout, routes, or behavior.

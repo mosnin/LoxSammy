@@ -1,5 +1,8 @@
 # Public Website Component Library Specification
 
+> **TL;DR:** Inventories all reusable public site components (header, hero, cards, forms, footer, etc.) with shared rules, variants, and accessibility requirements.
+> **Covers:** component inventory, button variants, card types, forms, accessibility, page composition | **Depends on:** design_system_tokens.md, public_component_specs.md, 15_canonical_breakpoints.md | **Used by:** public_screen_archetypes.md, public_copy_conversion_rules.md | **Phase:** 13
+
 ## Purpose
 
 Define the reusable public site components so that all public pages feel cohesive and production ready.

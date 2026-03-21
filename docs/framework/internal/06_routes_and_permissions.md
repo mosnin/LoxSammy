@@ -1,5 +1,8 @@
 # 06 Routes And Permissions
 
+> **TL;DR:** Defines route categories, canonical roles, and the three-layer permission enforcement system (middleware, API, UI) for the application.
+> **Covers:** public routes, auth routes, protected routes, admin routes, roles, middleware checks, API-level auth, UI visibility | **Depends on:** 07 | **Used by:** 09, 18 | **Phase:** 3
+
 ## Purpose
 
 Define the canonical route system, role visibility logic, and permission rules for the application layer.

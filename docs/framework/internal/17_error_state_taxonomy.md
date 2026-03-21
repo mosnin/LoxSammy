@@ -1,5 +1,8 @@
 # 17 Error State Taxonomy
 
+> **TL;DR:** Defines every error type a SaaS product encounters (validation, auth, network, timeout, billing, 500, etc.) with exact UI treatment, retry behavior, escalation patterns, logging policy, and accessibility requirements.
+> **Covers:** 12 error types, display component mapping, retry behavior, escalation patterns, error boundaries, accessibility, error message guidelines, logging | **Depends on:** 10, 12 | **Used by:** 09 | **Phase:** 9, 14
+
 ## Purpose
 
 Define every error state a SaaS product encounters and exactly how it should be handled in the UI. This file is the single source of truth for error presentation, retry behavior, logging policy, and admin visibility. When Claude builds any feature, it must consult this file to determine how failures surface to users.

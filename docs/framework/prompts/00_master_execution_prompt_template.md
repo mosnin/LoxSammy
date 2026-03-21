@@ -1,5 +1,8 @@
 # 00 Master Execution Prompt Template
 
+> **TL;DR:** Provides the standard startup prompt to paste into Claude Code for initiating a new project with this framework.
+> **Covers:** startup instruction, use pattern, session resumption | **Phase:** 0
+
 ## Purpose
 
 This is the standard startup prompt for a new project using this framework. Paste this into a Claude Code session to begin. You do not need to include your app idea in the same message — Claude will ask for it.

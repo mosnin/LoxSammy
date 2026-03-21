@@ -1,5 +1,8 @@
 # 00 Kickoff System
 
+> **TL;DR:** Defines the phased initialization sequence from welcome through discovery, doc generation, architecture planning, and build execution.
+> **Covers:** phase detection, discovery interview, project doc generation, architecture plan, build phases 4-14, session resumption | **Phase:** 0
+
 ## Purpose
 
 Define the phased initialization sequence for any new project that uses this framework. Claude works through phases interactively, reading files just-in-time and pausing for user input between phases.

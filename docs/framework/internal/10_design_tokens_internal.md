@@ -1,5 +1,8 @@
 # 10 Design Tokens Internal
 
+> **TL;DR:** Defines every visual token for the internal product — colors (light/dark), spacing scale, typography, border radii, shadows, motion, layout dimensions, and z-index layers.
+> **Covers:** color system, spacing, typography, radii, shadows, motion, layout dimensions, z-index, Tailwind mapping | **Depends on:** 15 | **Used by:** 01, 04, 08, 09, 11, 12, 13, 16, 17 | **Phase:** 7
+
 ## Purpose
 
 Define the canonical visual tokens for authenticated product pages. These tokens govern every visual decision inside the application shell — color, spacing, typography, shadows, radii, motion, and layout dimensions. They exist so Claude never improvises visual choices and every page feels like part of the same designed system.

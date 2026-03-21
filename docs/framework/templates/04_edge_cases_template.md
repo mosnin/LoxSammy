@@ -1,5 +1,8 @@
 # 04 Edge Cases
 
+> **TL;DR:** Template for cataloging realistic edge cases across auth, billing, product logic, integrations, and data integrity.
+> **Covers:** auth edge cases, billing failures, product conflicts, integration errors, data constraints | **Phase:** 2
+
 ## Instructions
 
 List edge cases grouped by category. For each, describe the specific scenario, what the system should do, and which page or module is affected. Focus on realistic situations that will occur in production — not hypothetical extremes.

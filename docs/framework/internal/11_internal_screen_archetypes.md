@@ -1,5 +1,8 @@
 # 11 Internal Screen Archetypes
 
+> **TL;DR:** Defines the canonical page patterns (dashboard, analytics, table index, detail, settings, billing, integration config, form setup, admin overview, empty state, loading state, error recovery) that every internal page must map to.
+> **Covers:** page archetypes, visual hierarchy, layout rules, density, mobile behavior, common mistakes | **Depends on:** 08, 10 | **Used by:** 04, 09, 15 | **Phase:** 9
+
 ## Purpose
 
 Define the canonical screen patterns for authenticated product pages. Every internal page must map to one of these archetypes. This prevents Claude from inventing new layouts per page and ensures every screen feels like part of the same designed product.

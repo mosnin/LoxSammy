@@ -1,5 +1,8 @@
 # 19 — Internationalization Posture
 
+> **TL;DR:** Establishes an English-only stance for v1, mandates the Intl API for date/currency/number formatting, and documents what would change for future multilingual support.
+> **Covers:** language assumption, Intl API formatting, UTC storage, future i18n requirements, formatting utilities | **Depends on:** None | **Used by:** None | **Phase:** 14
+
 > The framework's language and localization stance for v1 SaaS products.
 > Zero ambiguity — no guessing whether to externalize strings or add i18n libraries.
 

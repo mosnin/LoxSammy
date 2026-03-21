@@ -1,5 +1,8 @@
 # 16 Dashboard Archetypes
 
+> **TL;DR:** Defines 7 concrete, buildable dashboard patterns (queue, pipeline, analytics, content workspace, operations, monitoring, admin overview) with layout, summary cards, alerts, empty states, and mobile behavior for each.
+> **Covers:** queue, pipeline, analytics, content workspace, operations, monitoring, admin overview dashboards | **Depends on:** 03, 10, 12, 15 | **Used by:** 04, 09, 11 | **Phase:** 8
+
 ## Purpose
 
 Define concrete, buildable dashboard patterns for SaaS products. The general dashboard anatomy is in `03_dashboard_system.md`. This file specifies 7 specific dashboard types with enough detail to build each one without guessing layout or content.

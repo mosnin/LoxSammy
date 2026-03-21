@@ -1,5 +1,8 @@
 # 15 Canonical Breakpoints
 
+> **TL;DR:** Single source of truth for responsive breakpoints (xs through 2xl) across internal product, public site, and email — with layout behavior, sidebar collapse, table collapse, chart behavior, and modal/drawer rules per breakpoint.
+> **Covers:** breakpoint scale, layout per breakpoint, sidebar behavior, table collapse, chart behavior, modal/drawer sizing, form layout, navigation patterns, email rules | **Depends on:** None | **Used by:** 01, 04, 08, 09, 10, 11, 13, 16 | **Phase:** 7
+
 ## Purpose
 
 This is the single source of truth for responsive breakpoints across the entire SaaS framework — internal product, public marketing site, and email templates. Every file in this framework that references responsive behavior uses these exact breakpoints with no exceptions. If a breakpoint value appears in any other document that contradicts this file, this file wins. No ad-hoc breakpoints. No per-page overrides. One scale, used everywhere.

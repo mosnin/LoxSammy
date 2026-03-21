@@ -1,5 +1,8 @@
 # 05 Tech Stack
 
+> **TL;DR:** Template for defining technology choices and justifications across frontend, backend, database, auth, billing, and infrastructure.
+> **Covers:** frontend, backend, database, auth, billing, hosting, storage, email, jobs, analytics | **Phase:** 2
+
 ## Instructions
 
 Fill in each section with the specific technology choice and a brief justification. The defaults below reflect the framework's assumed stack — override any section as needed for your project.

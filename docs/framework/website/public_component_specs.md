@@ -1,5 +1,8 @@
 # Public Website Component Specs
 
+> **TL;DR:** Provides detailed visual specs (dimensions, spacing, states, interaction rules, mobile behavior) for every canonical public website component.
+> **Covers:** pill header, mobile drawer, announcement bar, hero, logo marquee, proof cards, stats band, feature split, pricing card, comparison table, testimonial, FAQ accordion, CTA block, footer, blog card, integration card, form block | **Depends on:** design_system_tokens.md, 15_canonical_breakpoints.md | **Used by:** component_library_spec.md, public_screen_archetypes.md | **Phase:** 13
+
 ## Purpose
 
 Define the visual structure, spacing, states, and interaction rules for every canonical public website component. This is the website counterpart to `docs/framework/internal/12_internal_component_specs.md`.

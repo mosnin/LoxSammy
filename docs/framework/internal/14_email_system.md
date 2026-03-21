@@ -1,5 +1,8 @@
 # 14 Email System
 
+> **TL;DR:** Defines the complete email system — auth, billing, onboarding, and notification email templates with structure rules, subject line rules, plain text fallbacks, dark mode handling, mobile rules, and frequency limits.
+> **Covers:** email categories, layout structure, typography, CTA buttons, subject lines, preheaders, plain text, dark mode, mobile, frequency, testing checklist | **Depends on:** None | **Used by:** 09 | **Phase:** 12
+
 ## Purpose
 
 Define the complete email system for SaaS products built with this framework. Every transactional, onboarding, and product email follows these rules. This file exists so Claude never improvises email structure, tone, or layout.

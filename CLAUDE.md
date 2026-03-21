@@ -27,6 +27,13 @@ When a session starts, detect the current phase and resume from there.
 
 When resuming, briefly tell the user where you're picking up and what comes next.
 
+### Quick Reference
+
+- **`docs/framework/MANIFEST.md`** — one-line description of every file with phase associations
+- **`docs/framework/phases/`** — detailed index file for each phase (what to read, what to build, exit conditions)
+
+Read the manifest first if you need to locate a file. Read the phase index file for your current phase to get specific instructions.
+
 ---
 
 ## Phase 0 — Welcome
@@ -286,6 +293,8 @@ docs/
       19_i18n_posture.md               # Internationalization stance
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
+    phases/                            # Phase-specific index files (what to read, build, verify per phase)
+    MANIFEST.md                        # Quick reference — every file with one-line description and phase
   project/                             # Generated app-specific docs (created during Phase 2)
 ```
 

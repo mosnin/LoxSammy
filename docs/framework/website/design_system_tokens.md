@@ -1,5 +1,8 @@
 # Public Website Design System Tokens
 
+> **TL;DR:** Defines all visual primitives (color, spacing, typography, radius, shadow, motion, layout, button tokens) for the public website in both light and dark mode.
+> **Covers:** color tokens, spacing scale, typography scale, radius, shadows, motion, layout grid, button variants | **Depends on:** 15_canonical_breakpoints.md | **Used by:** component_library_spec.md, public_component_specs.md, public_screen_archetypes.md, saas_home_page_system.md | **Phase:** 13
+
 ## Purpose
 
 Define the shared visual primitives for the public website. Every public page must use these tokens — no ad hoc values. This file is the website counterpart to `docs/framework/internal/10_design_tokens_internal.md`.

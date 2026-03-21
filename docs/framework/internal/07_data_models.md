@@ -1,5 +1,8 @@
 # 07 Data Models
 
+> **TL;DR:** Defines the canonical core entities (User, Organization, Membership, Subscription, Settings, Integration, Usage Event, Analytics Summary, Admin Record) with fields, types, and relationships.
+> **Covers:** entity schemas, field definitions, relationships, multi-tenancy pattern, product entity extension | **Depends on:** None | **Used by:** 06, 09 | **Phase:** 3, 4
+
 ## Purpose
 
 Define the canonical core entities for SaaS products so that data modeling stays stable and consistent across projects. Product specific entities attach to these — they do not replace them.

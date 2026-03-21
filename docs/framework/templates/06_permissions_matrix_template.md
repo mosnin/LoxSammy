@@ -1,5 +1,8 @@
 # 06 Permissions Matrix
 
+> **TL;DR:** Template for defining user roles, route-level access controls, and permission enforcement rules.
+> **Covers:** role definitions, route access matrix, enforcement layers, role assignment rules | **Phase:** 2
+
 ## Instructions
 
 Define all roles and their access levels. The route access matrix should cover every protected route in the application. Use these access levels: full (read + write), view (read only), own (only their own data), none (no access, route hidden).

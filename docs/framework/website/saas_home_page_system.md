@@ -1,5 +1,8 @@
 # SaaS Home Page System
 
+> **TL;DR:** Defines the canonical 14-section home page structure with conversion sequencing, section-by-section design rules, and mobile responsiveness guidance.
+> **Covers:** hero, logo marquee, case studies, stats band, feature splits, pricing, testimonials, FAQ, CTA blocks, footer | **Depends on:** design_system_tokens.md, 15_canonical_breakpoints.md | **Used by:** saas_website_page_system.md, public_screen_archetypes.md, public_component_specs.md | **Phase:** 13
+
 ## Purpose
 
 Define the canonical structure, design logic, and conversion sequencing for a modern SaaS home page that feels clean, premium, and intentionally designed rather than generic or over animated.

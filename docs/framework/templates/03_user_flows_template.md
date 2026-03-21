@@ -1,5 +1,8 @@
 # 03 User Flows
 
+> **TL;DR:** Template for documenting step-by-step user journeys from signup through repeat usage and admin support.
+> **Covers:** signup, onboarding, first value event, repeat usage, billing upgrade, admin flows | **Phase:** 2
+
 ## Instructions
 
 Document each key product flow as a numbered sequence of steps. Include the trigger, each screen/action, decision points, and the end state. Note where the flow branches based on user choices or system state.

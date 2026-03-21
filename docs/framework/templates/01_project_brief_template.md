@@ -1,5 +1,8 @@
 # 01 Project Brief
 
+> **TL;DR:** Template for a one-page executive summary covering what is being built, for whom, and why.
+> **Covers:** product summary, primary user, core problem, first value event, v1 scope, tech summary | **Phase:** 2
+
 ## Instructions
 
 This is a one-page executive summary of the product. It should be readable in under 2 minutes and give anyone full context on what is being built and why.

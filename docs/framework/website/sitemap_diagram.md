@@ -1,5 +1,8 @@
 # SaaS Website Sitemap Diagram
 
+> **TL;DR:** Defines the canonical public website information architecture including sitemap, navigation hierarchy, URL patterns, and IA rules.
+> **Covers:** canonical sitemap, primary navigation grouping, URL guidance, information architecture rules | **Depends on:** saas_website_page_system.md | **Used by:** nextjs_folder_structure.md | **Phase:** 13
+
 ## Purpose
 
 Define the recommended public website information architecture for a modern SaaS company.

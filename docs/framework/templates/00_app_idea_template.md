@@ -1,5 +1,8 @@
 # 00 App Idea
 
+> **TL;DR:** Template for capturing the product concept, target users, core problem, and v1 scope.
+> **Covers:** app name, problem, users, core features, entities, roles, non-goals | **Phase:** 2
+
 ## Instructions
 
 Fill out every section with concrete, specific content for your product. Do not leave sections blank or generic. If a section is not applicable, write "Not applicable for v1" and explain why.

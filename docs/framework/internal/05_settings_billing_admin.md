@@ -1,5 +1,8 @@
 # 05 Settings Billing Admin
 
+> **TL;DR:** Defines the canonical settings sections, billing capabilities, security controls, admin panel areas, and user management features.
+> **Covers:** profile settings, workspace settings, billing, security, admin overview, user management | **Depends on:** None | **Used by:** 06, 09, 11 | **Phase:** 10, 11
+
 ## Purpose
 
 Define the canonical account control surfaces for SaaS applications.

@@ -1,5 +1,8 @@
 # 18 Testing Strategy
 
+> **TL;DR:** Defines the automated testing strategy — unit, integration, and E2E test layers with tool choices, what to test, what to skip, test data factories, and CI pipeline integration.
+> **Covers:** test stack, testing philosophy, unit/integration/E2E layers, route protection, permission testing, billing flows, responsive testing, CI pipeline, test data strategy | **Depends on:** 06 | **Used by:** 09 | **Phase:** 14
+
 ## Purpose
 
 Define the automated testing strategy for SaaS products built with this framework. Complements the manual QA checklist (`08_qa_checklist_template.md`) with automated testing expectations. This document is opinionated — it tells you what to test, how deeply, and what to skip.

@@ -1,5 +1,8 @@
 # 09 Build Rules Internal
 
+> **TL;DR:** Defines the authoritative build order (11 phases), source-of-truth hierarchy, reuse rules, responsive requirements, state handling rules, coding standards, and quality gates.
+> **Covers:** build phases, source hierarchy, reuse rules, responsive rules, state handling, coding standards, quality gates | **Depends on:** 01, 02, 03, 05, 07, 08, 10, 11, 12, 13, 14, 15, 16, 17, 18 | **Used by:** None | **Phase:** 3, 4
+
 ## Purpose
 
 Define how the internal framework must be used during implementation. This is the authoritative reference for build order, coding standards, and quality gates.

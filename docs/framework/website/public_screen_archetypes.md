@@ -1,5 +1,8 @@
 # Public Website Screen Archetypes
 
+> **TL;DR:** Defines canonical page patterns (section order, layout rules, CTA strategy, mobile behavior, common mistakes) for all 13 public-facing page types.
+> **Covers:** home, product, pricing, solutions, case studies, features, integrations, security, docs, blog, about, contact, legal page archetypes | **Depends on:** design_system_tokens.md, public_component_specs.md, public_copy_conversion_rules.md, 15_canonical_breakpoints.md | **Used by:** component_library_spec.md, nextjs_folder_structure.md | **Phase:** 13
+
 ## Purpose
 
 Define canonical page patterns for every public-facing page in a SaaS website. This is the website counterpart to `docs/framework/internal/11_internal_screen_archetypes.md`. Every public page must map to one of these archetypes.

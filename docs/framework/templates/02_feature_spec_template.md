@@ -1,5 +1,8 @@
 # 02 Feature Spec
 
+> **TL;DR:** Template for specifying each feature's purpose, user actions, system behavior, and required UI states.
+> **Covers:** feature definitions, user actions, system output, dependencies, loading/empty/success/error states | **Phase:** 2
+
 ## Instructions
 
 Create one section per feature. Be specific about what the user does, what the system does in response, and what states the UI must handle. Group related features together.

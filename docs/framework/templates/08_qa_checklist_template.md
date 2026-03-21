@@ -1,5 +1,8 @@
 # 08 QA Checklist
 
+> **TL;DR:** Template providing a pre-release verification checklist covering auth, permissions, billing, empty states, errors, mobile, and dark mode.
+> **Covers:** auth, redirects, onboarding, dashboard, permissions, settings, billing, admin, empty states, errors, mobile, dark mode | **Phase:** 2
+
 ## Instructions
 
 Use this checklist before marking any milestone as complete. Check each item and note any failures. Each category should be tested across all relevant pages.

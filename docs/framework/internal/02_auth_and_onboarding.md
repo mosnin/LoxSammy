@@ -1,5 +1,8 @@
 # 02 Auth And Onboarding
 
+> **TL;DR:** Defines the canonical auth routes, page layouts, email verification, onboarding sequence, and first value event delivery for user activation.
+> **Covers:** login, signup, password reset, email verification, invite flow, onboarding steps, first value event | **Depends on:** None | **Used by:** 06, 09 | **Phase:** 5, 6
+
 ## Purpose
 
 Define the canonical user entry and activation flow for SaaS applications.

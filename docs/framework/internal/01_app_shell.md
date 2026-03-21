@@ -1,5 +1,8 @@
 # 01 App Shell
 
+> **TL;DR:** Defines the authenticated app frame — top bar, sidebar, drawer, page header, user menu, and responsive shell behavior.
+> **Covers:** layout, navigation, sidebar, drawer, user menu, responsive shell | **Depends on:** 10, 15 | **Used by:** 08, 09, 11 | **Phase:** 7
+
 ## Purpose
 
 Define the canonical authenticated application shell for SaaS products. This file governs layout, navigation, header behavior, drawer behavior, user access entry points, and shell level state handling.

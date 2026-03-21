@@ -1,5 +1,8 @@
 # 13 Internal Data Display Rules
 
+> **TL;DR:** Governs when to use tables vs cards vs charts vs lists, metric formatting rules, status badge mapping, dense data handling, bulk actions, pagination, mobile collapse rules, and activity feed presentation.
+> **Covers:** display pattern selection, chart framing, metric hierarchy, status pills, dense data, bulk actions, pagination, mobile collapse, activity feeds | **Depends on:** 10, 12 | **Used by:** 04, 08, 09, 15, 16 | **Phase:** 8, 9
+
 ## Purpose
 
 Define when and how to present data inside the authenticated product. This file governs the decision of which display pattern to use (table vs cards vs charts vs lists), how to handle density, how to present metrics, and how to handle data-heavy views so they look like a designed product rather than a generic dashboard template.

@@ -1,5 +1,8 @@
 # Public Copy and Conversion Rules
 
+> **TL;DR:** Defines enforceable rules for marketing copy including headline formulas, CTA hierarchy, proof/trust patterns, tone, pricing copy, FAQ structure, and form copy.
+> **Covers:** headline rules, CTA hierarchy and placement, social proof copy, tone and word rules, pricing copy, FAQ copy, form copy, anti-patterns | **Depends on:** None | **Used by:** public_screen_archetypes.md, component_library_spec.md | **Phase:** 13
+
 Rules for writing public-facing marketing copy that converts. Every rule here is specific and enforceable — if a rule could apply to any website for any product, it does not belong in this file.
 
 ---

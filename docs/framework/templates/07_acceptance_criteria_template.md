@@ -1,5 +1,8 @@
 # 07 Acceptance Criteria
 
+> **TL;DR:** Template for writing testable acceptance criteria across auth, onboarding, dashboard, features, billing, and mobile responsiveness.
+> **Covers:** auth, onboarding, dashboard, feature modules, settings, billing, admin, mobile, error handling | **Phase:** 2
+
 ## Instructions
 
 Write acceptance criteria as testable statements using "Given / When / Then" or simple "Must" assertions. Each criterion should be verifiable by a human or automated test. Group by system area.

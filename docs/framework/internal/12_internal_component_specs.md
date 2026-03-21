@@ -1,5 +1,8 @@
 # 12 Internal Component Specs
 
+> **TL;DR:** Provides exact visual specs (dimensions, padding, colors, states, mobile behavior) for every canonical internal component — summary cards, tables, forms, modals, drawers, badges, toasts, timelines, and more.
+> **Covers:** component dimensions, spacing, variants, states, density presets, mobile behavior | **Depends on:** 08, 10 | **Used by:** 04, 09, 13, 16, 17 | **Phase:** 9
+
 ## Purpose
 
 Define the visual structure, spacing, density, states, and interaction rules for every canonical internal component. This file works alongside `08_ui_system_internal.md` (which defines component behavior) and `10_design_tokens_internal.md` (which defines the values). This file specifies how each component is built visually so Claude never guesses.
