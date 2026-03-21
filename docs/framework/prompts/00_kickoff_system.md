@@ -89,26 +89,28 @@ Infer the implementation plan:
 
 ### Step 7
 
-Build in this order:
-1. foundation
-2. auth
-3. onboarding
-4. shell
-5. dashboard
-6. core features
-7. settings and billing
-8. admin
-9. edge cases and polish
+Build in this order (detailed in `09_build_rules_internal.md`):
+1. foundation (project setup, database schema, utilities)
+2. auth (login, signup, password flows, email verification)
+3. onboarding (multi-step setup, first value event)
+4. shell (top bar, sidebar, drawer, page header, user menu)
+5. dashboard (summary row, main work area, analytics)
+6. core features (product-specific modules from project docs)
+7. settings and billing (profile, workspace, Stripe integration)
+8. admin (user management, billing overview, logs)
+9. marketing site (public pages from `docs/framework/website/`)
+10. edge cases and polish (QA checklist, acceptance criteria, dark mode)
 
 ## Build Constraints
 
-- build only v1
-- reuse shared patterns
-- keep responsive from the start
-- follow framework rules
-- handle loading, empty, success, and error states
-- enforce auth and permissions
-- do not invent unrelated modules
+- Build only v1 scope unless the user explicitly requests otherwise
+- Reuse shared patterns from `08_ui_system_internal.md` before creating new components
+- Keep responsive from the start — test at 375px width
+- Follow build rules from `09_build_rules_internal.md`
+- Handle loading, empty, success, and error states on every page and component
+- Enforce auth and permissions at middleware, API, and UI layers per `06_routes_and_permissions.md`
+- Do not invent unrelated modules or features outside the v1 scope
+- Follow coding standards from `09_build_rules_internal.md`
 
 ## Final Principle
 

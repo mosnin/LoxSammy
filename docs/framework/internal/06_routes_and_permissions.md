@@ -69,13 +69,15 @@ Admin route behavior:
 
 ## Canonical Roles
 
-| Role | Description | Typical Access |
-|------|-------------|----------------|
-| guest | Unauthenticated visitor | Public and auth routes only |
-| member | Standard team member | Dashboard, own data, profile settings |
-| manager | Team lead (optional) | Member access + team data + analytics |
-| admin | Organization administrator | Full access except ownership transfer and workspace deletion |
-| owner | Organization owner (one per org) | Full access including billing, workspace deletion, ownership transfer |
+| Role | Stored in DB | Description | Typical Access |
+|------|-------------|-------------|----------------|
+| guest | No (conceptual) | Unauthenticated visitor | Public and auth routes only |
+| member | Yes (Membership.role) | Standard team member | Dashboard, own data, profile settings |
+| manager | Yes (Membership.role) | Team lead (optional) | Member access + team data + analytics |
+| admin | Yes (Membership.role) | Organization administrator | Full access except ownership transfer and workspace deletion |
+| owner | Yes (Membership.role) | Organization owner (one per org) | Full access including billing, workspace deletion, ownership transfer |
+
+Note: `guest` is not a stored role in the Membership entity. It represents unauthenticated visitors for route categorization purposes. The four stored roles (`member`, `manager`, `admin`, `owner`) match the `role` enum in `07_data_models.md`.
 
 ## Permission Enforcement Layers
 

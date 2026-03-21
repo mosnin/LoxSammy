@@ -54,13 +54,26 @@ Step 9:
 Build only what is required for v1 unless explicitly asked otherwise.
 
 Step 10:
+Build in this order (detailed phases in docs/framework/internal/09_build_rules_internal.md):
+1. foundation (project setup, database schema, utilities)
+2. auth (login, signup, password flows, email verification)
+3. onboarding (multi-step setup, first value event)
+4. shell (top bar, sidebar, drawer, page header, user menu)
+5. dashboard (summary row, main work area, analytics)
+6. core features (product-specific modules)
+7. settings and billing (profile, workspace, Stripe)
+8. admin (user management, billing overview, logs)
+9. marketing site (public pages from docs/framework/website/)
+10. edge cases and polish (QA checklist, acceptance criteria, dark mode)
+
+Step 11:
 Throughout implementation:
-- reuse shared patterns before creating new ones
-- keep all pages mobile responsive
-- handle loading, empty, success, and error states
-- enforce permissions on protected and admin routes
-- do not add features outside scope
-- keep the product aligned with the app idea
+- reuse shared patterns from docs/framework/internal/08_ui_system_internal.md before creating new ones
+- keep all pages mobile responsive (test at 375px)
+- handle loading, empty, success, and error states on every page
+- enforce permissions at middleware, API, and UI layers per docs/framework/internal/06_routes_and_permissions.md
+- do not add features outside the v1 scope
+- follow coding standards from docs/framework/internal/09_build_rules_internal.md
 
 Before writing production code, briefly summarize:
 - inferred app architecture

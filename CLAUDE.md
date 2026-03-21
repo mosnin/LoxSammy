@@ -31,7 +31,7 @@ When this framework is present in a project, follow this exact order:
    - `07_acceptance_criteria.md`
    - `08_qa_checklist.md`
 5. **Summarize the architecture** before writing any code — routes, modules, entities, implementation order
-6. **Build in this order**: foundation → auth → onboarding → shell → dashboard → core features → settings/billing → admin → edge cases/polish
+6. **Build in this order** (detailed in `docs/framework/internal/09_build_rules_internal.md`): foundation → auth → onboarding → shell → dashboard → core features → settings/billing → admin → marketing site → edge cases/polish
 
 ## Source of Truth Hierarchy
 
