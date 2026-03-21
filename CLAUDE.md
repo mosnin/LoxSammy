@@ -82,7 +82,9 @@ docs/
 2. `docs/framework/internal/09_build_rules_internal.md` — build order and constraints
 3. `docs/framework/internal/07_data_models.md` — core entity definitions with fields
 4. `docs/framework/internal/01_app_shell.md` — authenticated app frame structure
-5. `docs/framework/website/saas_home_page_system.md` — marketing site conversion funnel
+5. `docs/framework/internal/10_design_tokens_internal.md` — internal product visual tokens (colors, spacing, typography, shadows)
+6. `docs/framework/internal/11_internal_screen_archetypes.md` — canonical page patterns for authenticated views
+7. `docs/framework/website/saas_home_page_system.md` — marketing site conversion funnel
 
 ## Important Conventions
 

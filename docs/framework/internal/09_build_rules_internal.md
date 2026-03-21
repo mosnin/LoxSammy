@@ -38,6 +38,8 @@ Build in this exact order. Do not skip ahead.
 - First value event delivery
 
 ### Phase 4: App Shell
+- Read the internal visual pack (`10_design_tokens_internal.md`, `11_internal_screen_archetypes.md`, `12_internal_component_specs.md`, `13_internal_data_display_rules.md`) before building any authenticated pages
+- Configure Tailwind theme with design tokens from `10_design_tokens_internal.md`
 - Build the authenticated shell per `01_app_shell.md`: top bar, sidebar, mobile drawer, main content area
 - Page header component (title, context, primary action, secondary actions)
 - User menu (profile, settings, billing, logout)
@@ -85,6 +87,9 @@ Build in this exact order. Do not skip ahead.
 - Reuse common settings framing (left nav + right content panel)
 - Reuse common admin framing (same layout as settings)
 - Reuse components from `08_ui_system_internal.md` before creating new ones
+- Follow visual specs from `12_internal_component_specs.md` for all component dimensions, spacing, and states
+- Follow screen archetypes from `11_internal_screen_archetypes.md` for page composition
+- Follow data display rules from `13_internal_data_display_rules.md` for tables, charts, and metric presentation
 - Extract shared patterns only when used in 3+ places
 
 ## Responsive Rules

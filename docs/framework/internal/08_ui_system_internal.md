@@ -109,6 +109,17 @@ Fixed bar at the bottom of the page for bulk operations or unsaved changes.
 4. Interactive components (buttons, links, form inputs) must have visible focus states for keyboard navigation.
 5. Destructive actions (delete, remove, disconnect) always require a confirmation Modal.
 
+## Related Visual Pack
+
+This file defines component behavior and structure. The deeper visual specificity layer lives in four companion files:
+
+- `10_design_tokens_internal.md` — exact colors, spacing, typography, shadows, radii, motion, layout dimensions
+- `11_internal_screen_archetypes.md` — canonical page patterns (dashboard, table index, detail, settings, etc.)
+- `12_internal_component_specs.md` — visual specs for every component (dimensions, padding, variants, states)
+- `13_internal_data_display_rules.md` — when to use tables vs cards vs charts, metric formatting, density rules
+
+When building any authenticated page, read this file for component behavior, then read the visual pack for how it looks.
+
 ## Final Principle
 
 The internal UI system should create a stable visual and interaction language so the product feels like one system regardless of how many modules it includes.
