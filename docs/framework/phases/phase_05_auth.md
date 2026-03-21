@@ -31,5 +31,15 @@ Foundation (Phase 4) is complete.
 - Protected routes redirect to login
 - Session persists across page refreshes
 
+### Run Validation Gates
+Run all Phase 5 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:auth-routes` — All auth API routes exist
+- `gate:auth-pages` — Login and signup pages exist
+- `gate:auth-middleware` — Auth middleware protects routes
+- `gate:auth-password-hashing` — Passwords are hashed
+- `gate:auth-no-secrets-exposed` — No server secrets in client code
+
+Plus regression: re-run all Phase 4 gates.
+
 ## Exit Condition
-Auth flows are functional. Summarize and ask user to continue to **Phase 6**.
+Auth flows are functional. All gates pass. Summarize and ask user to continue to **Phase 6**.

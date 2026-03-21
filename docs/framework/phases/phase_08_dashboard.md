@@ -38,5 +38,16 @@ Choose the appropriate archetype from `16_dashboard_archetypes.md`:
 - Responsive at all breakpoints
 - Metrics update correctly
 
+### Run Validation Gates
+Run all Phase 8 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:dashboard-page` — Dashboard route exists
+- `gate:dashboard-four-states` — Loading, empty, success, and error states present
+- `gate:dashboard-metrics` — Summary metrics implemented
+
+Plus regression: re-run all Phase 4–7 gates.
+
+### Update Pattern Snapshot
+Update `docs/project/pattern_snapshot.md` Section D with dashboard-specific component patterns (data display, metrics, etc.).
+
 ## Exit Condition
-Dashboard is functional with all states. Summarize and ask user to continue to **Phase 9**.
+Dashboard is functional with all states. All gates pass. Pattern snapshot updated. Summarize and ask user to continue to **Phase 9**.

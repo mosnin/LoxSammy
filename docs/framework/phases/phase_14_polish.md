@@ -46,5 +46,18 @@ Walk through all 12 error types from `17_error_state_taxonomy.md`:
 ### Formatting
 - Ensure dates, numbers, currencies use Intl API per `19_i18n_posture.md`
 
+### Run Full Validation Gate Suite
+Run ALL gates from `docs/framework/internal/21_validation_gates.md` as a final regression:
+- `gate:typescript-clean` — Full TypeScript compilation passes
+- `gate:no-any-types` — No `any` types in production code
+- `gate:no-console-logs` — No stray console.log statements
+- `gate:all-states-audit` — Every authenticated page handles all four states
+- `gate:accessibility-basics` — Alt text, aria labels present
+- `gate:full-regression` — Re-run every gate from Phases 4–13
+
+Plus any custom gates from `docs/project/custom_gates.md`.
+
+Present the full gate report to the user.
+
 ## Exit Condition
-QA checklist is passing. Acceptance criteria are met. Summarize the final state of the project. The v1 build is complete.
+QA checklist is passing. Acceptance criteria are met. All validation gates pass (46 standard + custom). Summarize the final state of the project. The v1 build is complete.

@@ -29,5 +29,13 @@ Auth (Phase 5) is complete.
 - Returning onboarded users skip to dashboard
 - Partially completed onboarding resumes correctly
 
+### Run Validation Gates
+Run all Phase 6 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:onboarding-flow` — Onboarding route exists
+- `gate:onboarding-completion-flag` — Completion tracked in schema
+- `gate:onboarding-redirect` — Non-onboarded users redirected
+
+Plus regression: re-run all Phase 4–5 gates.
+
 ## Exit Condition
-Onboarding flow is functional. Summarize and ask user to continue to **Phase 7**.
+Onboarding flow is functional. All gates pass. Summarize and ask user to continue to **Phase 7**.

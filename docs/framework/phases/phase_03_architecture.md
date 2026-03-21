@@ -36,7 +36,13 @@ Produce an architecture summary covering:
   - What each phase includes for THIS app
   - Key decisions or dependencies between phases
 
+### 5. Custom Validation Gates
+- Read `docs/framework/internal/21_validation_gates.md` for the gate system
+- Define app-specific gates based on entities and features identified
+- Write custom gates to `docs/project/custom_gates.md`
+- Examples: tenant isolation checks, feature-specific structural checks
+
 Present the full plan to the user for review.
 
 ## Exit Condition
-User confirms architecture → **Phase 4**.
+User confirms architecture and custom gates → **Phase 4**.

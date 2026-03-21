@@ -128,6 +128,9 @@ Output: Write all 3 files. No summary needed.
 ```
 Prompt: Build the [FEATURE_NAME] module for [APP_NAME].
 
+Read these files FIRST (canonical patterns — follow exactly):
+- docs/project/pattern_snapshot.md (code conventions — MANDATORY)
+
 Read these framework files (DO NOT read other framework files):
 - docs/framework/internal/08_ui_system_internal.md (component behaviors)
 - docs/framework/internal/11_internal_screen_archetypes.md (page patterns)

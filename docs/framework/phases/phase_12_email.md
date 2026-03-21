@@ -44,5 +44,13 @@ Admin (Phase 11) is complete.
 - Plain text fallbacks are readable
 - Dark mode doesn't break layout or readability
 
+### Run Validation Gates
+Run all Phase 12 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:email-templates` — Email template components exist
+- `gate:email-plain-text` — Plain text fallbacks present
+- `gate:email-send-function` — Centralized email sending utility
+
+Plus regression: re-run all Phase 4–11 gates.
+
 ## Exit Condition
-Email templates are complete. Summarize and ask user to continue to **Phase 13**.
+Email templates are complete. All gates pass. Summarize and ask user to continue to **Phase 13**.

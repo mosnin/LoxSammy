@@ -39,5 +39,13 @@ Settings & billing (Phase 10) are complete.
 - Admin routes are inaccessible to non-admin users
 - Admin actions are logged
 
+### Run Validation Gates
+Run all Phase 11 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:admin-routes` — Admin pages exist
+- `gate:admin-middleware` — Middleware-level protection (not just UI hiding)
+- `gate:admin-audit-log` — Admin actions are logged
+
+Plus regression: re-run all Phase 4–10 gates.
+
 ## Exit Condition
-Admin panel is functional. Summarize and ask user to continue to **Phase 12**.
+Admin panel is functional. All gates pass. Summarize and ask user to continue to **Phase 12**.

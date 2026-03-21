@@ -130,10 +130,11 @@ Each build phase is a discrete step. At the start of each phase:
 5. Ask the user if they want to review, adjust, or continue to the next phase
 
 ### Phase 4 — Foundation
-**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 1 section)
+**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 1 section), `docs/framework/internal/21_validation_gates.md`
 - Project setup (Next.js, TypeScript, Tailwind, Prisma)
 - Database schema from entity plan
 - Shared utilities, types, constants
+- **Run Phase 4 validation gates before proceeding**
 
 ### Phase 5 — Auth
 **Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (auth sections only)
@@ -152,9 +153,11 @@ Each build phase is a discrete step. At the start of each phase:
 - `docs/framework/internal/01_app_shell.md`
 - `docs/framework/internal/10_design_tokens_internal.md`
 - `docs/framework/internal/15_canonical_breakpoints.md`
+- `docs/framework/internal/22_pattern_snapshot.md` (for snapshot generation)
 - Top bar, sidebar, drawer, page header, user menu
 - Responsive layout, dark mode tokens
 - Navigation structure from route plan
+- **Generate pattern snapshot** at `docs/project/pattern_snapshot.md` before proceeding
 
 ### Phase 8 — Dashboard
 **Read now:**
@@ -166,6 +169,7 @@ Each build phase is a discrete step. At the start of each phase:
 
 ### Phase 9 — Core Features
 **Read now:**
+- `docs/project/pattern_snapshot.md` (MANDATORY — read before writing any code)
 - `docs/framework/internal/08_ui_system_internal.md`
 - `docs/framework/internal/11_internal_screen_archetypes.md`
 - `docs/framework/internal/12_internal_component_specs.md`
@@ -173,6 +177,7 @@ Each build phase is a discrete step. At the start of each phase:
 - Product-specific feature modules from project docs
 - CRUD views, detail pages, forms, filters
 - All four states: loading, empty, success, error
+- **Update pattern snapshot** with feature module template after first feature is built
 
 ### Phase 10 — Settings & Billing
 **Read now:** `docs/framework/internal/05_settings_billing_admin.md`
@@ -255,6 +260,9 @@ These apply to every build phase:
 - Do not add features outside the defined v1 scope
 - Do not modify files in `docs/framework/` — those are reusable defaults
 - English-first for v1
+- **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) after every build phase — all gates must pass before proceeding
+- **Read the pattern snapshot** (`docs/project/pattern_snapshot.md`) before writing code in Phase 8+ — follow established conventions exactly
+- **All sub-agents** must read the pattern snapshot before building (see `docs/framework/internal/22_pattern_snapshot.md`)
 
 ## Repository Structure
 
@@ -291,6 +299,9 @@ docs/
       17_error_state_taxonomy.md       # Error handling patterns
       18_testing_strategy.md           # Testing expectations
       19_i18n_posture.md               # Internationalization stance
+      20_subagent_dispatch.md          # Sub-agent recipes for parallel phases
+      21_validation_gates.md           # 46 machine-checkable structural assertions per phase
+      22_pattern_snapshot.md           # Pattern capture system — prevents drift across phases
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)

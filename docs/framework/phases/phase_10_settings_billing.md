@@ -30,5 +30,14 @@ Core features (Phase 9) are complete.
 - Customer Portal link works
 - Plan changes reflect in the UI
 
+### Run Validation Gates
+Run all Phase 10 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:settings-pages` — Settings sub-pages exist
+- `gate:billing-stripe` — Stripe integration code present
+- `gate:billing-webhook` — Webhook endpoint with signature verification
+- `gate:settings-permissions` — Role enforcement on settings routes
+
+Plus regression: re-run all Phase 4–9 gates.
+
 ## Exit Condition
-Settings and billing are functional. Summarize and ask user to continue to **Phase 11**.
+Settings and billing are functional. All gates pass. Summarize and ask user to continue to **Phase 11**.

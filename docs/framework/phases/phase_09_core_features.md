@@ -9,6 +9,9 @@ Dashboard (Phase 8) is complete.
 - `docs/framework/internal/12_internal_component_specs.md` — component visual specs
 - `docs/framework/internal/17_error_state_taxonomy.md` — error handling
 
+## Required Reading (Before Building)
+- `docs/project/pattern_snapshot.md` — canonical code conventions (all agents must read this)
+
 ## What to Build
 
 Build the product-specific feature modules defined in `docs/project/02_feature_spec.md`.
@@ -43,5 +46,18 @@ Build the product-specific feature modules defined in `docs/project/02_feature_s
 - All four states render properly
 - Responsive at all breakpoints
 
+### Run Validation Gates
+Run all Phase 9 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:features-exist` — All feature modules from spec have routes
+- `gate:features-four-states` — Every feature handles loading, empty, success, error
+- `gate:features-permissions` — Permission checks in API routes
+- `gate:features-org-isolation` — Queries filter by organization
+- `gate:features-validation` — Forms have client-side validation
+
+Plus regression: re-run all Phase 4–8 gates.
+
+### Update Pattern Snapshot
+After the first feature module is built, update `docs/project/pattern_snapshot.md` to add Section H (Feature Module Template). All subsequent feature agents must read this before building.
+
 ## Exit Condition
-Core features are functional. Summarize what was built and ask user to continue to **Phase 10**.
+Core features are functional. All gates pass. Pattern snapshot updated with feature template. Summarize what was built and ask user to continue to **Phase 10**.

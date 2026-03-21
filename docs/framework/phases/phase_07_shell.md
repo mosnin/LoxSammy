@@ -38,5 +38,18 @@ Onboarding (Phase 6) is complete.
 - Dark mode toggles correctly
 - Navigation highlights active route
 
+### Run Validation Gates
+Run all Phase 7 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:shell-layout` — Authenticated layout exists
+- `gate:shell-sidebar` — Sidebar/nav component exists
+- `gate:shell-responsive` — Mobile responsive classes present
+- `gate:shell-dark-mode` — Dark mode configured and used
+- `gate:shell-page-header` — Reusable page header component exists
+
+Plus regression: re-run all Phase 4–6 gates.
+
+### Generate Pattern Snapshot
+Read `docs/framework/internal/22_pattern_snapshot.md` and follow its instructions to generate `docs/project/pattern_snapshot.md`. This captures the canonical code conventions from Phases 4–7 so all future phases stay consistent.
+
 ## Exit Condition
-App shell is responsive and functional. Summarize and ask user to continue to **Phase 8**.
+App shell is responsive and functional. All gates pass. Pattern snapshot generated. Summarize and ask user to continue to **Phase 8**.

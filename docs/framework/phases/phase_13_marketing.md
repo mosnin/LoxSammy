@@ -44,5 +44,14 @@ Email templates (Phase 12) are complete.
 - CTAs link to correct destinations
 - Page load performance is acceptable
 
+### Run Validation Gates
+Run all Phase 13 gates from `docs/framework/internal/21_validation_gates.md`:
+- `gate:marketing-pages` — Core public pages exist
+- `gate:marketing-responsive` — Responsive utility classes present
+- `gate:marketing-cta` — CTAs link to auth routes
+- `gate:marketing-separate-tokens` — No internal component imports in public pages
+
+Plus regression: re-run all Phase 4–12 gates.
+
 ## Exit Condition
-Marketing site is live-ready. Summarize and ask user to continue to **Phase 14**.
+Marketing site is live-ready. All gates pass. Summarize and ask user to continue to **Phase 14**.
