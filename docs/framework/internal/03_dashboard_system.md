@@ -1,5 +1,8 @@
 # 03 Dashboard System
 
+> **TL;DR:** Defines the canonical dashboard framework — anatomy, summary rows, main work area, analytics, role-aware logic, required states, and mobile rules.
+> **Covers:** dashboard anatomy, summary cards, main work area, analytics, role-aware logic, required states | **Depends on:** 08, 13, 16 | **Used by:** 09, 11 | **Phase:** 8
+
 ## Purpose
 
 Define the canonical dashboard framework for authenticated SaaS users.
@@ -84,6 +87,12 @@ Every dashboard must support:
 - avoid unnecessary horizontal scroll
 - collapse tables intelligently
 - keep actions visible
+
+## Dashboard Archetypes
+
+For concrete, buildable dashboard patterns (queue, pipeline, analytics, content workspace, operations, monitoring, admin overview), see `16_dashboard_archetypes.md`. That file defines specific layout, summary cards, secondary insights, activity patterns, alert patterns, empty states, mobile behavior, and common mistakes for each dashboard type.
+
+When building a dashboard, first identify which archetype matches the product, then use the archetype spec as the construction blueprint.
 
 ## Final Principle
 

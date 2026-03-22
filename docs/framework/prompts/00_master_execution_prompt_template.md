@@ -1,80 +1,41 @@
 # 00 Master Execution Prompt Template
 
+> **TL;DR:** Provides the standard startup prompt to paste into Claude Code for initiating a new project with this framework.
+> **Covers:** startup instruction, use pattern, session resumption | **Phase:** 0
+
 ## Purpose
 
-This is the standard startup prompt for a new project using this framework.
+This is the standard startup prompt for a new project using this framework. Paste this into a Claude Code session to begin. You do not need to include your app idea in the same message — Claude will ask for it.
+
+For the full protocol, see `00_kickoff_system.md`.
 
 ## Prompt
 
 Use the following startup instruction:
 
 ```text
-You are working inside a repository that uses a framework layer and a project layer.
+This project uses a SaaS framework located in docs/framework/.
 
-Follow this sequence exactly.
+Follow the phased process defined in CLAUDE.md:
 
-Step 1:
-Read all files in:
-- docs/framework/website
-- docs/framework/internal
-- docs/framework/templates
-- docs/framework/prompts
+1. Detect what phase this project is in
+2. If starting fresh, welcome me and ask for my app idea
+3. Walk me through discovery, then generate project docs for my review
+4. Plan the architecture and get my confirmation
+5. Build phase by phase, checking in between each one
 
-Step 2:
-Use the app idea provided in this conversation as the raw product input.
-
-Step 3:
-Create docs/project if it does not already exist.
-
-Step 4:
-Using the template files in docs/framework/templates, generate these project files inside docs/project:
-- 00_app_idea.md
-- 01_project_brief.md
-- 02_feature_spec.md
-- 03_user_flows.md
-- 04_edge_cases.md
-- 05_tech_stack.md
-- 06_permissions_matrix.md
-- 07_acceptance_criteria.md
-- 08_qa_checklist.md
-
-Step 5:
-Populate those files with concrete app specific content. Do not leave them generic.
-
-Step 6:
-Treat docs/project as the app specific source of truth and docs/framework as the reusable default framework.
-
-Step 7:
-Infer the exact route set, feature modules, onboarding flow, dashboard structure, entities, admin needs, and v1 scope from the combined docs.
-
-Step 8:
-Only after the docs are generated and populated, begin implementation.
-
-Step 9:
-Build only what is required for v1 unless explicitly asked otherwise.
-
-Step 10:
-Throughout implementation:
-- reuse shared patterns before creating new ones
-- keep all pages mobile responsive
-- handle loading, empty, success, and error states
-- enforce permissions on protected and admin routes
-- do not add features outside scope
-- keep the product aligned with the app idea
-
-Before writing production code, briefly summarize:
-- inferred app architecture
-- required routes
-- required modules
-- key entities
-- implementation order
-
-Then proceed to build.
+Read framework files just-in-time — only what's needed for the current phase.
+Do not try to do everything at once.
 ```
 
 ## Use Pattern
 
-1. Use this prompt.
-2. Append the app idea beneath it.
-3. Let the project docs be generated first.
-4. Then let implementation begin.
+1. Paste this prompt into a new Claude Code session
+2. Claude will detect the project state and start at the right phase
+3. If no app idea exists, Claude will ask for one
+4. Each phase ends with a summary and a check-in before continuing
+5. You can pause, adjust, or skip phases at any time
+
+## Resuming a Project
+
+If you start a new session on an existing project, Claude will automatically detect where you left off by checking for `docs/project/` and existing source code. Just start the session — no special prompt needed.

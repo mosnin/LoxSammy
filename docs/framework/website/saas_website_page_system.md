@@ -1,5 +1,8 @@
 # SaaS Website Page System
 
+> **TL;DR:** Defines the multi-page public website system extending the home page into 13 canonical page types with shared layout rules and navigation consistency.
+> **Covers:** product, pricing, solutions, case studies, features, integrations, security, docs, blog, about, contact, legal pages | **Depends on:** saas_home_page_system.md, design_system_tokens.md | **Used by:** public_screen_archetypes.md, sitemap_diagram.md, nextjs_folder_structure.md | **Phase:** 13
+
 ## Purpose
 
 Define the multi page public website system that extends the home page into a full SaaS website. Every page must feel like part of the same product, company, and design system.

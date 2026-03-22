@@ -1,5 +1,8 @@
 # SaaS Home Page System
 
+> **TL;DR:** Defines the canonical 14-section home page structure with conversion sequencing, section-by-section design rules, and mobile responsiveness guidance.
+> **Covers:** hero, logo marquee, case studies, stats band, feature splits, pricing, testimonials, FAQ, CTA blocks, footer | **Depends on:** design_system_tokens.md, 15_canonical_breakpoints.md | **Used by:** saas_website_page_system.md, public_screen_archetypes.md, public_component_specs.md | **Phase:** 13
+
 ## Purpose
 
 Define the canonical structure, design logic, and conversion sequencing for a modern SaaS home page that feels clean, premium, and intentionally designed rather than generic or over animated.
@@ -349,12 +352,111 @@ End the experience with trust, navigation, and legal clarity.
 - FAQ remains easy to tap
 - footer stacks cleanly
 
+## Website Animation & Motion System
+
+The public website uses Motion (framer-motion) expressively — more creative and energetic than the internal product, but always purposeful. Every animation must serve conversion, clarity, or delight. Never animate for decoration alone.
+
+### Scroll-Triggered Entrances
+
+Sections fade in as they enter the viewport. Use IntersectionObserver + Motion.
+
+| Element | Animation | Duration | Easing |
+|---------|-----------|----------|--------|
+| Section headline | opacity 0→1, y: 24→0 | 500ms | ease-out |
+| Section subheadline | opacity 0→1, y: 16→0 | 500ms, 100ms delay | ease-out |
+| Cards (staggered) | opacity 0→1, y: 20→0 | 400ms + 80ms stagger | ease-out |
+| Feature visual/screenshot | opacity 0→1, scale: 0.97→1 | 600ms | ease-out |
+| Stats band numbers | Count-up from 0 to value | 1.2s | ease-out (decelerate) |
+| CTA buttons | opacity 0→1, y: 12→0 | 400ms, 200ms delay | ease-out |
+
+**Rules:**
+- Trigger once per element (not on every scroll direction change)
+- Trigger when element is ~20% visible
+- Keep entrance animations under 600ms
+- Stagger children with 60-100ms gap — enough to create reading order, not enough to feel slow
+
+### Marquee Components
+
+Marquees add kinetic energy and social proof. The website supports multiple marquee patterns:
+
+**Logo Marquee (trust strip):**
+- Continuous left scroll, 30s per cycle, linear easing
+- Logos grayscale at 50% opacity → full color on hover (optional)
+- Duplicate logo set for seamless loop
+- Pause on hover (optional)
+- Gap: 48px between logos
+
+**Testimonial Marquee:**
+- Horizontal scroll of testimonial cards, slower pace (40-50s per cycle)
+- Cards at full opacity, slight scale (0.98) for non-center cards
+- Two rows scrolling in opposite directions creates a dynamic "wall of love" effect
+- Each row can have different speed (row 1: 35s, row 2: 45s)
+
+**Feature/Integration Marquee:**
+- Grid of integration logos or feature tags scrolling horizontally
+- Works well as a secondary trust signal or to show breadth of integrations
+- Same seamless loop technique as logo marquee
+
+**Marquee Implementation Rules:**
+- Use CSS `@keyframes` with `translateX` for the base scroll — GPU-accelerated, no JS overhead
+- Duplicate the content track to create seamless loop
+- Pause animation on `prefers-reduced-motion`
+- Never marquee essential information — users must be able to read it without chasing it
+- Mobile: same behavior, slightly smaller content. Do not disable marquees on mobile
+
+### Hero Section Animation
+
+The hero is the first thing users see — it should feel alive but not busy:
+
+- Headline: staggered word or line reveal (fade + y shift), 400ms per line, 100ms stagger
+- Subheadline: fade in after headline completes, 400ms
+- CTA buttons: fade + slight y shift, 300ms, after subheadline
+- Product visual: fade + subtle scale (0.96→1), 600ms, can begin simultaneously with text
+- Optional: subtle floating animation on product visual (y: 0 → -8 → 0, 4s cycle, ease-in-out) — use sparingly
+
+### Interactive Hover Effects (Website Only)
+
+The public site allows more expressive hover states than the internal product:
+
+- **Cards**: translateY(-4px) + shadow increase + optional border color shift, 200ms ease-out
+- **Feature visuals**: slight scale (1.02) on parent card hover, 300ms ease-out
+- **CTA buttons**: scale(1.02) + shadow increase, 150ms ease-out. Never shift position.
+- **Nav items**: underline slide-in from left, 200ms ease-out
+- **Footer links**: color shift only, 150ms
+
+### Animated Backgrounds (Use Sparingly)
+
+- Subtle gradient mesh that shifts slowly (20-30s cycle) — hero section only
+- Dot grid or grain texture with very subtle parallax on mouse move (2-4px max offset)
+- Never use particle systems, 3D scenes, or anything that tanks mobile performance
+- These are opt-in per project — not default. Only add if the product visual identity benefits from it
+
+### What NOT to Animate on the Website
+
+- Text color changes on scroll (distracting)
+- Parallax on every section (dated, performance cost)
+- Scroll-jacking (never)
+- Elements that animate every time they enter/leave viewport (once only)
+- Decorative SVG line draws (feels 2019)
+- Anything that delays content being readable by more than 800ms total
+
+### Reduced Motion
+
+Always provide a `prefers-reduced-motion` fallback:
+- Marquees: pause entirely (show static row)
+- Scroll entrances: instant opacity (no transform)
+- Hero: all elements visible immediately
+- Hover effects: reduce to opacity/color only (no transforms)
+
 ## Performance Rules
 
 - do not trade speed for visual novelty
 - optimize images
-- avoid overuse of motion libraries
+- Motion is allowed generously on the website but must be GPU-accelerated (opacity, transform only)
+- Marquees use CSS @keyframes, not JS animation loops
+- Lazy-load scroll-triggered animations (IntersectionObserver, not scroll event listeners)
 - preserve fast mobile load performance
+- Test animation performance on mid-tier Android devices, not just MacBook Pro
 
 ## Final Principle
 

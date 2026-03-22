@@ -1,5 +1,8 @@
 # Public Website Next.js Folder Structure
 
+> **TL;DR:** Defines the recommended Next.js app router folder structure for organizing public SaaS website routes, components, and assets.
+> **Covers:** app directory routes, component directory layout, public assets, naming conventions | **Depends on:** saas_website_page_system.md, sitemap_diagram.md | **Used by:** None | **Phase:** 13
+
 ## Purpose
 
 Define a clean recommended folder structure for building the public SaaS website in Next.js.
