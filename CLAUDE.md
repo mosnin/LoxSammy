@@ -46,6 +46,7 @@ When resuming, read `docs/project/*` to restore app context, then read `docs/pro
 
 ### Quick Reference
 
+- **`docs/framework/QUICK_START.md`** — task-to-file decision tree ("I need to build X → read files Y"), files by category, phase dependency chain, shared utilities index
 - **`docs/framework/MANIFEST.md`** — one-line description of every file with phase associations
 - **`docs/framework/phases/`** — detailed index file for each phase (what to read, what to build, exit conditions)
 
@@ -359,6 +360,7 @@ docs/
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)
     MANIFEST.md                        # Quick reference — every file with one-line description and phase
+    QUICK_START.md                     # Task-to-file decision tree, files by category, shared utilities index
     GLOSSARY.md                        # Framework-specific terminology definitions
     VERSION.md                         # Semver version, versioning policy, merge strategy
     CHANGELOG.md                       # Version history with per-file change tracking

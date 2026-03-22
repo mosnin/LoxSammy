@@ -4,6 +4,16 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.9.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/QUICK_START.md` — New file. Task-to-file decision tree ("I need to build an API endpoint → read files 09, 06"), files grouped by category (Auth, UI, Code Patterns, Data, Quality, Infrastructure), phase dependency chain showing snapshot flow and parallel agent rules, and shared utilities index (every helper created in Phase 4 with file location and purpose).
+- `docs/framework/GLOSSARY.md` — Added 11 missing terms: apiHandler, authorize(), custom gate, doctor mode, error display decision tree, escape hatch, pagination utility, requireOrganization(), server action pattern, single-writer rule. Total: 44 terms.
+- `CLAUDE.md` — Added QUICK_START.md to Quick Reference section and Repository Structure tree.
+
+### Changed (non-breaking)
+- `docs/framework/MANIFEST.md` — Updated file 09 description to reflect all utility patterns added in v1.5–v1.7. Updated file 06 description to include middleware and permission helpers. Updated file 17 to mention error display decision tree. Added QUICK_START.md to root file list.
+
 ## [1.8.0] - 2026-03-22
 
 ### Fixed
