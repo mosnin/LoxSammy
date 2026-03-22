@@ -4,6 +4,7 @@
 App shell (Phase 7) is complete.
 
 ## Files to Read
+- `docs/project/pattern_snapshot.md` — **MANDATORY** — read before writing any code, follow established conventions
 - `docs/framework/internal/03_dashboard_system.md` — dashboard anatomy
 - `docs/framework/internal/16_dashboard_archetypes.md` — concrete dashboard types
 - `docs/framework/internal/13_internal_data_display_rules.md` — data display rules

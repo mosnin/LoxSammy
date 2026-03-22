@@ -453,7 +453,7 @@ Avoid nested modals. If a second modal is needed, close the first and open the s
 - Header: text-lg, font-weight 600, text-primary + close X button
 - Slides in from right (or left for navigation drawer)
 - Backdrop: same as modal
-- Animation: duration-slow, ease-out on open, ease-in on close
+- Animation: 250ms ease-out on open, 250ms ease-in on close (Motion — see Motion Timing Table in 10_design_tokens_internal.md)
 
 ### Mobile
 - Full width (100vw)
@@ -513,7 +513,7 @@ Avoid nested modals. If a second modal is needed, close the first and open the s
 - Text: text-sm, text-primary
 - Close X: 14px, text-tertiary, right side
 - Max-width: 400px
-- Animation: slide in from right, duration-normal, ease-out
+- Animation: slide in from right, 200ms ease-out on enter, 200ms ease-in on exit (Motion — see Motion Timing Table in 10_design_tokens_internal.md)
 - Auto-dismiss: 5 seconds
 - Stack: multiple toasts stack vertically with space-2 gap, newest on top
 - z-index: z-toast
