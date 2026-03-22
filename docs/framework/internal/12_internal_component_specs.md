@@ -166,6 +166,9 @@ Display structured data collections with sorting, actions, and pagination.
 - **Error**: Error block inside the table container with retry button
 - **Sorting**: Column header shows active sort direction, data re-fetches with loading skeleton
 
+### Row Interaction
+Entire row is clickable (cursor: pointer). Hover: surface-hover background. Keyboard: Tab focuses row, Enter navigates to detail. Row actions ("..." menu) stop propagation — clicking menu does NOT navigate.
+
 ### Mobile
 - Table container: horizontal scroll with shadow hint on edges, OR
 - Switch to card layout: each row becomes a stacked card with key fields as label:value pairs
@@ -193,6 +196,9 @@ Search, filter, and optionally save views for a table index page.
 - Active filter: primary-100 background, primary-600 text (to show it is filtering)
 - Gap between filter bar and table: space-4
 
+### Pill Placement
+Active filter pills appear in a row below the filter bar. Pills wrap to a second line if needed. If more than 5 active filters, show first 4 pills + "+N more" pill that expands on click.
+
 ### Mobile
 - Search: full width
 - Filters: collapse into a "Filters" button that opens a drawer with stacked filter controls
@@ -214,6 +220,9 @@ Text search across entity fields. Always debounced (300ms).
 - Focus: border-focus ring (2px), remove default browser outline
 - Clear button: X icon 14px, appears when input has value, right side
 
+### Debounce and Interaction
+Debounce delay: 300ms. Show inline spinner (12px) while searching. Clear button (x) appears when input has value. Escape clears input and removes focus.
+
 ---
 
 ## Tab Bar
@@ -234,6 +243,9 @@ Switch between views within a single page without navigation.
 - Active tab: text-primary, font-weight 600, border-bottom 2px primary-600
 - Hover: text-primary
 - Gap between tabs: space-1
+
+### Keyboard Navigation
+Arrow keys move focus between tabs. Home/End jump to first/last tab. Enter/Space activates the focused tab. Focus moves to the tab panel's first focusable element on activation.
 
 ### States
 - Tabs are always visible — do not lazy-load tab labels
@@ -415,6 +427,9 @@ Standard layout for data input and editing.
 | md | 560px | Forms, detail previews |
 | lg | 720px | Complex forms, multi-step |
 
+### Stacking Behavior
+Avoid nested modals. If a second modal is needed, close the first and open the second. If truly unavoidable, second modal renders at z-modal + 10 with a second backdrop overlay.
+
 ### Destructive Confirmation
 - Header: "Delete [entity]?" or "Are you sure?"
 - Body: Explain what happens, use text-secondary
@@ -559,6 +574,9 @@ Chronological list of events (activity log, audit trail, change history).
 - Gap between events: space-6
 - Dot to text gap: space-3
 - Left margin for timeline line: 12px (centered on dot)
+
+### Pagination
+Show 10 events initially. "Show more" button loads 10 more (not infinite scroll). After 50 events, switch to date-grouped pagination. Very old events (>90 days) are collapsed into monthly summaries.
 
 ### Mobile
 - Same layout — timeline is already single-column

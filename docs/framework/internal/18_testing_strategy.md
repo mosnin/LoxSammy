@@ -83,6 +83,7 @@ Define the automated testing strategy for SaaS products built with this framewor
 - Run `prisma migrate deploy` before the test suite
 - Reset database state between test suites (not individual tests, for speed)
 - Use transactions where possible for faster cleanup
+- **Database reset strategy:** Use transaction rollback for individual tests (wrap each test in a transaction, rollback after). Use `TRUNCATE ... CASCADE` for suite-level cleanup (faster than DROP/CREATE). Never use `prisma migrate reset` in CI — too slow. Seed data: use factory functions per test, not shared seed files (avoids test coupling).
 
 **Mocking strategy:**
 
@@ -113,6 +114,13 @@ Define the automated testing strategy for SaaS products built with this framewor
 4. **Settings: Profile Update** — user changes profile info, saves, navigates away and returns, changes persist
 5. **Admin: User Management** — admin views user list, changes a role, verifies permission change, tests destructive action confirmation
 6. **Mobile: Critical Paths at 375px** — repeat paths 1–3 at mobile viewport, verify sidebar collapse, form usability, touch targets
+
+**Failure scenario tests:** For each critical path, test the primary failure mode:
+- Signup: email already taken → shows inline error, no redirect
+- Login: wrong password → shows error, does not reveal if email exists
+- Payment: card declined → shows error, user stays on checkout
+- Invite: expired link → shows expiry message with 'request new invite' CTA
+- Form submission: network failure → shows retry option, does not lose form data
 
 **Conventions:**
 
@@ -224,6 +232,12 @@ Verify at each viewport: no horizontal scroll, navigation accessible (hamburger 
 | Charts and visualizations use dark-appropriate colors | Manual QA |
 | Form inputs and selects are readable | Playwright screenshot comparison |
 
+**Playwright dark mode setup:** Set `colorScheme: 'dark'` in `playwright.config.ts` under `use` or per-project. Example:
+```ts
+use: { colorScheme: 'dark' }
+```
+This sets `prefers-color-scheme: dark` for the browser context. Run dark mode tests as a separate project in the config to keep test matrix clear.
+
 ### Email Templates
 
 If email templates exist in the repository:
@@ -287,7 +301,14 @@ Seed one test user per role for consistent testing:
 - Environment variables: stored in CI secrets, never in repo
 - Stripe: test mode API keys only
 - Browser: Playwright bundled Chromium (no external dependency)
+
+**CI environment setup:**
+- Database: Use PostgreSQL service container (GitHub Actions `services` block) or Docker Compose
+- Stripe: Set `STRIPE_SECRET_KEY` to test mode key in CI secrets. Use Stripe CLI `stripe listen --forward-to` for webhook testing in CI
+- Environment variables: Store in CI secrets, never in `.env` files committed to repo
+- Browser binaries: Cache Playwright browsers (`npx playwright install --with-deps`) in CI cache layer
 - Parallelism: unit and integration in parallel, E2E sequentially
+- **Parallelization strategy:** Unit tests: unlimited parallelism (no shared state). Integration tests: max 4 workers, each with isolated database schema (e.g., `test_schema_1`, `test_schema_2`). E2E tests: max 2 workers (browser resource constraints). Set via `vitest.config.ts` `pool` and `poolOptions` for Vitest, `workers` in `playwright.config.ts`.
 
 ### Failure Protocol
 

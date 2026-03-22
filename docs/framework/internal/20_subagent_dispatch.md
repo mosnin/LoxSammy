@@ -116,6 +116,12 @@ Output: Write all 3 files. No summary needed.
 - After all complete, main thread reads all 9 files and presents the summary to the user
 - Agent type: `general-purpose` (needs Write access)
 
+**Conflict resolution for parallel agents:** If two agents make contradictory decisions (e.g., different data model assumptions), the main thread resolves by:
+1. Comparing both outputs against `docs/project/*` source of truth
+2. Choosing the version that aligns with project docs
+3. If both are valid interpretations, prefer the simpler design
+4. Document the resolution in the relevant project doc for future reference
+
 ---
 
 ## Recipe 2: Phase 9 — Core Feature Modules
@@ -178,6 +184,8 @@ Before dispatching, verify features are truly independent:
 - No cross-feature navigation that requires both to exist
 - No shared state beyond auth context
 - If features share a custom entity, build that entity's module first (sequentially), then parallelize the rest
+
+**When no reference feature exists:** If Phase 8 built only a dashboard (no feature CRUD), the first Phase 9 agent builds the primary feature module while other agents wait. This first feature becomes the reference. Subsequent agents are dispatched after the reference is committed. Do not dispatch all feature agents in parallel without a reference — pattern drift is guaranteed.
 
 ---
 
@@ -274,6 +282,12 @@ Output: Write all files. List component paths created.
 - After completion, main thread verifies cross-page navigation and shared component consistency
 - Agent type: `general-purpose`
 
+**Cross-page link verification:** After all page agents complete, main thread runs a link audit:
+1. Extract all internal `href` values from built pages
+2. Verify each target page/route exists
+3. Fix broken links before presenting phase as complete
+This is a main-thread responsibility, not delegated to agents.
+
 ---
 
 ## Recipe 4: Phase 14 — Polish & QA Audits
@@ -359,6 +373,8 @@ Do NOT write any code. Research only.
 - Main thread collects all findings, deduplicates, prioritizes
 - Main thread applies fixes sequentially (avoids merge conflicts on shared files)
 - Present consolidated findings to user before fixing (some may be intentional trade-offs)
+
+**Handling overlapping file edits:** Phase 14 audit agents are read-only (research). Main thread applies fixes sequentially. If two audit reports recommend changes to the same file, main thread reads both recommendations, merges them logically, and applies as a single edit pass. Never apply conflicting edits blindly.
 
 ---
 

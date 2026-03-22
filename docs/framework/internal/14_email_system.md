@@ -185,6 +185,7 @@ https://app.product.com/action
 - No image descriptions (skip images entirely)
 - CTA as labeled bare URL on its own line
 - Line width: max 72 characters (for email client compatibility)
+- **OAuth/button-only CTAs in plain text:** If the CTA is an OAuth action (e.g., 'Sign in with GitHub'), use format: 'Sign in with GitHub: [URL]'. If the CTA is a styled button with no meaningful text alternative, use the action description followed by bare URL.
 
 ---
 
@@ -196,6 +197,7 @@ https://app.product.com/action
 - CTA button: use inline styles with both `background-color` and MSO padding for Outlook
 - Test: light mode renders on white bg, dark mode renders on dark bg
 - Set `color-scheme: light dark` and `supported-color-schemes: light dark` in meta
+- **Dark mode implementation:** Add `<meta name='color-scheme' content='light dark'>` in `<head>`. Add `<style>` block with `@media (prefers-color-scheme: dark)` overrides for background colors and text colors. Logo images: provide both light and dark variants, swap with CSS `display:none` / `display:block` in media query. Test in Apple Mail (best support), Gmail (partial), Outlook (no support — falls back to light).
 
 ---
 
@@ -229,6 +231,8 @@ https://app.product.com/action
 
 **Hard rule**: Never send more than 1 non-auth email per day unless the event is critical (billing failure, security alert).
 
+**Daily email limit clarification:** The 1 non-auth email per day limit applies to marketing/engagement emails. Transactional emails triggered by user actions (e.g., invoice receipt after payment, team invite after admin action) are exempt from this limit. Onboarding sequence emails (welcome, activation nudge, value check) are spaced per the onboarding timeline (Day 0, Day 2, Day 5, Day 7) — never more than one per day.
+
 ---
 
 ## Email Testing Checklist
@@ -247,6 +251,15 @@ Before shipping any email template:
 - [ ] Unsubscribe link works (for non-transactional)
 - [ ] Personalization tokens render correctly ([name], [product], etc.)
 - [ ] Fallback values exist for missing personalization data
+
+**Personalization fallback values:** `{{first_name}}` → 'there' (as in 'Hi there'). `{{company_name}}` → 'your team'. `{{plan_name}}` → 'your plan'. `{{feature_name}}` → omit the sentence entirely. Never show raw template tokens like `{{first_name}}` to users.
+
+**Email client compatibility tiers:**
+- **Tier 1 (must work perfectly):** Gmail (web + mobile), Apple Mail (macOS + iOS), Outlook 365 (web)
+- **Tier 2 (must be readable):** Outlook desktop (Windows), Yahoo Mail, Samsung Mail
+- **Tier 3 (best effort):** Thunderbird, older Outlook versions (2016-)
+
+Test Tier 1 clients before every email template ships. Tier 2 on initial template creation. Tier 3 only if user reports issues.
 
 ---
 

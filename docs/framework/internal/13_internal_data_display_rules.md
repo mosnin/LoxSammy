@@ -58,6 +58,8 @@ Do not show the same data as both cards and a table on the same page. Pick one. 
 ### Never Use Pie Charts
 Pie charts are objectively worse than horizontal bar charts for comparing proportions. Use a horizontal bar chart or a stacked bar chart instead. This is a hard rule.
 
+**Alternatives to pie charts:** Use horizontal stacked bar for part-to-whole comparisons. Use small multiples (bar charts) for category comparison. Use a single metric with percentage for two-part splits (e.g., "72% active").
+
 ---
 
 ## Chart Framing Rules
@@ -131,6 +133,8 @@ Use the chart color palette from `10_design_tokens_internal.md` in order. Max 6 
 - Zero values: show "0" not "—" (dash is for missing/unavailable data)
 - Null/unavailable: show "—" (em dash)
 
+**Full abbreviation scale:** Under 1,000: show exact (942). 1,000–999,999: show as K (1.2K, 45.3K, 999K). 1,000,000–999,999,999: show as M (1.2M, 845M). 1,000,000,000+: show as B (1.2B, 3.4B). Threshold: 999K rounds to 999K, not 1.0M. 1,000K becomes 1.0M.
+
 ---
 
 ## Status Pill Usage
@@ -157,6 +161,8 @@ Use the chart color palette from `10_design_tokens_internal.md` in order. Max 6 
 - Keep badge text to 1-2 words
 - Do not use badges for non-status information (counts, categories, tags use different styling)
 
+**Mapping novel statuses:** Map custom statuses to the 4 semantic categories by intent: Active (live, published, connected, enabled) → status-success. Pending (draft, reviewing, scheduled, queued) → status-warning. Warning (expiring, degraded, at-risk) → status-warning with icon. Failed (suspended, deleted, blocked, rejected, error) → status-error. Archived/inactive → text-tertiary with no background (neutral pill).
+
 ---
 
 ## Dense Data Handling
@@ -170,6 +176,8 @@ Dense data views occur in admin panels, activity logs, analytics drill-downs, an
 - Truncate long text with ellipsis at max-width, show full text in tooltip on hover
 - Right-align numeric columns for easy scanning
 - Fixed column widths for consistency (do not let columns auto-size unpredictably)
+
+**Truncation rules:** Table cells: truncate at column width (CSS text-overflow: ellipsis). Minimum visible: 6 characters. Show full value on hover (title attribute) or in a tooltip. Card descriptions: truncate at 2 lines (line-clamp-2). Never truncate IDs, dates, or status values.
 
 ### Horizontal Overflow
 - If a table has more than 7 columns, make it horizontally scrollable
@@ -203,6 +211,8 @@ Dense data views occur in admin panels, activity logs, analytics drill-downs, an
 - Show "Select all 342 items" link after selecting all on current page
 - Deselecting any row after "select all" switches back to per-row selection
 - Selection persists across pagination (track selected IDs, not row positions)
+
+**Select-all across pages:** "Select all" selects visible page only. Show banner: "All 25 items on this page selected. Select all 142 items?" If user selects all, deselecting any row switches to per-row exclusion mode (all selected EXCEPT these rows). Persist selection state in component state, not URL.
 
 ---
 

@@ -22,6 +22,8 @@ Process a backlog of actionable items. The user's job is to work through items �
 - Default filter: "My items" or "Assigned to me"
 - Row click navigates to item detail page
 
+**Priority order:** High → Medium → Low (descending severity). Within same priority, sort by creation date ascending (oldest first — FIFO). Priority levels are always 3 (High/Medium/Low) unless project docs define custom levels.
+
 ### Summary Cards (4-5 metrics)
 - Total pending
 - Overdue count (status-error color if > 0)
@@ -127,6 +129,8 @@ Understand performance over time. The user's job is to monitor trends, identify 
 - Comparison view: this period vs previous period (overlay on charts)
 - Top performers table: ranked list of top entities (customers, products, campaigns)
 
+**Comparison UI:** Toggle button in chart header: "Compare". Opens date range picker for comparison period. Comparison data shown as dashed line overlay on same chart (not side-by-side). Legend shows both periods. If comparison data unavailable, disable toggle with tooltip "Not enough historical data".
+
 ### Activity Pattern
 - Not applicable. Analytics dashboards are retrospective, not event-driven.
 
@@ -164,6 +168,8 @@ Create and manage content items. The user's job is to find recent work, start ne
 - View toggle: grid (visual thumbnails) or list (compact table)
 - Sort: last modified (default), created date, alphabetical, status
 - Search bar prominent
+
+**View toggle UI:** Icon toggle group (grid icon | list icon) in top-right of content area. Persist selection in localStorage. Default: grid view for visual content (images, cards), list view for text-heavy content (documents, articles).
 
 ### Summary Cards (4 metrics)
 - Total items
@@ -295,6 +301,9 @@ Watch system health and performance. The user's job is to spot problems fast and
 - Equal visual weight for healthy and unhealthy resources (unhealthy should pop)
 - Missing "last checked" timestamps
 
+### Sparkline Specs
+Width: fill available tile space (min 80px). Height: 32px. No axis labels. Single color line (primary-500). Hover shows tooltip with exact value and timestamp. For tiles, sparkline sits below the metric value with space-2 gap.
+
 ---
 
 ## 7. Admin Overview Dashboard
@@ -362,6 +371,8 @@ When building a new product dashboard, choose the archetype that matches the use
 | Administering a platform | Admin Overview |
 
 Most products need one primary dashboard archetype plus the Admin Overview for admin users. Some products combine elements (e.g., a queue dashboard with an analytics sidebar). When combining, one archetype should dominate — don't create a hybrid that does everything poorly.
+
+**Hybrid dashboards:** If a user role requires two archetype patterns, use a primary archetype for the main view and embed elements from the secondary as a panel or tab. Example: Queue + Analytics → Queue is the main view with an "Analytics" tab showing key metrics. Never merge two archetypes into a single mixed view — it creates cognitive overload.
 
 ---
 

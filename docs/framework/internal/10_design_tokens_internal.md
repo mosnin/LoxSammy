@@ -90,6 +90,8 @@ Use in this order for multi-series data. Maximum 6 series before the palette rep
 | chart-5 | #EC4899 |
 | chart-6 | #10B981 |
 
+**Color opacity usage:** To apply opacity to color tokens in Tailwind, use the `/` opacity modifier syntax: `bg-primary-500/50` for 50% opacity, `text-secondary/75` for 75% opacity. Never use raw `rgba()` in component code — always use token + opacity modifier. Common opacity values: 50 (overlays), 75 (disabled text), 10 (subtle backgrounds like hover states).
+
 ### Dark Mode
 
 Dark mode uses the same token names with adjusted values. The principle: invert surfaces (dark base, light text), keep status colors recognizable, reduce contrast slightly to avoid eye strain.
@@ -237,6 +239,8 @@ Use shadows for elevation hierarchy. Do not combine shadows with colored borders
 | shadow-lg | 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1) | Modals, drawers, command palettes |
 | shadow-xl | 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1) | Full-screen overlays (rare) |
 
+**Combining shadows with borders:** The rule 'do not combine shadows with colored borders' exists because colored borders + shadows create visual noise and competing elevation cues. Exception: `border-error` with shadow-sm is allowed on form fields in error state — the border signals the error semantically while shadow provides baseline elevation.
+
 ### Shadow Rules (Dark Mode)
 
 In dark mode, shadows are less visible. Compensate with stronger border-default values and slight surface color differences between layers. Do not increase shadow opacity — it looks muddy on dark backgrounds.
@@ -325,6 +329,8 @@ On mobile (below 640px), all modals become full-width with 16px horizontal margi
 | z-toast | 50 | Toast notifications |
 | z-overlay | 60 | Backdrop overlays behind modals/drawers |
 | z-command | 70 | Command palette (highest interactive element) |
+
+**Z-index stacking for nested layers:** If a tooltip appears inside a dropdown, it inherits the dropdown's stacking context. Use `z-tooltip` (60) — it's above `z-dropdown` (40) regardless of nesting. For nested modals (avoid if possible), second modal uses `z-modal + 10` (60). Maximum z-index in the system: 70 (reserved for dev tools overlay). Never use arbitrary z-index values.
 
 ## Responsive Breakpoints
 

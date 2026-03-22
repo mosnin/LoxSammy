@@ -145,6 +145,8 @@ On xs, if the chart conveys a single metric with trend, prefer replacing it with
 
 Modals and drawers always include a visible close button. On xs–sm, include a swipe-down-to-dismiss gesture for bottom drawers.
 
+**Modal scroll behavior:** Modal max-height: 90vh. If content exceeds max-height, modal body scrolls (not the modal itself). Modal header and footer (with action buttons) remain fixed/sticky. On mobile (xs-sm), modals become full-screen sheets — body scrolls naturally with fixed bottom action bar.
+
 ## Form Behavior
 
 | Breakpoint | Layout | Label Position | Input Width | Button Alignment |
@@ -153,6 +155,8 @@ Modals and drawers always include a visible close button. On xs–sm, include a 
 | sm | Single column | Above input | 100% | Full width, stacked |
 | md | Single column (2-col for short fields) | Above input | 100% or 50% pairs | Right-aligned |
 | lg+ | 2-column where logical | Above input or inline (settings) | Mixed widths | Right-aligned |
+
+**'Logical' 2-column form layout:** Use 2 columns when two short fields are semantically paired: first name + last name, city + state, start date + end date, country + timezone. Never split a label-input pair across columns. If fields are unrelated or vary greatly in expected input length, use single column.
 
 ## Email Templates
 
@@ -174,8 +178,10 @@ Email clients have inconsistent `@media` support. Design the single-column layou
 1. **Mobile-first always.** Base styles target xs. Add complexity upward with `sm:`, `md:`, `lg:`, `xl:`, `2xl:` prefixes.
 2. **Use Tailwind prefixes.** Do not write raw `@media` queries unless Tailwind cannot express the rule (e.g., email templates, third-party widget overrides).
 3. **No custom breakpoints** unless a documented exception is added to this file. The 480px boundary is not a Tailwind default — handle sub-640px distinctions with max-width utilities or container queries, not custom breakpoints.
+   **Container queries vs viewport breakpoints:** Use viewport breakpoints (Tailwind responsive prefixes) for page-level layout decisions (sidebar visibility, grid columns, navigation pattern). Use container queries for component-level responsiveness when a component appears in different-width containers (e.g., a card component used in both a full-width dashboard and a narrow sidebar). Syntax: `@container (min-width: 300px)` in CSS. Tailwind: use `@container` plugin. Prefer viewport breakpoints unless the same component renders at materially different widths on the same page.
 4. **Container queries** may supplement breakpoints for component-level responsiveness (e.g., a card grid that adapts to its container width rather than viewport width). Container queries do not replace viewport breakpoints — they complement them.
 5. **Touch targets** must be at least 44px on xs–md breakpoints per WCAG 2.5.8.
+   **Touch target specification (WCAG 2.5.8):** Minimum touch target size: 44×44px (width × height). This applies to buttons, links, form controls, and interactive icons. If the visual element is smaller than 44px (e.g., a 24px icon button), add transparent padding to reach 44×44px. Spacing between adjacent touch targets: minimum 8px.
 6. **Test at these widths:** 375px, 768px, 1024px, 1280px, 1440px, 1920px.
 7. **Hide-vs-reflow:** Prefer reflowing content to a simpler layout over hiding it entirely. Content hidden at a breakpoint must still be accessible via navigation (drawer, accordion, "show more").
 

@@ -11,6 +11,16 @@ Each archetype specifies the visual hierarchy, required blocks, layout rules, de
 
 ---
 
+## Cross-Archetype Composition
+
+When a page requires elements from multiple archetypes:
+- **Embedded table in dashboard:** Use dashboard archetype for layout. Table follows Table Index density but is capped at 5 visible rows with 'View all →' link. No pagination controls in embedded tables.
+- **Embedded chart in detail page:** Use Detail Page archetype for layout. Chart fills the full content width, follows Analytics archetype chart rules but without the comparison toggle.
+- **Settings with 20+ categories:** Use collapsible sidebar groups. Group related categories under headings (Account, Workspace, Integrations, Billing). Sidebar scrolls independently. Max 6 top-level groups.
+- **General rule:** The page's primary archetype controls layout (width, spacing, header). Embedded elements from secondary archetypes follow their own internal specs but inherit the host page's width constraints.
+
+---
+
 ## Archetype: Dashboard Page
 
 ### Purpose
@@ -32,7 +42,7 @@ The primary operational surface. Answers: what is happening, what needs attentio
 Relaxed. The dashboard is the first thing users see — give it breathing room. Use space-6 between major sections. Stat cards use space-6 internal padding.
 
 ### Mobile Behavior
-- Summary row: horizontal scroll with snap, or stack to 2-column grid
+- Summary row: stack to 2-column grid at sm breakpoint, single column at xs. Do not use horizontal scroll for summary cards — it hides data. Reserve horizontal scroll for data tables only.
 - Main work area: full width, table switches to card layout
 - Secondary panel: collapses below main content
 - Primary action button: floating action button (FAB) at bottom-right if the page header scrolls out of view
@@ -413,6 +423,8 @@ Same as the target archetype.
 ### Common Mistakes to Avoid
 - Skeleton that does not match the actual loaded layout (causes jarring layout shift)
 - Showing skeleton for too long without a fallback (after 10 seconds, show error state)
+
+**Loading timeout:** If skeleton/spinner persists beyond 10 seconds, show a timeout message: 'This is taking longer than expected. [Retry]'. See `17_error_state_taxonomy.md` for timeout escalation pattern. Never show a spinner indefinitely.
 - Using a single generic skeleton for all pages (each page archetype needs its own skeleton shape)
 
 ---
