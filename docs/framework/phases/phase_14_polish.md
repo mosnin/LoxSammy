@@ -7,6 +7,8 @@ Marketing site (Phase 13) is complete.
 - `docs/framework/internal/17_error_state_taxonomy.md` — 12 error types
 - `docs/framework/internal/18_testing_strategy.md` — testing layers and strategy
 - `docs/framework/internal/19_i18n_posture.md` — i18n and formatting
+- `docs/framework/internal/27_performance.md` — performance audit checklist
+- `docs/framework/internal/28_accessibility.md` — accessibility audit checklist
 - `docs/project/04_edge_cases.md` — app-specific edge cases
 - `docs/project/07_acceptance_criteria.md` — acceptance criteria
 - `docs/project/08_qa_checklist.md` — QA checklist
@@ -38,6 +40,21 @@ Walk through all 12 error types from `17_error_state_taxonomy.md`:
 ### Dark Mode Polish
 - Verify all pages and components in dark mode
 - Fix contrast issues, missing token usage
+
+### Performance Audit (per `27_performance.md`)
+- Lighthouse scores on all public pages (mobile + desktop) — target >90
+- Core Web Vitals: LCP <2.5s (marketing), <3s (product)
+- Bundle analysis: no route exceeding per-route budget
+- Image audit: all images use `next/image` with correct sizing
+- Font audit: no external font requests, correct weights loaded
+
+### Accessibility Audit (per `28_accessibility.md`)
+- Run axe-core accessibility tests on all key pages
+- Navigate entire app using keyboard only
+- Verify heading hierarchy, focus management, screen reader support
+- Verify all images have alt text, all form fields have labels
+- Verify `prefers-reduced-motion` disables animations
+- Verify minimum 44x44px touch targets
 
 ### Responsive Audit
 - Test every page at 375px, 640px, 768px, 1024px, 1280px, 1536px

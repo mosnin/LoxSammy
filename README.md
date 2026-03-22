@@ -1,6 +1,6 @@
-# SaaS Framework Repository
+# Modaf
 
-This repository is a reusable framework pack for starting SaaS website and application projects with Claude.
+A reusable SaaS framework pack for planning and building SaaS products with Claude Code.
 
 ## Purpose
 

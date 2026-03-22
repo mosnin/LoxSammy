@@ -2,7 +2,13 @@
 
 ## What This Repository Is
 
-This is a reusable SaaS framework pack. It contains no code — only structured documentation that guides Claude Code through planning and building SaaS products. It is designed to be cloned into `docs/framework/` of any new project repository.
+This is **Modaf** — a reusable SaaS framework pack. It contains no code — only structured documentation that guides Claude Code through planning and building SaaS products. It is designed to be cloned into `docs/framework/` of any new project repository.
+
+**Modaf** (the framework name) refers to this entire system: the phased build process, the internal/website/template docs, the validation gates, the pattern snapshot, and everything in `docs/framework/`. When a user says "Modaf" or references it by name, they mean this framework.
+
+## Framework Version
+
+See `docs/framework/VERSION.md` for the current version and `docs/framework/CHANGELOG.md` for what changed. If you cloned this framework into a project, check these files against upstream to see if updates are available.
 
 ## How It Works
 
@@ -40,6 +46,7 @@ When resuming, read `docs/project/*` to restore app context, then read `docs/pro
 
 ### Quick Reference
 
+- **`docs/framework/QUICK_START.md`** — task-to-file decision tree ("I need to build X → read files Y"), files by category, phase dependency chain, shared utilities index
 - **`docs/framework/MANIFEST.md`** — one-line description of every file with phase associations
 - **`docs/framework/phases/`** — detailed index file for each phase (what to read, what to build, exit conditions)
 
@@ -80,6 +87,7 @@ Cover these areas (skip any the user already addressed):
 - **Dashboard shape**: When a user logs in, what do they see? A queue? Analytics? A feed?
 - **Monetization**: Free? Freemium? Paid tiers? Per-seat pricing?
 - **Integrations**: Does it connect to anything external? (Slack, email, APIs)
+- **Tech constraints**: Any required technologies or things to avoid? (e.g., must use Supabase, no billing needed, single-user app)
 - **Non-goals for v1**: Anything explicitly out of scope?
 
 Keep the interview conversational and concise — 2-4 questions at a time, not a wall of questions. Adapt based on answers. When you have enough to fill the project docs confidently, tell the user you're ready to move to Phase 2 and ask for confirmation.
@@ -119,6 +127,7 @@ Wait for user confirmation before proceeding to Phase 3.
 - `docs/framework/internal/06_routes_and_permissions.md` — route structure
 - `docs/framework/internal/04_feature_modules.md` — available module types
 - `docs/framework/internal/09_build_rules_internal.md` — build order and constraints
+- `docs/framework/internal/23_escape_hatches.md` — technology swap guide (if user chose non-default tech)
 - `docs/project/*` — the project docs you just generated
 
 Produce an architecture summary:
@@ -142,20 +151,21 @@ Each build phase is a discrete step. At the start of each phase:
 5. Ask the user if they want to review, adjust, or continue to the next phase
 
 ### Phase 4 — Foundation
-**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 1 section), `docs/framework/internal/21_validation_gates.md`
+**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 4: Foundation section), `docs/framework/internal/21_validation_gates.md`, `docs/framework/internal/26_observability.md`, `docs/framework/internal/27_performance.md`, `docs/framework/internal/28_accessibility.md`
 - Project setup (Next.js, TypeScript, Tailwind, Prisma)
 - Database schema from entity plan
 - Shared utilities, types, constants
-- **Run Phase 4 validation gates before proceeding**
+- **Run Phase 4 validation gates and custom gates** (`docs/project/custom_gates.md`) **before proceeding**
 
 ### Phase 5 — Auth
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth), `docs/framework/internal/06_routes_and_permissions.md` (Middleware Pattern + Multi-Tenancy Data Isolation), `docs/framework/internal/28_accessibility.md`
 - Login, signup, password reset, email verification
 - Auth middleware and session management
 - Protected route wrappers
+- `requireOrganization()` and `authorize()` helpers
 
 ### Phase 6 — Onboarding
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding), `docs/framework/internal/28_accessibility.md`
 - Multi-step onboarding flow
 - First value event
 - Workspace/org setup if applicable
@@ -186,10 +196,12 @@ Each build phase is a discrete step. At the start of each phase:
 ### Phase 9 — Core Features
 **Read now:**
 - `docs/project/pattern_snapshot.md` (MANDATORY — read before writing any code)
+- `docs/framework/internal/09_build_rules_internal.md` (Server Action Pattern, API Route Error Handler, Pagination Utility, Tanstack Query Conventions)
 - `docs/framework/internal/08_ui_system_internal.md`
 - `docs/framework/internal/11_internal_screen_archetypes.md`
 - `docs/framework/internal/12_internal_component_specs.md`
 - `docs/framework/internal/17_error_state_taxonomy.md`
+- See `docs/framework/phases/phase_09_core_features.md` for the step-by-step implementation recipe
 - Product-specific feature modules from project docs
 - CRUD views, detail pages, forms, filters
 - All four states: loading, empty, success, error
@@ -232,11 +244,14 @@ Each build phase is a discrete step. At the start of each phase:
 - `docs/framework/internal/17_error_state_taxonomy.md`
 - `docs/framework/internal/18_testing_strategy.md`
 - `docs/framework/internal/19_i18n_posture.md`
+- `docs/framework/internal/27_performance.md`
+- `docs/framework/internal/28_accessibility.md`
 - `docs/project/04_edge_cases.md`
 - `docs/project/07_acceptance_criteria.md`
 - `docs/project/08_qa_checklist.md`
 - Error states, edge case handling, QA checklist pass
-- Accessibility review, responsive testing
+- Performance audit (Core Web Vitals, bundle size, Lighthouse)
+- Accessibility audit (keyboard nav, screen reader, contrast, ARIA)
 - Dark mode polish, loading states audit
 
 ---
@@ -265,6 +280,9 @@ Unless the user specifies otherwise, assume:
 - **Billing**: Stripe (Checkout + Customer Portal), stripe-event-types for typed webhooks
 - **Email**: Resend for delivery, React Email for JSX templates
 - **Hosting**: Vercel
+
+For swap guidance when overriding any default, see `docs/framework/internal/23_escape_hatches.md`.
+
 - **Dark Mode**: next-themes for toggle and system preference detection
 - **Env Validation**: T3 Env for type-safe environment variables with runtime checks
 - **Toasts**: Sonner (shadcn default toast component)
@@ -287,14 +305,18 @@ These apply to every build phase:
 - Build only v1 scope unless explicitly asked otherwise
 - Reuse shared patterns from the framework before creating new ones
 - Every page must be mobile responsive from the start
+- Every page must be keyboard-accessible from the start (see `docs/framework/internal/28_accessibility.md`)
 - Every data-driven view must handle four states: loading, empty, success, error
 - Permissions must be enforced at both the routing layer and the UI layer
 - Do not add features outside the defined v1 scope
 - Do not modify files in `docs/framework/` — those are reusable defaults
 - English-first for v1
-- **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) after every build phase — all gates must pass before proceeding
+- **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) **and custom gates** (`docs/project/custom_gates.md`) after every build phase — all gates must pass before proceeding
+- If an error from a previous phase is discovered, follow the recovery protocol in `docs/framework/internal/24_error_recovery.md` — do not silently fix and move on, announce the issue and its scope
+- Tag phase completions in git (`git tag phase-N-complete`) for restore points
 - **Read the pattern snapshot** (`docs/project/pattern_snapshot.md`) before writing code in Phase 8+ — follow established conventions exactly
 - **All sub-agents** must read the pattern snapshot before building (see `docs/framework/internal/22_pattern_snapshot.md`)
+- **Pattern snapshot is single-writer**: Only one agent updates the snapshot at a time. When parallelizing Phase 9 features, the first feature built updates the snapshot, and subsequent agents read the updated version before building
 
 ## Repository Structure
 
@@ -334,12 +356,26 @@ docs/
       20_subagent_dispatch.md          # Sub-agent recipes for parallel phases
       21_validation_gates.md           # 46 machine-checkable structural assertions per phase
       22_pattern_snapshot.md           # Pattern capture system — prevents drift across phases
+      23_escape_hatches.md             # Technology swap guide — auth, billing, database, tenancy, email, hosting
+      24_error_recovery.md             # Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis
+      25_doctor_mode.md                # Safe diagnostic and repair system for broken framework/project docs
+      26_observability.md              # Logging, error tracking, health checks, metrics, alerting
+      27_performance.md               # Core Web Vitals targets, bundle budgets, image/font optimization
+      28_accessibility.md             # WCAG 2.1 AA compliance — keyboard, screen reader, contrast, ARIA
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)
     MANIFEST.md                        # Quick reference — every file with one-line description and phase
+    QUICK_START.md                     # Task-to-file decision tree, files by category, shared utilities index
+    GLOSSARY.md                        # Framework-specific terminology definitions
+    VERSION.md                         # Semver version, versioning policy, merge strategy
+    CHANGELOG.md                       # Version history with per-file change tracking
   project/                             # Generated app-specific docs (created during Phase 2)
 ```
+
+## Doctor Mode
+
+When the user asks to "run doctor mode", "run Modaf doctor", "check framework health", "diagnose the docs", or "fix broken docs", read `docs/framework/internal/25_doctor_mode.md` and follow the diagnostic and repair protocol. Doctor mode is a structural linter — it finds broken cross-references, missing files, stale manifest entries, and malformed tables. It **never** rewrites content, deletes files, or modifies specifications.
 
 ## Important Conventions
 

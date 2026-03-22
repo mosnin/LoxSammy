@@ -49,6 +49,120 @@ Use Stripe Checkout for upgrades/downgrades and Stripe Customer Portal for self-
 3. **Webhook endpoint**: `/api/webhooks/stripe` — handles `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`
 4. **Webhook security**: Verify Stripe signature on every webhook. Return 200 immediately, process async.
 
+### Webhook Reliability
+
+Stripe webhooks are the #1 source of billing bugs. These patterns prevent the most common failures.
+
+#### Idempotency
+
+Stripe may deliver the same event multiple times (retries, network issues). Every webhook handler must be idempotent:
+
+```typescript
+// Check if this event was already processed
+const existing = await prisma.webhookEvent.findUnique({
+  where: { stripeEventId: event.id },
+})
+if (existing) {
+  // Already processed — return 200 to stop retries
+  return new Response("OK", { status: 200 })
+}
+
+// Process the event
+await processEvent(event)
+
+// Record it as processed
+await prisma.webhookEvent.create({
+  data: {
+    stripeEventId: event.id,
+    type: event.type,
+    processedAt: new Date(),
+  },
+})
+```
+
+Add a `WebhookEvent` model to the Prisma schema:
+
+```prisma
+model WebhookEvent {
+  id            String   @id @default(cuid())
+  stripeEventId String   @unique
+  type          String
+  processedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  @@index([stripeEventId])
+}
+```
+
+#### Event Ordering
+
+Stripe does not guarantee event order. A `customer.subscription.updated` may arrive before `checkout.session.completed`. Handle this:
+
+1. **Use the event's embedded object state** — don't fetch current state from Stripe API (it may have changed again). The event payload represents the state at the time the event was created.
+2. **Use timestamps for conflict resolution** — if the local subscription record has a `updatedAt` newer than the event's `created` timestamp, skip the update (a newer event was already processed).
+3. **Handle missing entities gracefully** — if a `subscription.updated` event arrives for a subscription that doesn't exist locally yet, create it (the `checkout.session.completed` event may be delayed).
+
+#### Retry Handling
+
+```typescript
+export async function POST(req: Request) {
+  const body = await req.text()
+  const signature = req.headers.get("stripe-signature")!
+
+  let event: Stripe.Event
+  try {
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
+  } catch (err) {
+    // Invalid signature — do NOT return 200 (tells Stripe to stop retrying)
+    logger.error("billing.webhook.signature_failed", { error: err })
+    return new Response("Invalid signature", { status: 400 })
+  }
+
+  try {
+    await processWebhookEvent(event)
+    return new Response("OK", { status: 200 })
+  } catch (err) {
+    // Processing failed — return 500 so Stripe retries
+    logger.error("billing.webhook.processing_failed", {
+      eventType: event.type,
+      eventId: event.id,
+      error: err,
+    })
+    return new Response("Processing failed", { status: 500 })
+  }
+}
+```
+
+#### Webhook Event Routing
+
+Use a type-safe switch for event routing:
+
+```typescript
+async function processWebhookEvent(event: Stripe.Event) {
+  switch (event.type) {
+    case "checkout.session.completed":
+      return handleCheckoutCompleted(event.data.object)
+    case "customer.subscription.updated":
+      return handleSubscriptionUpdated(event.data.object)
+    case "customer.subscription.deleted":
+      return handleSubscriptionDeleted(event.data.object)
+    case "invoice.payment_failed":
+      return handlePaymentFailed(event.data.object)
+    case "invoice.payment_succeeded":
+      return handlePaymentSucceeded(event.data.object)
+    default:
+      logger.info("billing.webhook.unhandled", { type: event.type })
+  }
+}
+```
+
+#### Monitoring
+
+Log every webhook received with event type and processing result. Alert on:
+- Processing failure rate >5% in 1 hour
+- Zero webhooks received in 24 hours (may indicate endpoint misconfiguration)
+- Signature verification failures (may indicate secret rotation issue)
+
 ### Required Billing Capabilities
 
 - Current plan display with feature comparison

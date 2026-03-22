@@ -1,6 +1,6 @@
-# Framework Manifest
+# Modaf Framework Manifest
 
-> Quick reference for every file in the framework. Use this to find what you need without reading everything.
+> Quick reference for every file in the Modaf framework. Use this to find what you need without reading everything.
 
 ## Internal Product (`docs/framework/internal/`)
 
@@ -11,10 +11,10 @@
 | 03 | `03_dashboard_system.md` | Dashboard purpose, anatomy, required states, mobile rules | 8 |
 | 04 | `04_feature_modules.md` | 8 optional modules: analytics, integrations, API, MCP, webhooks, notifications, usage, activity logs | 3, 9 |
 | 05 | `05_settings_billing_admin.md` | Settings areas, Stripe billing, security, admin panel, user management | 10, 11 |
-| 06 | `06_routes_and_permissions.md` | Route categories, canonical roles, permission enforcement layers | 3 |
+| 06 | `06_routes_and_permissions.md` | Route categories, canonical roles, 3-layer permission enforcement, middleware pattern, org-scoping helpers (`requireOrganization`, `authorize`) | 3, 5 |
 | 07 | `07_data_models.md` | 9 core entities with fields, types, relationships, Prisma reference schema, state machines, and extension pattern | 3, 4 |
 | 08 | `08_ui_system_internal.md` | 20 canonical component behaviors — delegates visual specs to 10, 12. Read in Phase 7 (foundational) and Phase 9 (feature builds) | 7, 9 |
-| 09 | `09_build_rules_internal.md` | 11 build phases, reuse rules, responsive rules, coding standards, quality gates | 3, 4 |
+| 09 | `09_build_rules_internal.md` | Build phases overview, coding standards, T3 Env schema, API patterns (response format, error handler, pagination), server action pattern, Tanstack Query conventions, date/time helpers, Next.js file conventions, quality gates | 3, 4–14 |
 | 10 | `10_design_tokens_internal.md` | Complete visual system — colors, spacing, typography, borders, shadows, motion, z-index | 7 |
 | 11 | `11_internal_screen_archetypes.md` | 11 canonical page patterns for authenticated views with layout and density rules | 9 |
 | 12 | `12_internal_component_specs.md` | Visual specs for 27 components — padding, colors, typography, states, mobile behavior | 9 |
@@ -22,12 +22,28 @@
 | 14 | `14_email_system.md` | 4 email categories, structure rules, CTA specs, dark mode, mobile, frequency, testing | 12 |
 | 15 | `15_canonical_breakpoints.md` | 6 breakpoints (xs–2xl) with layout, sidebar, table, chart, modal, form, and nav behavior | 7 |
 | 16 | `16_dashboard_archetypes.md` | 7 concrete dashboard types: queue, pipeline, analytics, content, operations, monitoring, admin | 8 |
-| 17 | `17_error_state_taxonomy.md` | 12 error types with component mapping, retry logic, escalation, accessibility, logging | 9, 14 |
+| 17 | `17_error_state_taxonomy.md` | 12 error types with component mapping, retry logic, escalation, error display decision tree, accessibility, logging | 9, 14 |
 | 18 | `18_testing_strategy.md` | Testing philosophy, 3 layers (unit/integration/E2E), CI integration, test data strategy | 14 |
 | 19 | `19_i18n_posture.md` | English-first for v1, Intl API for formatting, what to prepare for future multilingual | 14 |
 | 20 | `20_subagent_dispatch.md` | Pre-built agent recipes for parallelizing Phases 2, 9, 13, 14 — prompts, file lists, coordination | 2, 9, 13, 14 |
 | 21 | `21_validation_gates.md` | 46 machine-checkable structural assertions — per-phase gates, regression testing, custom gate system | 4–14 |
 | 22 | `22_pattern_snapshot.md` | Generated reference file capturing exact code conventions — prevents pattern drift across phases and agents | 7 (generate), 9+ (consume) |
+| 23 | `23_escape_hatches.md` | Technology swap guide — how to replace auth, billing, database, tenancy, email, hosting defaults | 2, 3 |
+| 24 | `24_error_recovery.md` | Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis, git safety | any |
+| 25 | `25_doctor_mode.md` | Safe diagnostic and repair system for broken framework/project docs — never rewrites content or deletes files | any |
+| 26 | `26_observability.md` | Structured logging, Sentry error tracking, health checks, metrics, alerting thresholds | 4, 14 |
+| 27 | `27_performance.md` | Core Web Vitals targets, Lighthouse budgets, bundle size limits, image/font/caching optimization | 4, 13, 14 |
+| 28 | `28_accessibility.md` | WCAG 2.1 AA compliance — keyboard navigation, screen reader, contrast, ARIA patterns, focus management | 4, 7+, 14 |
+
+## Framework Root (`docs/framework/`)
+
+| File | One-line Description | Phase |
+|------|---------------------|-------|
+| `MANIFEST.md` | Quick reference — every file with one-line description and phase | all |
+| `QUICK_START.md` | Task-to-file decision tree, files by category, phase dependency chain, shared utilities index | all |
+| `GLOSSARY.md` | Framework-specific terminology definitions — prevents term drift across agents and phases | all |
+| `VERSION.md` | Semver version, versioning policy, merge strategy for downstream consumers | all |
+| `CHANGELOG.md` | Version history with per-file change descriptions and upgrade impact | all |
 
 ## Public Website (`docs/framework/website/`)
 

@@ -5,6 +5,7 @@ Auth (Phase 5) is complete.
 
 ## Files to Read
 - `docs/framework/internal/02_auth_and_onboarding.md` — onboarding sections
+- `docs/framework/internal/28_accessibility.md` — keyboard navigation, focus management for multi-step flows
 
 ## What to Build
 

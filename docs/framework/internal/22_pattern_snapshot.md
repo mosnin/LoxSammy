@@ -222,8 +222,27 @@ At the end of Phase 7, Claude must execute these steps:
 1. **Announce:** "Generating the pattern snapshot from established code conventions."
 2. **Extract each section** using the commands and instructions above.
 3. **Write the snapshot** to `docs/project/pattern_snapshot.md` using the template below.
-4. **Verify completeness:** Every section must contain real code references, not placeholders.
+4. **Verify completeness** using the checklist below.
 5. **Report:** "Pattern snapshot generated. All future phases will reference this file for code consistency."
+
+### Completeness Checklist
+
+The snapshot is NOT complete until every item passes. Do not proceed to Phase 8 with an incomplete snapshot.
+
+| Section | Required Content | Verification |
+|---------|-----------------|--------------|
+| A. Project Structure | Actual `find` output with annotations | At least 6 annotated directories |
+| B. Import Path Map | Real import statements grouped by category | At least 4 categories (auth, db, ui, utils) |
+| C. API Route Pattern | Complete handler function with comments | All 6 annotated sections present (parse, auth, permissions, query, response, error) |
+| D. Component Usage | Real page code showing wrapper, header, states | Loading, error, and empty state examples with real code |
+| E. Prisma Query Patterns | Real queries from the codebase | At least 1 scoped query and 1 error handling example |
+| F. Form Patterns | Complete form component | `"use client"`, zod schema, submit handler, error display all present |
+| G. File Naming | Actual naming conventions observed | Table with 6+ categories filled from real filenames |
+| H. Feature Module Template | Directory tree of first feature (Phase 9 only) | Full file tree with annotations |
+
+**If a section cannot be filled** (e.g., no feature API routes exist yet in Phase 7), write a placeholder that says `<!-- TO BE EXTRACTED: [description] — update after Phase [N] -->` and list it in the metadata as incomplete. This is preferable to guessing.
+
+**What "real code" means:** Extracted from files in the actual project using the bash commands specified in each section. Not written from memory. Not adapted from the canonical template. Run the extraction command, read the output, paste the actual code.
 
 At the end of Phase 9, Claude must:
 

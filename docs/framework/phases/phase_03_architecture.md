@@ -9,6 +9,8 @@ All 9 project docs exist. No source code written yet.
 - `docs/framework/internal/06_routes_and_permissions.md` — route structure
 - `docs/framework/internal/04_feature_modules.md` — available module types
 - `docs/framework/internal/09_build_rules_internal.md` — build order and constraints
+- `docs/framework/internal/21_validation_gates.md` — gate system (for writing custom gates)
+- `docs/framework/internal/23_escape_hatches.md` — if `docs/project/05_tech_stack.md` overrides any default
 
 ## What to Do
 
@@ -41,6 +43,11 @@ Produce an architecture summary covering:
 - Define app-specific gates based on entities and features identified
 - Write custom gates to `docs/project/custom_gates.md`
 - Examples: tenant isolation checks, feature-specific structural checks
+
+### 6. Escape Hatches (if applicable)
+- If `docs/project/05_tech_stack.md` overrides any default (auth, billing, database, tenancy, email, hosting), read the relevant section of `docs/framework/internal/23_escape_hatches.md`
+- Adapt the entity plan, route plan, and validation gates accordingly
+- Write replacement gates to `docs/project/custom_gates.md`
 
 Present the full plan to the user for review.
 

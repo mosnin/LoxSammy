@@ -21,6 +21,7 @@ Analyze the app idea for gaps. Ask targeted follow-up questions, 2-4 at a time. 
 | **Dashboard shape** | What do users see on login? Queue? Analytics? Feed? |
 | **Monetization** | Free? Freemium? Paid tiers? Per-seat? |
 | **Integrations** | External connections? (Slack, email, APIs) |
+| **Tech constraints** | Required technologies or things to avoid? (Supabase, no billing, single-user) |
 | **Non-goals for v1** | What's explicitly out of scope? |
 
 ### Interview Style

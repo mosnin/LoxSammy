@@ -391,6 +391,74 @@ active → [deleted]   (member leaves or is removed)
 - Deleting an Organization cascades to: Membership, Subscription, Settings, Integration, UsageEvent, AnalyticsSummary, and all product-specific entities
 - Deleting a User cascades to: Membership (removes from all orgs). Does NOT delete Organization — ownership transfers first.
 
+## Schema Migration Strategy
+
+### Phase 4: Initial Schema
+
+The initial schema is created from this file plus product-specific entities from the architecture plan. Run:
+
+```bash
+npx prisma migrate dev --name init
+```
+
+This creates the first migration. Commit both `prisma/schema.prisma` and `prisma/migrations/` to git.
+
+### Post-Phase 4: Schema Changes
+
+When subsequent phases need new entities or columns (common in Phase 9 when building features):
+
+1. **Modify `schema.prisma`** — add the new model or field.
+2. **Create a named migration:**
+   ```bash
+   npx prisma migrate dev --name add_[entity]_table
+   # or
+   npx prisma migrate dev --name add_status_to_projects
+   ```
+3. **Review the generated SQL** — Prisma writes SQL to `prisma/migrations/[timestamp]_[name]/migration.sql`. Read it before applying. Watch for:
+   - Unintended column drops (Prisma may drop + recreate if you rename)
+   - Missing default values on new required columns
+   - Large table locks on production (adding NOT NULL column without default)
+4. **Commit the migration** — both the schema change and the migration SQL.
+
+### Migration Naming Convention
+
+Use descriptive snake_case names: `create_[entity]`, `add_[field]_to_[entity]`, `remove_[field]_from_[entity]`, `add_[entity]_index`.
+
+### Renaming vs. Dropping
+
+Prisma interprets field renames as "drop + add" by default, which causes data loss. To rename:
+
+1. Add the new column with `@map("old_column_name")` to preserve the database column.
+2. Or use a custom migration: run `npx prisma migrate dev --create-only`, edit the SQL to use `ALTER TABLE RENAME COLUMN`, then apply.
+
+### Required Column on Existing Data
+
+Never add a required (`NOT NULL`) column without a default to a table that already has rows:
+
+```prisma
+// Bad — migration fails if table has data
+status String
+
+// Good — provide a default
+status String @default("active")
+```
+
+### Production Migrations
+
+For production deployments:
+
+```bash
+npx prisma migrate deploy
+```
+
+This applies pending migrations without generating new ones. Include this in the deployment pipeline (e.g., Vercel build command or GitHub Actions).
+
+### When NOT to Migrate
+
+- Schema-only changes (adding `@@index`) that don't affect data: safe to migrate anytime.
+- Dropping columns: create the migration but verify no code references the column first.
+- Enum value removal: dangerous — check that no rows use the value before migrating.
+
 ## Core Principle
 
 Use a small set of stable core entities, then attach product specific entities to them. Never reinvent user, organization, membership, or billing models per project.

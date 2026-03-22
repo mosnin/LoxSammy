@@ -231,6 +231,8 @@ Apply to every build phase (4–14):
 - Do not invent features outside v1 scope
 - English-first per `19_i18n_posture.md`, use Intl API for formatting
 - Do not modify files in `docs/framework/`
+- If an error from a previous phase is discovered, follow the recovery protocol in `docs/framework/internal/24_error_recovery.md` — announce the issue and its scope before fixing
+- Tag phase completions in git (`git tag phase-N-complete`) for restore points
 
 ## Session Resumption
 
