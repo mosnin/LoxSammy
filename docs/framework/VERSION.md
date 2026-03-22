@@ -1,6 +1,6 @@
 # Framework Version
 
-**Current version: 1.7.0**
+**Current version: 1.8.0**
 
 ## Versioning Policy
 

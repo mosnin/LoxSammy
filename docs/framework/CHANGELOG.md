@@ -4,6 +4,21 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.8.0] - 2026-03-22
+
+### Fixed
+- `CLAUDE.md` Phase 4: Changed "(Phase 1 section)" to "(Phase 4: Foundation section)" — file 09 has no Phase 1, causing Claude to search for a non-existent section
+- `CLAUDE.md` Phase 4: Added missing "Read now" files — `26_observability.md`, `27_performance.md`, `28_accessibility.md` were required by phase_04_foundation.md but not listed in CLAUDE.md
+- `CLAUDE.md` Phase 5-6: Added `28_accessibility.md` to "Read now" — auth and onboarding pages were being built without accessibility guidance
+- `CLAUDE.md` Phase 3: Added `23_escape_hatches.md` to "Read now" — users with non-default tech stacks had no swap guidance during architecture planning
+- `docs/framework/internal/19_i18n_posture.md`: Fixed "Used by: None" → "Used by: 09, 14" — file IS consumed by Phase 14 and referenced by build rules
+
+### Added (non-breaking)
+- `CLAUDE.md` Global Build Rules: Added custom gates requirement — "Run validation gates AND custom gates (`docs/project/custom_gates.md`)" — custom gates from Phase 3 were never referenced in Phase 4-14
+- `CLAUDE.md` Global Build Rules: Added pattern snapshot single-writer rule — prevents parallel Phase 9 agents from conflicting on snapshot updates
+
+### Changed (non-breaking)
+
 ## [1.7.0] - 2026-03-22
 
 ### Added (non-breaking)

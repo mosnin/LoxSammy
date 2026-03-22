@@ -126,6 +126,7 @@ Wait for user confirmation before proceeding to Phase 3.
 - `docs/framework/internal/06_routes_and_permissions.md` — route structure
 - `docs/framework/internal/04_feature_modules.md` — available module types
 - `docs/framework/internal/09_build_rules_internal.md` — build order and constraints
+- `docs/framework/internal/23_escape_hatches.md` — technology swap guide (if user chose non-default tech)
 - `docs/project/*` — the project docs you just generated
 
 Produce an architecture summary:
@@ -149,20 +150,20 @@ Each build phase is a discrete step. At the start of each phase:
 5. Ask the user if they want to review, adjust, or continue to the next phase
 
 ### Phase 4 — Foundation
-**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 1 section), `docs/framework/internal/21_validation_gates.md`
+**Read now:** `docs/framework/internal/09_build_rules_internal.md` (Phase 4: Foundation section), `docs/framework/internal/21_validation_gates.md`, `docs/framework/internal/26_observability.md`, `docs/framework/internal/27_performance.md`, `docs/framework/internal/28_accessibility.md`
 - Project setup (Next.js, TypeScript, Tailwind, Prisma)
 - Database schema from entity plan
 - Shared utilities, types, constants
-- **Run Phase 4 validation gates before proceeding**
+- **Run Phase 4 validation gates and custom gates** (`docs/project/custom_gates.md`) **before proceeding**
 
 ### Phase 5 — Auth
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth), `docs/framework/internal/28_accessibility.md`
 - Login, signup, password reset, email verification
 - Auth middleware and session management
 - Protected route wrappers
 
 ### Phase 6 — Onboarding
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding), `docs/framework/internal/28_accessibility.md`
 - Multi-step onboarding flow
 - First value event
 - Workspace/org setup if applicable
@@ -303,11 +304,12 @@ These apply to every build phase:
 - Do not add features outside the defined v1 scope
 - Do not modify files in `docs/framework/` — those are reusable defaults
 - English-first for v1
-- **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) after every build phase — all gates must pass before proceeding
+- **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) **and custom gates** (`docs/project/custom_gates.md`) after every build phase — all gates must pass before proceeding
 - If an error from a previous phase is discovered, follow the recovery protocol in `docs/framework/internal/24_error_recovery.md` — do not silently fix and move on, announce the issue and its scope
 - Tag phase completions in git (`git tag phase-N-complete`) for restore points
 - **Read the pattern snapshot** (`docs/project/pattern_snapshot.md`) before writing code in Phase 8+ — follow established conventions exactly
 - **All sub-agents** must read the pattern snapshot before building (see `docs/framework/internal/22_pattern_snapshot.md`)
+- **Pattern snapshot is single-writer**: Only one agent updates the snapshot at a time. When parallelizing Phase 9 features, the first feature built updates the snapshot, and subsequent agents read the updated version before building
 
 ## Repository Structure
 
