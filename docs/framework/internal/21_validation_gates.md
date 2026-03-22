@@ -41,6 +41,17 @@ If a gate fails:
 
 If a gate is genuinely inapplicable (e.g., no Stripe in v1), document the skip with a reason — don't silently ignore.
 
+## Gate Interpretation Rules
+
+These gates are **structural smoke checks**, not unit tests. They verify that expected files, patterns, and structures exist. They cannot verify logical correctness.
+
+**Pass/fail determination:**
+- **Bash command gates**: Pass if exit code is 0 AND output matches the described pass criteria
+- **Grep-based gates**: Pass if grep finds at least one match in production code (not comments). If a grep match appears only in a comment, it's a false positive — verify manually.
+- **File existence gates**: Pass if the specified file/directory exists and is non-empty
+
+**When in doubt:** If a gate result is ambiguous, inspect the matched code manually. The goal is catching missing structure, not proving correctness.
+
 ---
 
 ## Phase 4 — Foundation Gates

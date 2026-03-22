@@ -1,7 +1,7 @@
 # 12 Internal Component Specs
 
 > **TL;DR:** Provides exact visual specs (dimensions, padding, colors, states, mobile behavior) for every canonical internal component — summary cards, tables, forms, modals, drawers, badges, toasts, timelines, and more.
-> **Covers:** component dimensions, spacing, variants, states, density presets, mobile behavior | **Depends on:** 08, 10 | **Used by:** 04, 09, 13, 16, 17 | **Phase:** 9
+> **Covers:** component dimensions, spacing, variants, states, density presets, mobile behavior | **Depends on:** 08, 10, 15 | **Used by:** 04, 09, 13, 16, 17 | **Phase:** 7 (read alongside 08), 9
 
 ## Purpose
 
@@ -564,6 +564,48 @@ Chronological list of events (activity log, audit trail, change history).
 - Same layout — timeline is already single-column
 
 ---
+
+---
+
+## Universal Component State Rules
+
+Every interactive component must handle these states. If a component spec above doesn't explicitly list all states, apply these defaults:
+
+| State | Visual Treatment |
+|-------|-----------------|
+| **Default** | As specified in component spec |
+| **Hover** | `surface-hover` background (or specified hover). Transition: `duration-fast`, `ease-default` |
+| **Focus** | 2px ring using `border-focus` (primary-500) with 2px offset. Outline: none |
+| **Active/Pressed** | `surface-active` background. Scale: none (no press animation in internal product) |
+| **Disabled** | Opacity 0.5, cursor `not-allowed`, no hover/focus state changes |
+| **Loading** | Replace content with skeleton matching component shape. Or show spinner on action button |
+| **Error** | `border-error` border. Error text below in `text-sm`, `status-error` color |
+
+### Async Validation Pattern
+When a component requires server-side validation (e.g., checking email uniqueness):
+1. Show inline spinner (12px) next to the field after debounce (300ms)
+2. On success: show check icon in `status-success`
+3. On failure: show error text below field per standard validation pattern
+4. Never block form submission for async validation — validate server-side on submit as well
+
+### Toast Auto-Dismiss
+- Success toasts: auto-dismiss after 5 seconds
+- Error toasts: persist until manually dismissed (user must acknowledge)
+- Timer pauses on hover (accessibility requirement)
+
+---
+
+## Cross-File Authority
+
+This file defines **visual dimensions, spacing, and density** for components. For other concerns:
+- **Component behavior and composition rules** → `08_ui_system_internal.md`
+- **Design token values (colors, shadows, motion)** → `10_design_tokens_internal.md`
+- **Page-level layout patterns** → `11_internal_screen_archetypes.md`
+- **Data display decisions (table vs card vs chart)** → `13_internal_data_display_rules.md`
+- **Error state taxonomy and escalation** → `17_error_state_taxonomy.md`
+- **Responsive breakpoint behavior** → `15_canonical_breakpoints.md`
+
+If specs in this file conflict with `10_design_tokens_internal.md` token values, the token file wins. If specs conflict with `08_ui_system_internal.md` behavior rules, the behavior file wins.
 
 ## Final Principle
 
