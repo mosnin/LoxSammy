@@ -4,6 +4,14 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.11.0] - 2026-03-22
+
+### Fixed
+- `CLAUDE.md` Phase 9: Added `09_build_rules_internal.md` to "Read now" with specific sections (Server Action Pattern, API Route Error Handler, Pagination Utility, Tanstack Query Conventions) — Claude had the patterns but Phase 9 didn't point to them, forcing discovery by luck.
+- `phase_09_core_features.md`: Added file 09 and QUICK_START.md to "Files to Read". Added 8-step Implementation Recipe that maps each build step (schema → validation → API routes → list page → forms → detail → delete → four states) to the exact file and section containing the pattern. Phase 9 was the most complex phase but had the least guidance on HOW to build.
+
+### Changed (non-breaking)
+
 ## [1.10.0] - 2026-03-22
 
 ### Fixed

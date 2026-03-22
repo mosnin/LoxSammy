@@ -196,10 +196,12 @@ Each build phase is a discrete step. At the start of each phase:
 ### Phase 9 — Core Features
 **Read now:**
 - `docs/project/pattern_snapshot.md` (MANDATORY — read before writing any code)
+- `docs/framework/internal/09_build_rules_internal.md` (Server Action Pattern, API Route Error Handler, Pagination Utility, Tanstack Query Conventions)
 - `docs/framework/internal/08_ui_system_internal.md`
 - `docs/framework/internal/11_internal_screen_archetypes.md`
 - `docs/framework/internal/12_internal_component_specs.md`
 - `docs/framework/internal/17_error_state_taxonomy.md`
+- See `docs/framework/phases/phase_09_core_features.md` for the step-by-step implementation recipe
 - Product-specific feature modules from project docs
 - CRUD views, detail pages, forms, filters
 - All four states: loading, empty, success, error
