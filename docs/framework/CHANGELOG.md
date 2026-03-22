@@ -4,6 +4,17 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.7.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/internal/09_build_rules_internal.md` — Added 3 reusable utilities and 1 convention:
+  - **API route error handler**: `apiHandler()` wrapper that catches ZodError → 422, AuthorizationError → 403, Prisma P2002 → 409, P2025 → 404, unknown → 500 with referenceId and structured logging. Eliminates per-route try/catch boilerplate.
+  - **Pagination utility**: `parsePagination()`, `toPrismaArgs()`, `buildPaginationMeta()` — parses URL params with zod validation, converts to Prisma skip/take, builds response meta. Default 25 rows, max 100.
+  - **Next.js App Router file conventions**: Decision table for `loading.tsx` vs `<Suspense>` boundaries, `error.tsx` convention with shell preservation, concrete code examples for both patterns.
+  - **TypeScript style rules**: Prefer `type` over `interface` (use interface only for declaration merging), type files in singular kebab-case, shared types in `src/types/`
+
+### Changed (non-breaking)
+
 ## [1.6.0] - 2026-03-22
 
 ### Added (non-breaking)

@@ -215,8 +215,10 @@ Every major page or module must account for:
 ## Coding Standards
 
 - Use TypeScript strict mode — no `any` types in production code
+- Prefer `type` over `interface` — use `interface` only when declaration merging is needed (extending third-party types). Use `type` for everything else (props, API shapes, function signatures, unions, intersections).
 - Server Components by default, Client Components only when interactivity requires it
 - Colocate related files (component, styles, types, tests in the same directory)
+- Type files: singular, kebab-case (`user.ts`, `api-response.ts`) in `src/types/` for shared types, or colocated for component-specific types
 - API routes and Server Actions validate input and check permissions independently — use next-safe-action for server actions, zod for input validation
 - Database queries always filter by organization_id for multi-tenancy isolation
 - Sensitive data (tokens, secrets) stored encrypted, never logged or exposed in responses
@@ -443,6 +445,322 @@ type PaginationMeta = { page: number; pageSize: number; total: number; totalPage
 3. **Use `fields` for validation errors** — maps field names to error messages, consumed by forms.
 4. **Use HTTP status codes correctly** — 200 (success), 201 (created), 204 (deleted), 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (validation), 429 (rate limit), 500 (server error).
 5. **Never expose stack traces, SQL errors, or internal details** in error responses.
+
+---
+
+## API Route Error Handler
+
+Every API route needs the same try/catch boilerplate. Extract it into a shared wrapper:
+
+```typescript
+// src/lib/api/handler.ts
+import { ZodError } from "zod"
+import { AuthorizationError } from "@/lib/auth/authorize"
+import { Prisma } from "@prisma/client"
+import { logger } from "@/lib/logger"
+import { nanoid } from "nanoid"
+
+type ApiHandler = (req: Request, context?: { params: Record<string, string> }) => Promise<Response>
+
+/**
+ * Wraps an API route handler with standard error handling.
+ * Maps known error types to the correct HTTP status and response shape.
+ */
+export function apiHandler(handler: ApiHandler): ApiHandler {
+  return async (req, context) => {
+    try {
+      return await handler(req, context)
+    } catch (error) {
+      // Validation errors (zod)
+      if (error instanceof ZodError) {
+        const fields: Record<string, string> = {}
+        error.errors.forEach((e) => {
+          const path = e.path.join(".")
+          if (path) fields[path] = e.message
+        })
+        return Response.json(
+          { error: { code: "VALIDATION_ERROR", message: "Invalid input", fields } },
+          { status: 422 }
+        )
+      }
+
+      // Authorization errors
+      if (error instanceof AuthorizationError) {
+        return Response.json(
+          { error: { code: "FORBIDDEN", message: error.message } },
+          { status: 403 }
+        )
+      }
+
+      // Auth errors (requireOrganization throws plain Error)
+      if (error instanceof Error && error.message === "Unauthorized") {
+        return Response.json(
+          { error: { code: "UNAUTHORIZED", message: "Session expired" } },
+          { status: 401 }
+        )
+      }
+
+      if (error instanceof Error && error.message === "No active membership") {
+        return Response.json(
+          { error: { code: "FORBIDDEN", message: "No active organization membership" } },
+          { status: 403 }
+        )
+      }
+
+      // Prisma known errors
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          return Response.json(
+            { error: { code: "CONFLICT", message: "A record with this value already exists" } },
+            { status: 409 }
+          )
+        }
+        if (error.code === "P2025") {
+          return Response.json(
+            { error: { code: "NOT_FOUND", message: "Record not found" } },
+            { status: 404 }
+          )
+        }
+      }
+
+      // Unknown errors — log and return 500 with reference ID
+      const referenceId = nanoid(10)
+      logger.error("api.unhandled_error", {
+        referenceId,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        method: req.method,
+        url: req.url,
+      })
+
+      return Response.json(
+        { error: { code: "INTERNAL_ERROR", message: "Something went wrong", referenceId } },
+        { status: 500 }
+      )
+    }
+  }
+}
+```
+
+### Usage in API Routes
+
+```typescript
+// src/app/api/projects/route.ts
+import { apiHandler } from "@/lib/api/handler"
+import { requireOrganization } from "@/lib/auth/scope"
+import { authorize } from "@/lib/auth/authorize"
+import { prisma } from "@/lib/db"
+
+export const GET = apiHandler(async (req) => {
+  const { organizationId, role } = await requireOrganization()
+  authorize(role, "projects", "read")
+
+  const projects = await prisma.project.findMany({
+    where: { organizationId },
+  })
+
+  return Response.json({ data: projects })
+})
+
+export const POST = apiHandler(async (req) => {
+  const { userId, organizationId, role } = await requireOrganization()
+  authorize(role, "projects", "create")
+
+  const body = createProjectSchema.parse(await req.json())
+  const project = await prisma.project.create({
+    data: { ...body, organizationId, createdBy: userId },
+  })
+
+  return Response.json({ data: project }, { status: 201 })
+})
+```
+
+### Rules
+
+1. **Wrap every API route** — `export const GET = apiHandler(...)`, never raw async functions.
+2. **Don't catch errors inside the handler** — let them propagate to the wrapper.
+3. **Add new error types to the wrapper** as the project grows (e.g., `StripeError`, `RateLimitError`).
+4. **The wrapper handles logging** — individual routes don't need to log errors.
+
+---
+
+## Pagination Utility
+
+Shared helpers for parsing pagination params and generating response metadata.
+
+```typescript
+// src/lib/api/pagination.ts
+import { z } from "zod"
+
+const paginationSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+})
+
+export type PaginationParams = z.infer<typeof paginationSchema>
+export type PaginationMeta = {
+  page: number
+  pageSize: number
+  total: number
+  totalPages: number
+}
+
+/**
+ * Parse page + pageSize from URL search params.
+ * Returns validated values with defaults (page=1, pageSize=25).
+ */
+export function parsePagination(searchParams: URLSearchParams): PaginationParams {
+  return paginationSchema.parse({
+    page: searchParams.get("page"),
+    pageSize: searchParams.get("pageSize"),
+  })
+}
+
+/**
+ * Convert pagination params to Prisma skip/take.
+ */
+export function toPrismaArgs(params: PaginationParams) {
+  return {
+    skip: (params.page - 1) * params.pageSize,
+    take: params.pageSize,
+  }
+}
+
+/**
+ * Build pagination meta from total count and params.
+ */
+export function buildPaginationMeta(total: number, params: PaginationParams): PaginationMeta {
+  return {
+    page: params.page,
+    pageSize: params.pageSize,
+    total,
+    totalPages: Math.ceil(total / params.pageSize),
+  }
+}
+```
+
+### Usage in API Routes
+
+```typescript
+export const GET = apiHandler(async (req) => {
+  const { organizationId, role } = await requireOrganization()
+  authorize(role, "projects", "read")
+
+  const url = new URL(req.url)
+  const pagination = parsePagination(url.searchParams)
+
+  const [projects, total] = await prisma.$transaction([
+    prisma.project.findMany({
+      where: { organizationId },
+      ...toPrismaArgs(pagination),
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.project.count({ where: { organizationId } }),
+  ])
+
+  return Response.json({
+    data: projects,
+    pagination: buildPaginationMeta(total, pagination),
+  })
+})
+```
+
+### Rules
+
+1. **Default page size is 25** — matches `13_internal_data_display_rules.md`.
+2. **Max page size is 100** — prevents abuse.
+3. **Use `$transaction` for count + findMany** — ensures consistent total.
+4. **Always return pagination meta** — the client needs it for the pagination UI.
+
+---
+
+## Next.js App Router File Conventions
+
+### When to Use `loading.tsx`
+
+Use `loading.tsx` for **full-page loading states** — when the entire page content depends on async data.
+
+```typescript
+// src/app/(authenticated)/projects/loading.tsx
+import { PageHeader } from "@/components/shell/page-header"
+import { Skeleton } from "@/components/ui/skeleton"
+
+export default function ProjectsLoading() {
+  return (
+    <>
+      <PageHeader title="Projects" />
+      <div className="p-6 space-y-4">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-16 w-full" />
+        ))}
+      </div>
+    </>
+  )
+}
+```
+
+### When to Use `<Suspense>` Boundaries
+
+Use inline `<Suspense>` when **parts of the page load independently**:
+
+```typescript
+// Page renders immediately with header; table streams in
+export default function ProjectsPage() {
+  return (
+    <>
+      <PageHeader title="Projects" action={<CreateButton />} />
+      <Suspense fallback={<ProjectTableSkeleton />}>
+        <ProjectTable />
+      </Suspense>
+      <Suspense fallback={<ActivityFeedSkeleton />}>
+        <RecentActivity />
+      </Suspense>
+    </>
+  )
+}
+```
+
+### Decision Rule
+
+| Scenario | Use |
+|----------|-----|
+| Entire page depends on one data fetch | `loading.tsx` |
+| Page has multiple independent async sections | `<Suspense>` per section |
+| Dashboard with stats + table + feed | `<Suspense>` per section (they load independently) |
+| Detail page loading a single entity | `loading.tsx` |
+
+### `error.tsx` Convention
+
+Every route segment that fetches data should have an `error.tsx`:
+
+```typescript
+// src/app/(authenticated)/projects/error.tsx
+"use client"
+import { ErrorBlock } from "@/components/ui/error-block"
+
+export default function ProjectsError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
+  return (
+    <ErrorBlock
+      title="Failed to load projects"
+      message="Something went wrong. Try refreshing."
+      onRetry={reset}
+    />
+  )
+}
+```
+
+### Rules
+
+1. **`loading.tsx` must match the page layout** — include the PageHeader, skeleton rows matching real content shape.
+2. **`error.tsx` is always `"use client"`** — Next.js requirement.
+3. **`error.tsx` preserves the shell** — only the content area shows the error, sidebar/topbar remain functional.
+4. **Don't use `loading.tsx` + `<Suspense>` on the same page** — if you need granular loading, use Suspense only.
 
 ---
 
