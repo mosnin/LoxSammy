@@ -82,6 +82,84 @@ Admin route behavior:
 
 Note: `guest` is not a stored role in the Membership entity. It represents unauthenticated visitors for route categorization purposes. The four stored roles (`member`, `manager`, `admin`, `owner`) match the `role` enum in `07_data_models.md`.
 
+## Middleware Pattern
+
+Next.js uses a single `middleware.ts` file at the project root. All route protection logic is composed here.
+
+### Canonical Middleware
+
+```typescript
+// middleware.ts
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { auth } from "@/lib/auth"
+
+// Routes that don't require authentication
+const PUBLIC_ROUTES = ["/", "/pricing", "/about", "/contact", "/legal"]
+const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
+const API_PUBLIC_ROUTES = ["/api/health", "/api/webhooks"]
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // 1. Public routes — always allow
+  if (PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`))) {
+    return NextResponse.next()
+  }
+
+  // 2. Public API routes (webhooks, health) — always allow
+  if (API_PUBLIC_ROUTES.some((r) => pathname.startsWith(r))) {
+    return NextResponse.next()
+  }
+
+  // 3. Get session
+  const session = await auth()
+
+  // 4. Auth routes — redirect to dashboard if already authenticated
+  if (AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
+    if (session?.user) {
+      return NextResponse.redirect(new URL("/dashboard", request.url))
+    }
+    return NextResponse.next()
+  }
+
+  // 5. All remaining routes require authentication
+  if (!session?.user) {
+    const loginUrl = new URL("/login", request.url)
+    loginUrl.searchParams.set("returnTo", pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  // 6. Admin routes — check role
+  if (pathname.startsWith("/admin")) {
+    const role = session.user.role
+    if (role !== "admin" && role !== "owner") {
+      return NextResponse.rewrite(new URL("/403", request.url))
+    }
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    // Match all routes except static files and Next.js internals
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+}
+```
+
+### Middleware Rules
+
+1. **Single file** — Next.js app router supports only one `middleware.ts`. Do not try to create multiple.
+2. **No database queries in middleware** — middleware runs on the edge. Use the session token for role checks. Detailed permission checks happen at the API layer (Layer 2).
+3. **Redirect vs rewrite** — redirect for auth flows (changes URL), rewrite for error pages (preserves URL).
+4. **`returnTo` parameter** — always preserve the intended destination when redirecting to login.
+5. **Order matters** — check public routes first (fast path), then auth routes, then protected routes.
+6. **Invite routes** — `/invite/[token]` must work for both authenticated and unauthenticated users. Add it to a separate list that skips the auth redirect but still resolves the session.
+
+---
+
 ## Permission Enforcement Layers
 
 ### Layer 1: Middleware (Route Level)

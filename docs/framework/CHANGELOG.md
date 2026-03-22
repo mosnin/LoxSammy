@@ -4,6 +4,16 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.6.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/internal/06_routes_and_permissions.md` — Added canonical Next.js middleware pattern: single `middleware.ts` with route classification (public → auth → protected → admin), session check, `returnTo` parameter, role-based admin gating, and matcher config. Includes 6 middleware rules (no DB in middleware, redirect vs rewrite, invite route handling).
+- `docs/framework/internal/09_build_rules_internal.md` — Added 2 practical patterns:
+  - **T3 Env canonical schema**: Complete `src/env.ts` template with typed server vars (DATABASE_URL, AUTH_SECRET, STRIPE_SECRET_KEY, RESEND_API_KEY, etc.) and client vars (NEXT_PUBLIC_APP_URL, NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY), zod validation with `.startsWith()` prefix checks, `.env.example` requirement, and adaptation rules for projects that don't use all services
+  - **Date and time conventions**: UTC storage rule, smart `formatDate()` utility (relative for recent, absolute for old), `formatDateAbsolute()` and `formatDateTime()` helpers, hydration mismatch prevention for server-rendered dates, `<time>` element requirement for accessibility
+
+### Changed (non-breaking)
+
 ## [1.5.0] - 2026-03-22
 
 ### Added (non-breaking)

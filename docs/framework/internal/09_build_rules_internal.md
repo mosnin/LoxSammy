@@ -31,7 +31,7 @@ Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
   - Install email: Resend, React Email
   - Install testing: Vitest, Playwright, MSW, Faker
   - Install include-when-needed libraries based on `docs/project/02_feature_spec.md`: Recharts (if charts needed), Tanstack Table (if complex tables), uploadthing (if file uploads), Trigger.dev/Inngest (if background jobs), Upstash Ratelimit (if rate limiting needed)
-- Configure T3 Env with all required environment variables (`DATABASE_URL`, `NEXTAUTH_SECRET`, `STRIPE_SECRET_KEY`, etc.)
+- Configure T3 Env with environment variables (see T3 Env Canonical Schema below)
 - Configure database (PostgreSQL + Prisma schema for core entities from `07_data_models.md`)
 - Set up shared directories: `lib/validations/` (zod schemas), `lib/animations.ts` (Motion variants), `components/ui/` (shadcn components)
 - Create shared utility functions (date formatting, currency, validation helpers)
@@ -226,6 +226,148 @@ Every major page or module must account for:
 - Animations use Motion with shared variants from `lib/animations.ts` — durations follow design tokens (fast: 150ms, normal: 250ms, slow: 350ms)
 - URL-persisted state (filters, pagination, tabs) uses nuqs — not React state or localStorage
 - Toast notifications use Sonner — success after mutations, error on failures, promise for async operations
+
+## T3 Env Canonical Schema
+
+Configure during Phase 4. This is the canonical environment variable schema — add or remove variables based on the project's tech stack.
+
+```typescript
+// src/env.ts
+import { createEnv } from "@t3-oss/env-nextjs"
+import { z } from "zod"
+
+export const env = createEnv({
+  server: {
+    // Database
+    DATABASE_URL: z.string().url(),
+
+    // Auth (Auth.js / NextAuth v5)
+    AUTH_SECRET: z.string().min(32),
+    AUTH_URL: z.string().url().optional(), // auto-detected on Vercel
+
+    // OAuth providers (include only those configured)
+    AUTH_GOOGLE_ID: z.string().optional(),
+    AUTH_GOOGLE_SECRET: z.string().optional(),
+    AUTH_GITHUB_ID: z.string().optional(),
+    AUTH_GITHUB_SECRET: z.string().optional(),
+
+    // Billing (include if Stripe is used)
+    STRIPE_SECRET_KEY: z.string().startsWith("sk_"),
+    STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_"),
+
+    // Email (include if Resend is used)
+    RESEND_API_KEY: z.string().startsWith("re_"),
+    EMAIL_FROM: z.string().email().default("noreply@example.com"),
+
+    // Observability (include if Sentry is used)
+    SENTRY_DSN: z.string().url().optional(),
+
+    // Rate limiting (include if Upstash is used)
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+
+    // App
+    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  },
+  client: {
+    // Public keys exposed to the browser (NEXT_PUBLIC_ prefix)
+    NEXT_PUBLIC_APP_URL: z.string().url(),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
+    NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+  },
+  runtimeEnv: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_URL: process.env.AUTH_URL,
+    AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
+    AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
+    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  },
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+})
+```
+
+### Rules
+
+1. **All env access goes through `env`** — never use `process.env` directly in application code.
+2. **Mark optional vars as `.optional()`** — only vars required by every deployment are non-optional.
+3. **Use `.startsWith()` for prefixed keys** — catches misconfigs early (wrong Stripe key type, etc.).
+4. **Create `.env.example`** — list every variable with placeholder values. Never commit `.env`.
+5. **Adapt to the project** — remove OAuth providers, Stripe, Resend, Upstash, or Sentry lines if the project doesn't use them. Add project-specific vars as needed.
+
+---
+
+## Date and Time Conventions
+
+### Storage
+
+- **Always store in UTC** — all `DateTime` fields in Prisma are UTC by default. Never store local times.
+- **Use `DateTime` type in Prisma** — not `String` or `Int` timestamps.
+
+### Display
+
+```typescript
+// src/lib/format.ts
+import { formatDistanceToNow, format, isToday, isYesterday, isThisYear } from "date-fns"
+
+/**
+ * Smart date formatting:
+ * - Under 1 hour: "5 minutes ago"
+ * - Today: "Today at 2:30 PM"
+ * - Yesterday: "Yesterday at 2:30 PM"
+ * - This year: "Mar 15 at 2:30 PM"
+ * - Older: "Mar 15, 2025"
+ */
+export function formatDate(date: Date | string): string {
+  const d = new Date(date)
+  const now = new Date()
+  const diffMs = now.getTime() - d.getTime()
+
+  if (diffMs < 60 * 60 * 1000) {
+    return formatDistanceToNow(d, { addSuffix: true })
+  }
+  if (isToday(d)) return `Today at ${format(d, "h:mm a")}`
+  if (isYesterday(d)) return `Yesterday at ${format(d, "h:mm a")}`
+  if (isThisYear(d)) return format(d, "MMM d 'at' h:mm a")
+  return format(d, "MMM d, yyyy")
+}
+
+/**
+ * Absolute date for tables and exports.
+ */
+export function formatDateAbsolute(date: Date | string): string {
+  return format(new Date(date), "MMM d, yyyy")
+}
+
+/**
+ * Date + time for audit logs and detailed views.
+ */
+export function formatDateTime(date: Date | string): string {
+  return format(new Date(date), "MMM d, yyyy 'at' h:mm a")
+}
+```
+
+### Rules
+
+1. **Relative for recent, absolute for old** — matches `13_internal_data_display_rules.md` metric formatting rules.
+2. **No timezone conversion in v1** — display in the browser's local timezone (JavaScript `Date` does this automatically). Add explicit timezone support in a later phase if needed.
+3. **Import specific functions** — `import { format } from "date-fns"` not `import * as dateFns`.
+4. **Use `<time>` element in HTML** — `<time dateTime={date.toISOString()}>5 minutes ago</time>` for accessibility and SEO.
+5. **Server-rendered dates** — use absolute format to avoid hydration mismatch (server and client may be in different timezones). Switch to relative format on the client after hydration if needed.
+
+---
 
 ## API Response Format
 
