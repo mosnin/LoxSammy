@@ -1,7 +1,7 @@
 # 04 Feature Modules
 
 > **TL;DR:** Specifies optional plug-in modules (analytics, integrations, API, MCP, webhooks, notifications, usage, activity logs) with routes, layouts, states, and permission rules for each.
-> **Covers:** analytics, integrations, API keys, MCP servers, webhooks, notifications, usage metering, activity logs | **Depends on:** 11, 12, 13, 15, 16 | **Used by:** 09 | **Phase:** 3, 9
+> **Covers:** analytics, integrations, API keys, MCP servers, webhooks, notifications, usage metering, activity logs | **Depends on:** 07, 08, 11, 12, 13, 14, 15, 16 | **Used by:** 05, 09 | **Phase:** 3, 9
 
 ## Purpose
 

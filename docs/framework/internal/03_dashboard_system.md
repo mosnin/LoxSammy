@@ -1,7 +1,7 @@
 # 03 Dashboard System
 
 > **TL;DR:** Defines the canonical dashboard framework — anatomy, summary rows, main work area, analytics, role-aware logic, required states, and mobile rules.
-> **Covers:** dashboard anatomy, summary cards, main work area, analytics, role-aware logic, required states | **Depends on:** 16 | **Used by:** 09, 11 | **Phase:** 8
+> **Covers:** dashboard anatomy, summary cards, main work area, analytics, role-aware logic, required states | **Depends on:** 08, 13, 16 | **Used by:** 09, 11 | **Phase:** 8
 
 ## Purpose
 

@@ -1,7 +1,7 @@
 # 01 App Shell
 
 > **TL;DR:** Defines the authenticated app frame — top bar, sidebar, drawer, page header, user menu, and responsive shell behavior.
-> **Covers:** layout, navigation, sidebar, drawer, user menu, responsive shell | **Depends on:** 10, 15 | **Used by:** 08, 09, 11 | **Phase:** 7
+> **Covers:** layout, navigation, sidebar, drawer, user menu, responsive shell | **Depends on:** 08, 10, 12, 15 | **Used by:** 03, 09, 11 | **Phase:** 7
 
 ## Purpose
 

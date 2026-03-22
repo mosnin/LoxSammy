@@ -1,7 +1,7 @@
 # 08 UI System Internal
 
 > **TL;DR:** Defines the internal product design system — canonical component catalog (cards, tables, forms, modals, badges, etc.), composition rules, state handling, and responsive behavior.
-> **Covers:** component behavior, page header, sidebar, drawer, cards, tables, forms, modals, tabs, badges, empty states, loading skeletons, error blocks | **Depends on:** 01, 10, 11, 12, 13 | **Used by:** 04, 09, 17 | **Phase:** 9
+> **Covers:** component behavior, page header, sidebar, drawer, cards, tables, forms, modals, tabs, badges, empty states, loading skeletons, error blocks | **Depends on:** 01, 10, 11, 12, 13 | **Used by:** 04, 09, 17 | **Phase:** 7, 9 (read in Phase 7 as foundational; referenced again in Phase 9 for feature builds)
 
 ## Purpose
 

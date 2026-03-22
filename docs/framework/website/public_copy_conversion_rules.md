@@ -239,7 +239,7 @@ When an answer references a deeper topic, link to it: "Yes, we support SSO via S
 
 - Labels: short and specific. "Work email" not "Please enter your email address"
 - Sentence case: "Company name" not "Company Name"
-- Mark optional fields, not required ones
+- Mark required fields with an asterisk (*) per WCAG 2.1 Section 3.3.2. Also mark optional fields with "(optional)" text for clarity
 - Placeholder shows format: "jane@company.com" not "Enter your email"
 - Never use the label as placeholder — it disappears on focus
 

@@ -7,13 +7,13 @@
 | # | File | One-line Description | Phase |
 |---|------|---------------------|-------|
 | 01 | `01_app_shell.md` | Authenticated app frame — top bar, sidebar, drawer, page header, user menu | 7 |
-| 02 | `02_auth_and_onboarding.md` | Auth routes, login/signup flows, invite flow, onboarding sequence | 5, 6 |
+| 02 | `02_auth_and_onboarding.md` | Auth routes, login/signup flows, invite flow, onboarding sequence. Split into Section A (Auth, Phase 5) and Section B (Onboarding, Phase 6) | 5, 6 |
 | 03 | `03_dashboard_system.md` | Dashboard purpose, anatomy, required states, mobile rules | 8 |
 | 04 | `04_feature_modules.md` | 8 optional modules: analytics, integrations, API, MCP, webhooks, notifications, usage, activity logs | 3, 9 |
 | 05 | `05_settings_billing_admin.md` | Settings areas, Stripe billing, security, admin panel, user management | 10, 11 |
 | 06 | `06_routes_and_permissions.md` | Route categories, canonical roles, permission enforcement layers | 3 |
-| 07 | `07_data_models.md` | 9 core entities with fields, types, relationships, and extension pattern | 3, 4 |
-| 08 | `08_ui_system_internal.md` | 20 canonical component behaviors — delegates visual specs to 10, 12 | 9 |
+| 07 | `07_data_models.md` | 9 core entities with fields, types, relationships, Prisma reference schema, state machines, and extension pattern | 3, 4 |
+| 08 | `08_ui_system_internal.md` | 20 canonical component behaviors — delegates visual specs to 10, 12. Read in Phase 7 (foundational) and Phase 9 (feature builds) | 7, 9 |
 | 09 | `09_build_rules_internal.md` | 11 build phases, reuse rules, responsive rules, coding standards, quality gates | 3, 4 |
 | 10 | `10_design_tokens_internal.md` | Complete visual system — colors, spacing, typography, borders, shadows, motion, z-index | 7 |
 | 11 | `11_internal_screen_archetypes.md` | 11 canonical page patterns for authenticated views with layout and density rules | 9 |

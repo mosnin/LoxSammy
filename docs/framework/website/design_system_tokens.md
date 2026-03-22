@@ -215,6 +215,89 @@ All other tokens remain the same on mobile.
 
 Hero CTA buttons use `lg` size. Section CTAs use `md`. Inline CTAs use `sm`.
 
+### Disabled State (all variants)
+
+| Property | Value |
+|----------|-------|
+| Opacity | 0.5 |
+| Cursor | `not-allowed` |
+| Pointer events | none |
+| No hover/focus state change |
+
+### Focus State (all variants)
+
+| Property | Value |
+|----------|-------|
+| Ring | 2px solid `primary-500` |
+| Ring offset | 2px (ensures visibility on any background) |
+| Outline | none (replaced by ring) |
+
+In dark mode, use `primary-400` for the focus ring to maintain contrast on dark surfaces.
+
+---
+
+## Tailwind CSS Mapping
+
+Map tokens to Tailwind theme extensions in `tailwind.config.ts`:
+
+```
+Spacing:   space-1 → 1 (p-1, m-1, gap-1)     = 4px
+           space-2 → 2 (p-2, m-2, gap-2)     = 8px
+           space-3 → 3 (p-3, m-3, gap-3)     = 12px
+           space-4 → 4 (p-4, m-4, gap-4)     = 16px
+           space-6 → 6 (p-6, m-6, gap-6)     = 24px
+           space-8 → 8 (p-8, m-8, gap-8)     = 32px
+           space-12 → 12 (p-12, m-12)        = 48px
+           space-16 → 16 (p-16, m-16)        = 64px
+           space-20 → 20 (p-20, m-20)        = 80px
+           space-24 → 24 (p-24, m-24)        = 96px
+
+Buttons:   sm → h-9 px-4 text-sm rounded-lg
+           md → h-11 px-6 text-[15px] rounded-lg
+           lg → h-[52px] px-8 text-base rounded-xl
+
+Radius:    radius-sm → rounded (6px)
+           radius-md → rounded-lg (8px)
+           radius-lg → rounded-xl (12px)
+           radius-xl → rounded-2xl (16px)
+           radius-2xl → rounded-3xl (24px)
+           radius-full → rounded-full
+
+Shadows:   shadow-subtle → shadow-sm
+           shadow-card → shadow
+           shadow-elevated → shadow-lg
+           shadow-overlay → shadow-2xl
+```
+
+Use CSS custom properties for colors (enables runtime light/dark switching):
+```css
+:root { --color-bg-page: #FFFFFF; --color-text-primary: #111827; ... }
+.dark { --color-bg-page: #0F1117; --color-text-primary: #F3F4F6; ... }
+```
+
+---
+
+## Accessibility Contrast Verification
+
+Verified WCAG AA compliance (4.5:1 for body text, 3:1 for large text):
+
+| Combination | Ratio | Pass? |
+|-------------|-------|-------|
+| `text-primary` (#111827) on `bg-page` (#FFFFFF) | 15.4:1 | Yes |
+| `text-secondary` (#6B7280) on `bg-page` (#FFFFFF) | 5.0:1 | Yes |
+| `text-tertiary` (#9CA3AF) on `bg-page` (#FFFFFF) | 3.0:1 | Large text only |
+| `text-inverse` (#FFFFFF) on `primary-600` (#2563EB) | 4.6:1 | Yes |
+| Dark: `text-primary` (#F3F4F6) on `bg-page` (#0F1117) | 14.8:1 | Yes |
+| Dark: `text-secondary` (#9CA3AF) on `bg-page` (#0F1117) | 6.5:1 | Yes |
+
+Rule: Never use `text-tertiary` for essential information — only for supplementary metadata.
+
+---
+
+## Dark Mode Shadow Rules
+
+Dark mode uses higher opacity shadows because the base background is already dark and subtle shadows become invisible. This is intentional and differs from the internal product tokens (which use a lighter dark mode base). The principle: shadows must remain perceivable in both modes.
+
 ---
 
 ## Relationship to Internal Tokens

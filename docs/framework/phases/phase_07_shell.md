@@ -5,8 +5,11 @@ Onboarding (Phase 6) is complete.
 
 ## Files to Read
 - `docs/framework/internal/01_app_shell.md` — shell structure
+- `docs/framework/internal/08_ui_system_internal.md` — component behavior system (foundational for all authenticated UI)
 - `docs/framework/internal/10_design_tokens_internal.md` — visual tokens
+- `docs/framework/internal/12_internal_component_specs.md` — component visual specs
 - `docs/framework/internal/15_canonical_breakpoints.md` — responsive breakpoints
+- `docs/framework/internal/22_pattern_snapshot.md` — pattern capture instructions (generate snapshot at end of this phase)
 
 ## What to Build
 

@@ -9,6 +9,9 @@ Define the visual structure, spacing, states, and interaction rules for every ca
 
 Use `design_system_tokens.md` for all token values. Use `docs/framework/internal/15_canonical_breakpoints.md` for responsive breakpoints.
 
+### Breakpoint Quick Reference
+When this file says "mobile" it means **below 768px (md)**. "Tablet" = **768px–1023px**. "Desktop" = **1024px+ (lg)**.
+
 ---
 
 ## Pill Header / Navigation Bar

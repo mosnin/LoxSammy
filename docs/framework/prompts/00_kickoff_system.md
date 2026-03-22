@@ -103,10 +103,11 @@ If project docs conflict with framework docs, project docs win.
    - **Entities** with key fields and relationships
    - **Routes** — full route table (public, auth, app, admin)
    - **Modules** — which optional modules apply
-   - **Build order** — the 11 build phases with app-specific notes
+   - **Build order** — the 11 build phases (4–14) with app-specific notes
+   - **Custom validation gates** — read `docs/framework/internal/21_validation_gates.md`, define app-specific gates, write to `docs/project/custom_gates.md`
 2. Present to user for review
 
-**Exit:** User confirms architecture → Phase 4.
+**Exit:** User confirms architecture and custom gates → Phase 4.
 
 ---
 
@@ -121,19 +122,20 @@ Each phase follows the same protocol:
 5. **Pause** — ask user to review, adjust, or continue
 
 ### Phase 4 — Foundation
-**Read:** `docs/framework/internal/09_build_rules_internal.md` (Phase 1 section)
+**Read:** `docs/framework/internal/09_build_rules_internal.md` (Phase 4 section), `docs/framework/internal/21_validation_gates.md`
 - Next.js project setup, TypeScript, Tailwind, Prisma
-- Database schema from entity plan
+- Database schema from entity plan (use Prisma reference schema from `07_data_models.md`)
 - Shared utilities, types, constants, project structure
+- Run Phase 4 validation gates before proceeding
 
 ### Phase 5 — Auth
-**Read:** `docs/framework/internal/02_auth_and_onboarding.md` (auth sections)
+**Read:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth)
 - Login, signup, password reset, email verification
 - Auth middleware, session management
 - Protected route wrappers
 
 ### Phase 6 — Onboarding
-**Read:** `docs/framework/internal/02_auth_and_onboarding.md` (onboarding sections)
+**Read:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding)
 - Multi-step onboarding flow
 - First value event
 - Workspace/org creation if applicable
@@ -141,27 +143,35 @@ Each phase follows the same protocol:
 ### Phase 7 — App Shell
 **Read:**
 - `docs/framework/internal/01_app_shell.md`
+- `docs/framework/internal/08_ui_system_internal.md`
 - `docs/framework/internal/10_design_tokens_internal.md`
+- `docs/framework/internal/12_internal_component_specs.md`
 - `docs/framework/internal/15_canonical_breakpoints.md`
+- `docs/framework/internal/22_pattern_snapshot.md`
 - Top bar, sidebar, drawer, page header, user menu
 - Responsive layout, navigation, dark mode setup
+- **Generate pattern snapshot** at `docs/project/pattern_snapshot.md` before proceeding
 
 ### Phase 8 — Dashboard
 **Read:**
+- `docs/project/pattern_snapshot.md` (MANDATORY)
 - `docs/framework/internal/03_dashboard_system.md`
 - `docs/framework/internal/16_dashboard_archetypes.md`
 - `docs/framework/internal/13_internal_data_display_rules.md`
 - Summary metrics, main work area, activity feed
 - Apply the appropriate dashboard archetype
+- Update pattern snapshot with dashboard conventions
 
 ### Phase 9 — Core Features
 **Read:**
+- `docs/project/pattern_snapshot.md` (MANDATORY — read before writing any code)
 - `docs/framework/internal/08_ui_system_internal.md`
 - `docs/framework/internal/11_internal_screen_archetypes.md`
 - `docs/framework/internal/12_internal_component_specs.md`
 - `docs/framework/internal/17_error_state_taxonomy.md`
 - Product-specific modules, CRUD views, detail pages, forms
 - All four states on every view: loading, empty, success, error
+- Update pattern snapshot with feature module template after first feature
 
 ### Phase 10 — Settings & Billing
 **Read:** `docs/framework/internal/05_settings_billing_admin.md`

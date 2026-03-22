@@ -23,9 +23,20 @@ When a session starts, detect the current phase and resume from there.
 1. If `docs/project/` does not exist → start at **Phase 0**
 2. If `docs/project/` exists but has fewer than 9 files → resume at **Phase 2**
 3. If `docs/project/` has all 9 files but no source code exists → resume at **Phase 3**
-4. If source code exists → resume at the appropriate **Build Phase (4+)**
+4. If source code exists → resume at the appropriate **Build Phase (4+)** using these checks:
+   - If no Prisma schema or only boilerplate → **Phase 4**
+   - If schema exists but no auth routes → **Phase 5**
+   - If auth exists but no onboarding flow → **Phase 6**
+   - If no authenticated layout/shell → **Phase 7**
+   - If shell exists but no dashboard → **Phase 8**
+   - If dashboard exists but core features incomplete → **Phase 9**
+   - If features exist but no settings/billing → **Phase 10**
+   - If settings exist but no admin panel → **Phase 11**
+   - If admin exists but no email templates → **Phase 12**
+   - If emails exist but no marketing site → **Phase 13**
+   - If marketing site exists → **Phase 14** (polish)
 
-When resuming, briefly tell the user where you're picking up and what comes next.
+When resuming, read `docs/project/*` to restore app context, then read `docs/project/pattern_snapshot.md` if it exists (Phase 8+). Briefly tell the user where you're picking up and what comes next.
 
 ### Quick Reference
 
@@ -114,7 +125,8 @@ Produce an architecture summary:
 - **Entities**: List with key fields and relationships
 - **Routes**: Full route table (public, authenticated, admin)
 - **Modules**: Which optional modules apply (analytics, integrations, API, webhooks, etc.)
-- **Build order**: The 11 phases with app-specific notes on what each phase includes
+- **Build order**: The 11 build phases (4–14) with app-specific notes on what each phase includes
+- **Custom validation gates**: Read `docs/framework/internal/21_validation_gates.md`, then define app-specific gates based on entities and features. Write custom gates to `docs/project/custom_gates.md`.
 
 Present this to the user. Ask for confirmation before starting to build.
 
@@ -137,13 +149,13 @@ Each build phase is a discrete step. At the start of each phase:
 - **Run Phase 4 validation gates before proceeding**
 
 ### Phase 5 — Auth
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (auth sections only)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth)
 - Login, signup, password reset, email verification
 - Auth middleware and session management
 - Protected route wrappers
 
 ### Phase 6 — Onboarding
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (onboarding sections)
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding)
 - Multi-step onboarding flow
 - First value event
 - Workspace/org setup if applicable
@@ -151,7 +163,9 @@ Each build phase is a discrete step. At the start of each phase:
 ### Phase 7 — App Shell
 **Read now:**
 - `docs/framework/internal/01_app_shell.md`
+- `docs/framework/internal/08_ui_system_internal.md` (component behavior — foundational for all authenticated UI)
 - `docs/framework/internal/10_design_tokens_internal.md`
+- `docs/framework/internal/12_internal_component_specs.md` (component visual specs)
 - `docs/framework/internal/15_canonical_breakpoints.md`
 - `docs/framework/internal/22_pattern_snapshot.md` (for snapshot generation)
 - Top bar, sidebar, drawer, page header, user menu
@@ -161,11 +175,13 @@ Each build phase is a discrete step. At the start of each phase:
 
 ### Phase 8 — Dashboard
 **Read now:**
+- `docs/project/pattern_snapshot.md` (MANDATORY — read before writing any code)
 - `docs/framework/internal/03_dashboard_system.md`
 - `docs/framework/internal/16_dashboard_archetypes.md`
 - `docs/framework/internal/13_internal_data_display_rules.md`
 - Summary metrics, main work area, activity feed
 - Select and implement the appropriate dashboard archetype
+- **Update pattern snapshot** with dashboard conventions after building
 
 ### Phase 9 — Core Features
 **Read now:**

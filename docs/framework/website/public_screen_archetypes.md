@@ -9,6 +9,9 @@ Define canonical page patterns for every public-facing page in a SaaS website. T
 
 Use `design_system_tokens.md` for all visual values. Use `public_component_specs.md` for component details. Use `public_copy_conversion_rules.md` for copy and CTA rules. Use `docs/framework/internal/15_canonical_breakpoints.md` for responsive behavior.
 
+### Breakpoint Quick Reference (from `15_canonical_breakpoints.md`)
+When this file says "mobile" it means **below 768px (md)**. When it says "tablet" it means **768px–1023px**. When it says "desktop" it means **1024px+ (lg)**. All "stacks vertically" behavior occurs at the md breakpoint unless otherwise noted.
+
 ---
 
 ## 1. Home Page

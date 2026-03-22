@@ -1,7 +1,7 @@
 # 09 Build Rules Internal
 
-> **TL;DR:** Defines the authoritative build order (11 phases), source-of-truth hierarchy, reuse rules, responsive requirements, state handling rules, coding standards, and quality gates.
-> **Covers:** build phases, source hierarchy, reuse rules, responsive rules, state handling, coding standards, quality gates | **Depends on:** 01, 02, 03, 05, 07, 08, 10, 11, 12, 13, 14, 15, 16, 17, 18 | **Used by:** None | **Phase:** 3, 4
+> **TL;DR:** Defines the authoritative build order (11 build phases, numbered 4–14 to match CLAUDE.md), source-of-truth hierarchy, reuse rules, responsive requirements, state handling rules, coding standards, and quality gates.
+> **Covers:** build phases, source hierarchy, reuse rules, responsive rules, state handling, coding standards, quality gates | **Depends on:** 01, 02, 03, 05, 07, 08, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 22 | **Used by:** None | **Phase:** 3, 4
 
 ## Purpose
 
@@ -18,68 +18,77 @@ Read the framework first. Generate the project docs next. Build only after both 
 3. docs/framework/website/* (marketing site rules)
 4. docs/framework/templates/* (document shape reference)
 
-## Build Phases
+## Build Phases (4–14)
 
-Build in this exact order. Do not skip ahead.
+Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
 
-### Phase 1: Foundation
+### Phase 4: Foundation
 - Initialize project (Next.js app router, TypeScript, Tailwind)
 - Configure database (PostgreSQL + Prisma schema for core entities from `07_data_models.md`)
 - Set up environment variables and config
 - Create shared utility functions (date formatting, currency, validation helpers)
+- Run Phase 4 validation gates from `21_validation_gates.md`
 
-### Phase 2: Auth
+### Phase 5: Auth
 - Implement auth routes: /login, /signup, /forgot-password, /reset-password, /verify-email
-- Auth page layout per `02_auth_and_onboarding.md` (split layout desktop, single column mobile)
+- Auth page layout per `02_auth_and_onboarding.md` — Section A: Auth (split layout desktop, single column mobile)
 - Session management and middleware for protected routes
-- Email verification flow
+- Email verification flow (see also `14_email_system.md` for email templates)
 
-### Phase 3: Onboarding
-- Multi-step onboarding flow per `02_auth_and_onboarding.md`
+### Phase 6: Onboarding
+- Multi-step onboarding flow per `02_auth_and_onboarding.md` — Section B: Onboarding
 - Progress persistence (user can leave and return)
 - Skip logic for optional steps
-- First value event delivery
+- First value event delivery (defined in `docs/project/03_user_flows.md`)
 
-### Phase 4: App Shell
-- Read the internal visual pack (`10_design_tokens_internal.md`, `11_internal_screen_archetypes.md`, `12_internal_component_specs.md`, `13_internal_data_display_rules.md`) before building any authenticated pages
+### Phase 7: App Shell
+- Read the internal visual pack (`10_design_tokens_internal.md`, `11_internal_screen_archetypes.md`, `12_internal_component_specs.md`, `13_internal_data_display_rules.md`) and `08_ui_system_internal.md` before building any authenticated pages
 - Configure Tailwind theme with design tokens from `10_design_tokens_internal.md`
 - Build the authenticated shell per `01_app_shell.md`: top bar, sidebar, mobile drawer, main content area
 - Page header component (title, context, primary action, secondary actions)
 - User menu (profile, settings, billing, logout)
 - Role-aware sidebar (hide items user cannot access)
+- Generate pattern snapshot per `22_pattern_snapshot.md` → `docs/project/pattern_snapshot.md`
 
-### Phase 5: Dashboard
+### Phase 8: Dashboard
+- Read `docs/project/pattern_snapshot.md` before writing code
 - Identify the appropriate dashboard archetype from `16_dashboard_archetypes.md` (queue, pipeline, analytics, content workspace, operations, monitoring, admin overview)
 - Dashboard page per `03_dashboard_system.md`: summary row, main work area, secondary insights
+- Data display rules from `13_internal_data_display_rules.md` for metric formatting and table/card choices
 - All four states: loading skeleton, empty state with CTA, success with data, error with retry
 - Mobile responsive layout (stacked cards, no horizontal scroll)
+- Update pattern snapshot with dashboard conventions
 
-### Phase 6: Core Features
+### Phase 9: Core Features
+- Read `docs/project/pattern_snapshot.md` (MANDATORY) before writing any code
 - Product-specific feature modules from `docs/project/02_feature_spec.md`
 - Each feature uses the shared page header and shell layout
 - CRUD operations with confirmation dialogs for destructive actions
 - List views with search, sort, and pagination
+- All four states on every view: loading, empty, success, error
+- Error handling per `17_error_state_taxonomy.md`
+- Update pattern snapshot with feature module template after first feature
 
-### Phase 7: Settings and Billing
+### Phase 10: Settings and Billing
 - Settings pages per `05_settings_billing_admin.md`: profile, workspace, billing, security, notifications
 - Stripe integration: Checkout for upgrades, Customer Portal for billing management
 - Webhook endpoint for subscription lifecycle events
 - Permission enforcement (workspace/billing restricted to admin+)
 
-### Phase 8: Admin
+### Phase 11: Admin
 - Admin panel per `05_settings_billing_admin.md`: user management, billing overview, usage, logs
 - Role-gated access (admin and owner only)
 - All admin actions logged to Admin Record entity
 - Search and filter on user list
 
-### Phase 9: Email Templates
+### Phase 12: Email Templates
 - Build transactional and product emails per `14_email_system.md`
 - Auth emails (verification, password reset, magic link)
 - Billing emails (receipt, failure, trial ending)
 - Onboarding emails (welcome, activation nudge)
 - Plain text fallbacks for all emails
 
-### Phase 10: Marketing Site
+### Phase 13: Marketing Site
 - Build public pages per `docs/framework/website/` specs
 - Home page with conversion funnel per `saas_home_page_system.md`
 - Page layouts per `public_screen_archetypes.md`
@@ -87,7 +96,7 @@ Build in this exact order. Do not skip ahead.
 - Copy and CTA rules from `public_copy_conversion_rules.md`
 - Additional pages per `saas_website_page_system.md` as scoped
 
-### Phase 11: Edge Cases and Polish
+### Phase 14: Edge Cases and Polish
 - Implement edge cases from `docs/project/04_edge_cases.md`
 - Handle all error types per `17_error_state_taxonomy.md`
 - Run through QA checklist from `docs/project/08_qa_checklist.md`

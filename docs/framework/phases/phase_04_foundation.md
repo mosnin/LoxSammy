@@ -4,7 +4,8 @@
 Architecture plan confirmed. No source code exists yet.
 
 ## Files to Read
-- `docs/framework/internal/09_build_rules_internal.md` — Phase 1 section
+- `docs/framework/internal/09_build_rules_internal.md` — Phase 4 (Foundation) section
+- `docs/framework/internal/21_validation_gates.md` — validation gate system and Phase 4 gates
 
 ## What to Build
 

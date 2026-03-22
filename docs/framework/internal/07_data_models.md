@@ -1,7 +1,7 @@
 # 07 Data Models
 
 > **TL;DR:** Defines the canonical core entities (User, Organization, Membership, Subscription, Settings, Integration, Usage Event, Analytics Summary, Admin Record) with fields, types, and relationships.
-> **Covers:** entity schemas, field definitions, relationships, multi-tenancy pattern, product entity extension | **Depends on:** None | **Used by:** 06, 09 | **Phase:** 3, 4
+> **Covers:** entity schemas, field definitions, relationships, multi-tenancy pattern, product entity extension, Prisma reference schema | **Depends on:** None | **Used by:** 02, 05, 06, 09 | **Phase:** 3, 4
 
 ## Purpose
 
@@ -170,6 +170,226 @@ Project (product entity)
 ├── created_at: timestamp
 └── updated_at: timestamp
 ```
+
+## Prisma Reference Schema
+
+Use this as the starting point for `prisma/schema.prisma`. Adapt field names and add product-specific models during Phase 4.
+
+```prisma
+// Enums
+enum Role {
+  member
+  manager
+  admin
+  owner
+}
+
+enum MembershipStatus {
+  active
+  invited
+  suspended
+}
+
+enum Plan {
+  free
+  starter
+  pro
+  enterprise
+}
+
+enum SubscriptionStatus {
+  active
+  trialing
+  past_due
+  canceled
+  paused
+}
+
+enum IntegrationStatus {
+  active
+  disconnected
+  error
+}
+
+enum AnalyticsPeriod {
+  daily
+  weekly
+  monthly
+}
+
+// Models
+model User {
+  id             String       @id @default(uuid())
+  email          String       @unique
+  name           String
+  avatarUrl      String?
+  emailVerified  Boolean      @default(false)
+  passwordHash   String?      // nullable if social auth only
+  lastLoginAt    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  memberships    Membership[]
+  adminRecords   AdminRecord[]
+  usageEvents    UsageEvent[]
+  integrations   Integration[] @relation("ConnectedBy")
+}
+
+model Organization {
+  id          String       @id @default(uuid())
+  name        String
+  slug        String       @unique   // URL-safe: lowercase, alphanumeric + hyphens, 3-60 chars
+  logoUrl     String?
+  plan        Plan         @default(free)
+  createdBy   String       // FK to User.id
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  memberships    Membership[]
+  subscription   Subscription?
+  settings       Settings?
+  integrations   Integration[]
+  usageEvents    UsageEvent[]
+  analyticsSummaries AnalyticsSummary[]
+
+  @@index([slug])
+}
+
+model Membership {
+  id             String           @id @default(uuid())
+  userId         String
+  organizationId String
+  role           Role             @default(member)
+  status         MembershipStatus @default(active)
+  invitedEmail   String?          // for pending invites before user account exists
+  invitedAt      DateTime?
+  joinedAt       DateTime?
+  createdAt      DateTime         @default(now())
+
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@index([invitedEmail])
+}
+
+model Subscription {
+  id                    String             @id @default(uuid())
+  organizationId        String             @unique
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  plan                  Plan               @default(free)
+  status                SubscriptionStatus @default(active)
+  currentPeriodStart    DateTime?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  organization          Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id                  String   @id @default(uuid())
+  organizationId      String   @unique
+  preferences         Json     @default("{}")  // notification prefs, feature toggles, defaults
+  onboardingCompleted Boolean  @default(false)
+  onboardingStep      String?  // tracks current step for resume
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Integration {
+  id             String            @id @default(uuid())
+  organizationId String
+  provider       String            // e.g. "slack", "github", "stripe"
+  status         IntegrationStatus @default(active)
+  accessToken    String            // encrypted at application layer
+  refreshToken   String?           // encrypted at application layer
+  config         Json              @default("{}")  // provider-specific settings
+  connectedBy    String            // FK to User.id
+  connectedAt    DateTime          @default(now())
+  createdAt      DateTime          @default(now())
+
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User              @relation("ConnectedBy", fields: [connectedBy], references: [id])
+
+  @@index([organizationId])
+  @@unique([organizationId, provider])
+}
+
+model UsageEvent {
+  id             String   @id @default(uuid())
+  organizationId String
+  userId         String?  // nullable for system events
+  eventType      String   // e.g. "api_call", "message_sent", "file_uploaded"
+  metadata       Json     @default("{}")
+  createdAt      DateTime @default(now())  // immutable
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User?        @relation(fields: [userId], references: [id])
+
+  @@index([organizationId, eventType, createdAt])
+}
+
+model AnalyticsSummary {
+  id             String          @id @default(uuid())
+  organizationId String
+  period         AnalyticsPeriod
+  periodStart    DateTime
+  metric         String          // e.g. "total_api_calls", "active_users"
+  value          Decimal
+  createdAt      DateTime        @default(now())
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, period, periodStart, metric])
+  @@index([organizationId, metric])
+}
+
+model AdminRecord {
+  id         String   @id @default(uuid())
+  actorId    String   // FK to User (admin who performed action)
+  targetType String   // e.g. "user", "organization", "subscription"
+  targetId   String
+  action     String   // e.g. "suspended_user", "changed_plan"
+  details    Json     @default("{}")  // before/after state
+  createdAt  DateTime @default(now())  // immutable
+
+  actor      User     @relation(fields: [actorId], references: [id])
+
+  @@index([targetType, targetId])
+  @@index([actorId])
+  @@index([createdAt])
+}
+```
+
+## Membership State Machine
+
+Valid state transitions for `Membership.status`:
+
+```
+invited → active     (user accepts invite)
+invited → [deleted]  (invite revoked or expired)
+active → suspended   (admin suspends member)
+suspended → active   (admin reactivates member)
+active → [deleted]   (member leaves or is removed)
+```
+
+## Organization Slug Rules
+
+- Lowercase alphanumeric characters and hyphens only: `/^[a-z0-9][a-z0-9-]*[a-z0-9]$/`
+- Minimum 3 characters, maximum 60 characters
+- Must not start or end with a hyphen
+- Reserved slugs: `admin`, `api`, `app`, `auth`, `billing`, `dashboard`, `settings`, `www`
+
+## Cascade Delete Rules
+
+- Deleting an Organization cascades to: Membership, Subscription, Settings, Integration, UsageEvent, AnalyticsSummary, and all product-specific entities
+- Deleting a User cascades to: Membership (removes from all orgs). Does NOT delete Organization — ownership transfers first.
 
 ## Core Principle
 
