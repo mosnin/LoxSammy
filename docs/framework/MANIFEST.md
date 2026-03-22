@@ -1,6 +1,6 @@
-# Framework Manifest
+# Modaf Framework Manifest
 
-> Quick reference for every file in the framework. Use this to find what you need without reading everything.
+> Quick reference for every file in the Modaf framework. Use this to find what you need without reading everything.
 
 ## Internal Product (`docs/framework/internal/`)
 
@@ -30,6 +30,7 @@
 | 22 | `22_pattern_snapshot.md` | Generated reference file capturing exact code conventions — prevents pattern drift across phases and agents | 7 (generate), 9+ (consume) |
 | 23 | `23_escape_hatches.md` | Technology swap guide — how to replace auth, billing, database, tenancy, email, hosting defaults | 2, 3 |
 | 24 | `24_error_recovery.md` | Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis, git safety | any |
+| 25 | `25_doctor_mode.md` | Safe diagnostic and repair system for broken framework/project docs — never rewrites content or deletes files | any |
 
 ## Framework Root (`docs/framework/`)
 

@@ -2,7 +2,9 @@
 
 ## What This Repository Is
 
-This is a reusable SaaS framework pack. It contains no code — only structured documentation that guides Claude Code through planning and building SaaS products. It is designed to be cloned into `docs/framework/` of any new project repository.
+This is **Modaf** — a reusable SaaS framework pack. It contains no code — only structured documentation that guides Claude Code through planning and building SaaS products. It is designed to be cloned into `docs/framework/` of any new project repository.
+
+**Modaf** (the framework name) refers to this entire system: the phased build process, the internal/website/template docs, the validation gates, the pattern snapshot, and everything in `docs/framework/`. When a user says "Modaf" or references it by name, they mean this framework.
 
 ## Framework Version
 
@@ -346,6 +348,7 @@ docs/
       22_pattern_snapshot.md           # Pattern capture system — prevents drift across phases
       23_escape_hatches.md             # Technology swap guide — auth, billing, database, tenancy, email, hosting
       24_error_recovery.md             # Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis
+      25_doctor_mode.md                # Safe diagnostic and repair system for broken framework/project docs
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)
@@ -354,6 +357,10 @@ docs/
     CHANGELOG.md                       # Version history with per-file change tracking
   project/                             # Generated app-specific docs (created during Phase 2)
 ```
+
+## Doctor Mode
+
+When the user asks to "run doctor mode", "run Modaf doctor", "check framework health", "diagnose the docs", or "fix broken docs", read `docs/framework/internal/25_doctor_mode.md` and follow the diagnostic and repair protocol. Doctor mode is a structural linter — it finds broken cross-references, missing files, stale manifest entries, and malformed tables. It **never** rewrites content, deletes files, or modifies specifications.
 
 ## Important Conventions
 

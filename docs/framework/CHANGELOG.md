@@ -4,6 +4,18 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.2.0] - 2026-03-22
+
+### Added (non-breaking)
+- **Modaf naming** — framework now has an official name. Added to CLAUDE.md, README.md, and MANIFEST.md so Claude recognizes "Modaf" as a reference to this framework.
+- `docs/framework/internal/25_doctor_mode.md` — Safe diagnostic and repair system for framework and project docs. Runs 9 structural checks (file inventory, cross-references, internal links, manifest accuracy, phase coverage, required sections, table integrity, project doc completeness, CLAUDE.md consistency). Hard safety constraints: never deletes files, never rewrites content, never creates framework files, always diagnoses before repairing, logs every change.
+
+### Changed (non-breaking)
+- `CLAUDE.md` — Added Modaf name, doctor mode activation section, file 25 to repo structure
+- `README.md` — Renamed from "SaaS Framework Repository" to "Modaf"
+- `docs/framework/MANIFEST.md` — Added Modaf name, entry for file 25
+- `docs/framework/VERSION.md` — Bumped to 1.2.0
+
 ## [1.1.0] - 2026-03-22
 
 ### Added (non-breaking)
