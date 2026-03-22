@@ -7,6 +7,39 @@
 
 Define the internal product design system so that authenticated views remain polished, coherent, and usable. Every component below should be built once and reused across all feature modules.
 
+## Implementation Stack
+
+The UI system is built on these libraries (see `docs/framework/templates/05_tech_stack_template.md` for full details):
+
+- **shadcn/ui** — component primitives built on Radix UI. Components are copied into the codebase (`components/ui/`) and customized to match framework specs. Not imported from node_modules.
+- **Tailwind CSS** — styling via design tokens from `10_design_tokens_internal.md`
+- **tailwind-merge + CVA** — class conflict resolution and typed component variants (size, density, intent)
+- **Motion (framer-motion)** — animations for page transitions, toast enter/exit, drawer slides, modal backdrop fade
+- **react-hook-form + zod** — form state and validation for all Form components
+- **Sonner** — toast notification component (used by Form success states, bulk action confirmations)
+- **Lucide** — icon set (consistent, tree-shakeable, shadcn default)
+- **nuqs** — URL state for Tabs (deep linking), Table (sort/filter/page), and filter persistence
+- **next-themes** — dark mode toggle and system preference detection
+
+### shadcn Component Mapping
+
+Each canonical component maps to a shadcn primitive that is then customized:
+
+| Framework Component | shadcn Base | Customization |
+|---|---|---|
+| Modal / Dialog | `dialog` | Size variants (sm/md/lg), mobile full-screen sheet |
+| Form | `form` + `input` + `select` | react-hook-form integration, inline validation |
+| Table | `table` | Optional Tanstack Table for complex sorting/filtering |
+| Tabs | `tabs` | URL sync via nuqs, horizontal scroll on mobile |
+| Badge | `badge` | Status color variants from design tokens |
+| Card | `card` | Bordered/elevated/interactive variants |
+| Action Bar | Custom | No shadcn equivalent — built from scratch |
+| Empty State | Custom | No shadcn equivalent — built from scratch |
+| Loading Skeleton | `skeleton` | Shape-matched to content it replaces |
+| Page Header | Custom | App-specific, uses shadcn button for actions |
+
+Components marked "Custom" follow the same file structure (`components/ui/`) and styling conventions as shadcn components.
+
 ## Core UI Principles
 
 - Clarity over decoration — remove anything that does not serve the user's task
@@ -122,6 +155,15 @@ This file defines component behavior and structure. The deeper visual specificit
 - `13_internal_data_display_rules.md` — when to use tables vs cards vs charts, metric formatting, density rules
 
 When building any authenticated page, read this file for component behavior, then read the visual pack for how it looks.
+
+## Library Integration Notes
+
+- **shadcn init**: Run `npx shadcn@latest init` during Phase 4 setup. Select "New York" style, CSS variables, and the project's primary color.
+- **Adding components**: Use `npx shadcn@latest add [component]` to scaffold, then customize to match framework specs. Never use shadcn components as-is without verifying they match the spec in `12_internal_component_specs.md`.
+- **Motion animations**: Define animation variants in a shared `lib/animations.ts` file. Use motion tokens from `10_design_tokens_internal.md` (fast: 150ms, normal: 250ms, slow: 350ms).
+- **Form pattern**: Every form uses `useForm` from react-hook-form with a zod schema via `zodResolver`. The zod schema is defined in a shared `lib/validations/` directory and reused in the corresponding API route or server action.
+- **Toast pattern**: Import `toast` from Sonner. Use after successful mutations (`toast.success("Saved")`), errors (`toast.error("Failed to save")`), and async operations (`toast.promise()`).
+- **URL state pattern**: Use `useQueryState` from nuqs for any state that should survive page refresh or be shareable — active tab, sort column, filter values, pagination page.
 
 ## Final Principle
 

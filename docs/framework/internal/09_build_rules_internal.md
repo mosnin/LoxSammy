@@ -24,8 +24,16 @@ Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
 
 ### Phase 4: Foundation
 - Initialize project (Next.js app router, TypeScript, Tailwind)
+- Install and configure the core library stack (see `docs/framework/templates/05_tech_stack_template.md`):
+  - Run `npx shadcn@latest init` — select "New York" style, CSS variables, project primary color
+  - Install always-included libraries: Motion, react-hook-form, zod, Tanstack Query, nuqs, next-themes, Sonner, superjson, date-fns, T3 Env, next-safe-action
+  - Install auth and billing: Auth.js, Stripe SDK, stripe-event-types
+  - Install email: Resend, React Email
+  - Install testing: Vitest, Playwright, MSW, Faker
+  - Install include-when-needed libraries based on `docs/project/02_feature_spec.md`: Recharts (if charts needed), Tanstack Table (if complex tables), uploadthing (if file uploads), Trigger.dev/Inngest (if background jobs), Upstash Ratelimit (if rate limiting needed)
+- Configure T3 Env with all required environment variables (`DATABASE_URL`, `NEXTAUTH_SECRET`, `STRIPE_SECRET_KEY`, etc.)
 - Configure database (PostgreSQL + Prisma schema for core entities from `07_data_models.md`)
-- Set up environment variables and config
+- Set up shared directories: `lib/validations/` (zod schemas), `lib/animations.ts` (Motion variants), `components/ui/` (shadcn components)
 - Create shared utility functions (date formatting, currency, validation helpers)
 - Run Phase 4 validation gates from `21_validation_gates.md`
 
@@ -142,10 +150,15 @@ Every major page or module must account for:
 - Use TypeScript strict mode — no `any` types in production code
 - Server Components by default, Client Components only when interactivity requires it
 - Colocate related files (component, styles, types, tests in the same directory)
-- API routes and Server Actions validate input and check permissions independently
+- API routes and Server Actions validate input and check permissions independently — use next-safe-action for server actions, zod for input validation
 - Database queries always filter by organization_id for multi-tenancy isolation
 - Sensitive data (tokens, secrets) stored encrypted, never logged or exposed in responses
 - Use Prisma transactions for operations that modify multiple tables
+- Forms use react-hook-form + zod — validation schemas live in `lib/validations/` and are shared between client and server
+- UI components live in `components/ui/` (shadcn primitives) — customize to match `12_internal_component_specs.md`, never use defaults without verification
+- Animations use Motion with shared variants from `lib/animations.ts` — durations follow design tokens (fast: 150ms, normal: 250ms, slow: 350ms)
+- URL-persisted state (filters, pagination, tabs) uses nuqs — not React state or localStorage
+- Toast notifications use Sonner — success after mutations, error on failures, promise for async operations
 
 ## Quality Gates
 

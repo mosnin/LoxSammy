@@ -255,13 +255,29 @@ When docs conflict, follow this priority:
 Unless the user specifies otherwise, assume:
 
 - **Frontend**: Next.js (app router) with TypeScript and Tailwind CSS
-- **Auth**: Email/password with optional social OAuth and magic links
+- **UI Components**: shadcn/ui (Radix primitives, copy-paste ownership) with Lucide icons
+- **Styling Utilities**: tailwind-merge, class-variance-authority (CVA) for component variants
+- **Animation**: Motion (framer-motion) for page transitions, toasts, drawers
+- **Forms**: react-hook-form + zod for validation (shared schemas between client and API)
+- **State**: Tanstack Query for server state, nuqs for URL state, React Context for auth/theme, server components where possible
+- **Auth**: Auth.js (NextAuth v5) with email/password, optional social OAuth and magic links
 - **Database**: PostgreSQL with Prisma ORM
-- **Billing**: Stripe (Checkout + Customer Portal)
+- **Billing**: Stripe (Checkout + Customer Portal), stripe-event-types for typed webhooks
+- **Email**: Resend for delivery, React Email for JSX templates
 - **Hosting**: Vercel
-- **State**: React Context for auth/theme, server components where possible
-- **UI**: Custom component library following `docs/framework/internal/08_ui_system_internal.md`
-- **Email**: Resend or SendGrid for transactional email
+- **Dark Mode**: next-themes for toggle and system preference detection
+- **Env Validation**: T3 Env for type-safe environment variables with runtime checks
+- **Toasts**: Sonner (shadcn default toast component)
+- **Charts**: Recharts (wrapped via shadcn chart component) — when dashboard requires charts
+- **Tables**: Tanstack Table — when complex sorting/filtering/virtual scroll is needed
+- **Testing**: Vitest (unit/integration), Playwright (E2E), MSW (API mocking), Faker (test data)
+- **Background Jobs**: Trigger.dev or Inngest — when webhook processing, email sequences, or async work is needed
+- **Rate Limiting**: Upstash Ratelimit — when auth rate limiting or API throttling is needed
+- **Error Tracking**: Sentry — for production error capture
+- **File Uploads**: uploadthing + react-dropzone — when file upload features are needed
+- **Server Actions**: next-safe-action for type-safe server actions with built-in validation
+- **Serialization**: superjson for Date/BigInt across server→client boundary
+- **Date Formatting**: date-fns for relative time, ranges, and formatting beyond Intl API
 
 ## Global Build Rules
 
