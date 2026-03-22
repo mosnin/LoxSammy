@@ -9,6 +9,8 @@ All 9 project docs exist. No source code written yet.
 - `docs/framework/internal/06_routes_and_permissions.md` — route structure
 - `docs/framework/internal/04_feature_modules.md` — available module types
 - `docs/framework/internal/09_build_rules_internal.md` — build order and constraints
+- `docs/framework/internal/21_validation_gates.md` — gate system (for writing custom gates)
+- `docs/framework/internal/23_escape_hatches.md` — if `docs/project/05_tech_stack.md` overrides any default
 
 ## What to Do
 

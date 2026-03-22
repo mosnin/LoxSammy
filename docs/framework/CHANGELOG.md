@@ -4,6 +4,17 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.10.0] - 2026-03-22
+
+### Fixed
+- `CLAUDE.md` Phase 5: Added `06_routes_and_permissions.md` (Middleware Pattern + Multi-Tenancy) to "Read now" — Claude was building auth without the middleware pattern, `requireOrganization()`, or `authorize()` helpers. The `gate:auth-middleware` validation gate would catch this but only after wasted work.
+- `phase_05_auth.md`: Added files 06 and 28 to "Files to Read" — phase file was missing both middleware and accessibility.
+- `phase_03_architecture.md`: Added files 21 and 23 to "Files to Read" — they were referenced in "What to Do" steps 5-6 but not listed at the top where agents look first.
+- `phase_06_onboarding.md`: Added file 28 to "Files to Read" — multi-step flows need focus management and keyboard navigation guidance.
+- `CLAUDE.md` Phase 14: Added `27_performance.md` and `28_accessibility.md` to "Read now" — polish phase was missing the actual audit checklists for performance and accessibility.
+
+### Changed (non-breaking)
+
 ## [1.9.0] - 2026-03-22
 
 ### Added (non-breaking)

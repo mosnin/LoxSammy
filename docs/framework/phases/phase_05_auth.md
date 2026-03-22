@@ -5,6 +5,8 @@ Foundation (Phase 4) is complete.
 
 ## Files to Read
 - `docs/framework/internal/02_auth_and_onboarding.md` — auth sections only
+- `docs/framework/internal/06_routes_and_permissions.md` — Middleware Pattern section (canonical `middleware.ts`), Multi-Tenancy Data Isolation section (`requireOrganization()`, `authorize()`)
+- `docs/framework/internal/28_accessibility.md` — keyboard navigation, form labels, ARIA for auth forms
 
 ## What to Build
 

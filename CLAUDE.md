@@ -158,10 +158,11 @@ Each build phase is a discrete step. At the start of each phase:
 - **Run Phase 4 validation gates and custom gates** (`docs/project/custom_gates.md`) **before proceeding**
 
 ### Phase 5 — Auth
-**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth), `docs/framework/internal/28_accessibility.md`
+**Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section A: Auth), `docs/framework/internal/06_routes_and_permissions.md` (Middleware Pattern + Multi-Tenancy Data Isolation), `docs/framework/internal/28_accessibility.md`
 - Login, signup, password reset, email verification
 - Auth middleware and session management
 - Protected route wrappers
+- `requireOrganization()` and `authorize()` helpers
 
 ### Phase 6 — Onboarding
 **Read now:** `docs/framework/internal/02_auth_and_onboarding.md` (Section B: Onboarding), `docs/framework/internal/28_accessibility.md`
@@ -241,11 +242,14 @@ Each build phase is a discrete step. At the start of each phase:
 - `docs/framework/internal/17_error_state_taxonomy.md`
 - `docs/framework/internal/18_testing_strategy.md`
 - `docs/framework/internal/19_i18n_posture.md`
+- `docs/framework/internal/27_performance.md`
+- `docs/framework/internal/28_accessibility.md`
 - `docs/project/04_edge_cases.md`
 - `docs/project/07_acceptance_criteria.md`
 - `docs/project/08_qa_checklist.md`
 - Error states, edge case handling, QA checklist pass
-- Accessibility review, responsive testing
+- Performance audit (Core Web Vitals, bundle size, Lighthouse)
+- Accessibility audit (keyboard nav, screen reader, contrast, ARIA)
 - Dark mode polish, loading states audit
 
 ---
