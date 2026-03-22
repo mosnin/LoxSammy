@@ -389,6 +389,45 @@ This section defines what gets logged for each error type, for use when implemen
 
 ---
 
+## Error Display Decision Tree
+
+When an error occurs, use this table to determine the UI treatment. This consolidates the scattered rules from component specs (12), data display rules (13), and the error types above.
+
+| Error Context | Display Component | Why |
+|--------------|-------------------|-----|
+| Form field fails client validation | **Inline text** below the field (text-xs, status-error) | User needs to see exactly which field is wrong |
+| Form submission returns 422 with field errors | **Inline text** per field + **alert banner** above submit for non-field errors | Same as client validation — map server errors to fields |
+| Form submission returns 500 | **Toast** (error) | The form itself is fine; the server failed. Don't block the form. |
+| Mutation succeeds (create, update, delete) | **Toast** (success) | Confirm the action without blocking navigation |
+| Mutation fails (non-validation) | **Toast** (error) with retry guidance | Brief, non-blocking feedback |
+| Page data fails to load (500, network) | **Error block** replacing the content area | The whole page is broken — needs prominent treatment |
+| Page data returns empty (0 results) | **Empty state** component with CTA | Not an error — guide the user to create data |
+| Auth session expires (401) | **Redirect** to /login | Can't show content without auth |
+| Permission denied (403) | **Full-page error** with "Go back" link | User can't fix this — show explanation |
+| Partial success (bulk operation) | **Alert banner** (warning) with per-item details | Some items succeeded — show both success and failure |
+| Integration/service degraded | **Persistent banner** at top of relevant section | Ongoing issue — must stay visible until resolved |
+| Billing past due | **Persistent banner** across all pages | Critical business issue — cannot be dismissed |
+| Background task completes | **Toast** (success or error) | Non-blocking notification of async work |
+| Rate limited (429) | **Toast** (warning) with retry-after | Temporary, user should wait |
+
+### Decision Rules
+
+1. **Use inline errors** when the user can fix the problem in-place (form validation).
+2. **Use toasts** for transient feedback that shouldn't block the user (mutation results, async notifications).
+3. **Use alert banners** for persistent issues within a section (degraded service, partial failure).
+4. **Use error blocks** when the entire content area is unusable (page load failure).
+5. **Use full-page errors** for terminal states the user cannot fix (403, 404).
+6. **Use redirects** when the session state is invalid (401).
+
+### Never
+
+- Never show a toast for a form validation error (the user needs to see which field failed).
+- Never show an inline error for a 500 (the form is fine, the server broke).
+- Never show a full-page error for a failed mutation (the page still works, only the action failed).
+- Never use `alert()` or `window.confirm()` for any error state.
+
+---
+
 ## Implementation Checklist
 
 When building any feature, verify that these error states are accounted for:

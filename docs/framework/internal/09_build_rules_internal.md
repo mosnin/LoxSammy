@@ -227,6 +227,302 @@ Every major page or module must account for:
 - URL-persisted state (filters, pagination, tabs) uses nuqs — not React state or localStorage
 - Toast notifications use Sonner — success after mutations, error on failures, promise for async operations
 
+## API Response Format
+
+All API routes and server actions must use a consistent response shape. This is the framework default — the pattern snapshot captures whatever the project actually uses.
+
+### Success Responses
+
+```typescript
+// Single entity
+return Response.json({ data: project }, { status: 200 })
+
+// List with pagination
+return Response.json({
+  data: projects,
+  pagination: { page, pageSize, total, totalPages },
+}, { status: 200 })
+
+// Mutation success
+return Response.json({ data: createdProject }, { status: 201 })
+
+// Delete (no body)
+return new Response(null, { status: 204 })
+```
+
+### Error Responses
+
+```typescript
+// Validation error (422)
+return Response.json({
+  error: {
+    code: "VALIDATION_ERROR",
+    message: "Invalid input",
+    fields: { email: "Email already in use", name: "Name is required" },
+  },
+}, { status: 422 })
+
+// Auth error (401)
+return Response.json({
+  error: { code: "UNAUTHORIZED", message: "Session expired" },
+}, { status: 401 })
+
+// Permission error (403)
+return Response.json({
+  error: { code: "FORBIDDEN", message: "Insufficient permissions" },
+}, { status: 403 })
+
+// Not found (404)
+return Response.json({
+  error: { code: "NOT_FOUND", message: "Project not found" },
+}, { status: 404 })
+
+// Server error (500)
+return Response.json({
+  error: { code: "INTERNAL_ERROR", message: "Something went wrong", referenceId },
+}, { status: 500 })
+```
+
+### Response Type Definitions
+
+```typescript
+// src/lib/api/types.ts
+type ApiSuccess<T> = { data: T; pagination?: PaginationMeta }
+type ApiError = { error: { code: string; message: string; fields?: Record<string, string> } }
+type ApiResponse<T> = ApiSuccess<T> | ApiError
+
+type PaginationMeta = { page: number; pageSize: number; total: number; totalPages: number }
+```
+
+### Rules
+
+1. **Always wrap data in `{ data: ... }`** — never return a raw array or object at the top level.
+2. **Always wrap errors in `{ error: { code, message } }`** — never return `{ message }` without a code.
+3. **Use `fields` for validation errors** — maps field names to error messages, consumed by forms.
+4. **Use HTTP status codes correctly** — 200 (success), 201 (created), 204 (deleted), 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (validation), 429 (rate limit), 500 (server error).
+5. **Never expose stack traces, SQL errors, or internal details** in error responses.
+
+---
+
+## Server Action Pattern
+
+The canonical end-to-end pattern for form submissions using next-safe-action + react-hook-form + zod + Sonner.
+
+### Step 1: Shared Validation Schema
+
+```typescript
+// src/lib/validations/project.ts
+import { z } from "zod"
+
+export const createProjectSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100),
+  description: z.string().max(500).optional(),
+})
+
+export type CreateProjectInput = z.infer<typeof createProjectSchema>
+```
+
+### Step 2: Server Action
+
+```typescript
+// src/app/(authenticated)/projects/actions.ts
+"use server"
+import { createSafeActionClient } from "next-safe-action"
+import { createProjectSchema } from "@/lib/validations/project"
+import { requireOrganization } from "@/lib/auth/scope"
+import { authorize } from "@/lib/auth/authorize"
+import { prisma } from "@/lib/db"
+import { logger } from "@/lib/logger"
+
+const action = createSafeActionClient()
+
+export const createProject = action
+  .schema(createProjectSchema)
+  .action(async ({ parsedInput }) => {
+    const { userId, organizationId, role } = await requireOrganization()
+    authorize(role, "projects", "create")
+
+    const project = await prisma.project.create({
+      data: {
+        ...parsedInput,
+        organizationId,
+        createdBy: userId,
+      },
+    })
+
+    logger.info("feature.project.created", { userId, organizationId, projectId: project.id })
+    return { data: project }
+  })
+```
+
+### Step 3: Client Form Component
+
+```typescript
+// src/app/(authenticated)/projects/components/create-project-form.tsx
+"use client"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useAction } from "next-safe-action/hooks"
+import { toast } from "sonner"
+import { createProjectSchema, type CreateProjectInput } from "@/lib/validations/project"
+import { createProject } from "../actions"
+
+export function CreateProjectForm({ onSuccess }: { onSuccess?: () => void }) {
+  const form = useForm<CreateProjectInput>({
+    resolver: zodResolver(createProjectSchema),
+    defaultValues: { name: "", description: "" },
+  })
+
+  const { execute, isExecuting } = useAction(createProject, {
+    onSuccess: () => {
+      toast.success("Project created")
+      form.reset()
+      onSuccess?.()
+    },
+    onError: ({ error }) => {
+      if (error.validationErrors) {
+        // Map server field errors to form
+        Object.entries(error.validationErrors).forEach(([field, message]) => {
+          form.setError(field as keyof CreateProjectInput, { message: String(message) })
+        })
+      } else {
+        toast.error(error.serverError ?? "Failed to create project")
+      }
+    },
+  })
+
+  return (
+    <form onSubmit={form.handleSubmit((data) => execute(data))}>
+      {/* Form fields with react-hook-form register + inline errors */}
+      <button type="submit" disabled={isExecuting}>
+        {isExecuting ? "Creating..." : "Create Project"}
+      </button>
+    </form>
+  )
+}
+```
+
+### Pattern Rules
+
+1. **Zod schema is the single source of truth** — shared between client (react-hook-form resolver) and server (next-safe-action schema).
+2. **Server action handles auth + permissions** — never trust the client.
+3. **Client maps server errors back to form fields** — validation errors are inline, other errors are toasts.
+4. **Disable submit while executing** — prevent double submission.
+5. **Toast on success** — always confirm mutations to the user.
+6. **Log on success** — use the structured logger for audit trail.
+
+---
+
+## Tanstack Query Conventions
+
+Tanstack Query manages server state for client components. Server Components should fetch data directly (no Tanstack Query needed). Use Tanstack Query when:
+- A client component needs to fetch/refetch data
+- Optimistic updates are needed
+- Polling or real-time refresh is needed
+- Cache sharing between components matters
+
+### Query Key Convention
+
+Query keys are arrays, structured from general to specific:
+
+```typescript
+// Convention: [entity, scope, filters]
+const queryKeys = {
+  projects: {
+    all:    (orgId: string) => ["projects", orgId] as const,
+    list:   (orgId: string, filters: ProjectFilters) => ["projects", orgId, "list", filters] as const,
+    detail: (orgId: string, id: string) => ["projects", orgId, id] as const,
+  },
+  members: {
+    all:    (orgId: string) => ["members", orgId] as const,
+    list:   (orgId: string) => ["members", orgId, "list"] as const,
+  },
+  dashboard: {
+    stats:  (orgId: string) => ["dashboard", orgId, "stats"] as const,
+  },
+}
+```
+
+Store query key factories in `src/lib/query-keys.ts`. Never use inline string keys.
+
+### Fetcher Pattern
+
+```typescript
+// src/lib/api/client.ts
+async function fetchApi<T>(path: string): Promise<T> {
+  const res = await fetch(path)
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}))
+    throw new ApiError(res.status, body.error?.message ?? "Request failed")
+  }
+  const json = await res.json()
+  return json.data
+}
+```
+
+### Query Usage
+
+```typescript
+function useProjects(orgId: string, filters: ProjectFilters) {
+  return useQuery({
+    queryKey: queryKeys.projects.list(orgId, filters),
+    queryFn: () => fetchApi<Project[]>(`/api/projects?${toSearchParams(filters)}`),
+  })
+}
+```
+
+### Mutation with Cache Invalidation
+
+```typescript
+function useCreateProject(orgId: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: CreateProjectInput) =>
+      fetchApi<Project>("/api/projects", { method: "POST", body: JSON.stringify(data) }),
+    onSuccess: () => {
+      // Invalidate the list (refetches in background)
+      queryClient.invalidateQueries({ queryKey: queryKeys.projects.all(orgId) })
+      toast.success("Project created")
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+}
+```
+
+### Optimistic Updates (When Needed)
+
+Use for high-frequency actions where instant feedback matters (toggling status, reordering):
+
+```typescript
+onMutate: async (newData) => {
+  await queryClient.cancelQueries({ queryKey })
+  const previous = queryClient.getQueryData(queryKey)
+  queryClient.setQueryData(queryKey, (old) => /* apply optimistic update */)
+  return { previous }
+},
+onError: (_err, _vars, context) => {
+  queryClient.setQueryData(queryKey, context?.previous) // rollback
+},
+onSettled: () => {
+  queryClient.invalidateQueries({ queryKey }) // refetch truth
+},
+```
+
+### When NOT to Use Tanstack Query
+
+| Scenario | Use Instead |
+|----------|------------|
+| Server Component data fetch | `async` function in the component |
+| Form submission | next-safe-action (see Server Action Pattern above) |
+| URL state (filters, pagination) | nuqs |
+| Auth session | Auth.js `useSession` |
+| Theme state | next-themes `useTheme` |
+
+---
+
 ## Quality Gates
 
 Before marking any build phase complete:

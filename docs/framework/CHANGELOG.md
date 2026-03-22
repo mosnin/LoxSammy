@@ -4,6 +4,17 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.5.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/internal/09_build_rules_internal.md` — Added 4 canonical coding patterns:
+  - **API response format**: Standard `{ data }` / `{ error: { code, message, fields? } }` shapes with TypeScript types, HTTP status code rules, and response examples for every status
+  - **Server action pattern**: End-to-end example showing zod schema → next-safe-action server action (with auth, permissions, logging) → react-hook-form client component (with field error mapping, toast feedback, submit state)
+  - **Tanstack Query conventions**: Query key factory pattern (`[entity, scope, filters]`), fetcher utility, query/mutation hooks with cache invalidation, optimistic update pattern, decision table for when NOT to use Tanstack Query (server components, forms, URL state)
+- `docs/framework/internal/17_error_state_taxonomy.md` — Added error display decision tree: 14-row mapping of error context → display component (inline, toast, banner, error block, full-page, redirect) with 6 decision rules and 4 "never do this" anti-patterns
+
+### Changed (non-breaking)
+
 ## [1.4.0] - 2026-03-22
 
 ### Added (non-breaking)
