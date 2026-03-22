@@ -31,6 +31,9 @@
 | 23 | `23_escape_hatches.md` | Technology swap guide — how to replace auth, billing, database, tenancy, email, hosting defaults | 2, 3 |
 | 24 | `24_error_recovery.md` | Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis, git safety | any |
 | 25 | `25_doctor_mode.md` | Safe diagnostic and repair system for broken framework/project docs — never rewrites content or deletes files | any |
+| 26 | `26_observability.md` | Structured logging, Sentry error tracking, health checks, metrics, alerting thresholds | 4, 14 |
+| 27 | `27_performance.md` | Core Web Vitals targets, Lighthouse budgets, bundle size limits, image/font/caching optimization | 4, 13, 14 |
+| 28 | `28_accessibility.md` | WCAG 2.1 AA compliance — keyboard navigation, screen reader, contrast, ARIA patterns, focus management | 4, 7+, 14 |
 
 ## Framework Root (`docs/framework/`)
 

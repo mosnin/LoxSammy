@@ -35,6 +35,11 @@ Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
 - Configure database (PostgreSQL + Prisma schema for core entities from `07_data_models.md`)
 - Set up shared directories: `lib/validations/` (zod schemas), `lib/animations.ts` (Motion variants), `components/ui/` (shadcn components)
 - Create shared utility functions (date formatting, currency, validation helpers)
+- Create structured logger utility (`lib/logger.ts`) per `26_observability.md`
+- Configure Sentry if included in tech stack per `26_observability.md`
+- Create health check endpoint (`/api/health`) per `26_observability.md`
+- Configure `next/font` and image optimization per `27_performance.md`
+- Add "Skip to content" link and base accessibility setup per `28_accessibility.md`
 - Run Phase 4 validation gates from `21_validation_gates.md`
 
 ### Phase 5: Auth
@@ -110,6 +115,8 @@ Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
 - Run through QA checklist from `docs/project/08_qa_checklist.md`
 - Verify acceptance criteria from `docs/project/07_acceptance_criteria.md`
 - Run automated tests per `18_testing_strategy.md`
+- Performance audit per `27_performance.md` (Lighthouse, bundle sizes, Core Web Vitals)
+- Accessibility audit per `28_accessibility.md` (axe-core, keyboard nav, screen reader, manual checklist)
 - Dark mode pass, mobile pass, responsive pass per `15_canonical_breakpoints.md`
 
 ## Reuse Rules

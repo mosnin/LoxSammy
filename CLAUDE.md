@@ -297,6 +297,7 @@ These apply to every build phase:
 - Build only v1 scope unless explicitly asked otherwise
 - Reuse shared patterns from the framework before creating new ones
 - Every page must be mobile responsive from the start
+- Every page must be keyboard-accessible from the start (see `docs/framework/internal/28_accessibility.md`)
 - Every data-driven view must handle four states: loading, empty, success, error
 - Permissions must be enforced at both the routing layer and the UI layer
 - Do not add features outside the defined v1 scope
@@ -349,6 +350,9 @@ docs/
       23_escape_hatches.md             # Technology swap guide — auth, billing, database, tenancy, email, hosting
       24_error_recovery.md             # Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis
       25_doctor_mode.md                # Safe diagnostic and repair system for broken framework/project docs
+      26_observability.md              # Logging, error tracking, health checks, metrics, alerting
+      27_performance.md               # Core Web Vitals targets, bundle budgets, image/font optimization
+      28_accessibility.md             # WCAG 2.1 AA compliance — keyboard, screen reader, contrast, ARIA
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)

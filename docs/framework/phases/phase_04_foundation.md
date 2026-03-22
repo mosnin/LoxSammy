@@ -6,6 +6,9 @@ Architecture plan confirmed. No source code exists yet.
 ## Files to Read
 - `docs/framework/internal/09_build_rules_internal.md` — Phase 4 (Foundation) section
 - `docs/framework/internal/21_validation_gates.md` — validation gate system and Phase 4 gates
+- `docs/framework/internal/26_observability.md` — logger setup, health check endpoint, Sentry config
+- `docs/framework/internal/27_performance.md` — font loading, image optimization, bundle budgets
+- `docs/framework/internal/28_accessibility.md` — skip-to-content link, base a11y setup
 
 ## What to Build
 
@@ -26,6 +29,10 @@ Architecture plan confirmed. No source code exists yet.
 - Utility functions
 - API route helpers
 - Error handling utilities
+- Structured logger (`lib/logger.ts`) per `26_observability.md`
+- Health check endpoint (`/api/health`) per `26_observability.md`
+- Sentry setup (if in tech stack) per `26_observability.md`
+- Skip-to-content link and base a11y setup per `28_accessibility.md`
 
 ### Verify
 - Project builds without errors

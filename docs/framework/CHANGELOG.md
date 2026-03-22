@@ -4,6 +4,19 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.3.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/internal/26_observability.md` — Structured logging conventions (JSON format, dot-notation events, required fields), Sentry integration rules (context attachment, error filtering), health check endpoint pattern, key metrics (API response time, error rate, conversion rates), alerting thresholds, production debugging checklist
+- `docs/framework/internal/27_performance.md` — Core Web Vitals targets (LCP <2.5s marketing, <3s product), Lighthouse score budgets (>90 marketing, >70 product), JavaScript bundle size limits (100KB marketing, 150KB product first-load), image optimization rules (next/image, sizing, formats), font loading strategy (next/font, subsetting), server component strategy, caching rules, third-party script policy
+- `docs/framework/internal/28_accessibility.md` — WCAG 2.1 AA compliance target, keyboard navigation patterns per component, focus management rules (modal traps, return focus), screen reader support (semantic HTML, ARIA attributes, heading hierarchy, alt text), color contrast verification, form accessibility patterns, touch target minimums (44x44px), motion sensitivity (prefers-reduced-motion), automated testing with axe-core, manual testing checklist
+
+### Changed (non-breaking)
+- `docs/framework/internal/22_pattern_snapshot.md` — Added completeness checklist with per-section verification criteria, enforcement rules for "real code" extraction, placeholder protocol for incomplete sections
+- `CLAUDE.md` — Added accessibility to global build rules, added files 26-28 to repo structure
+- `docs/framework/MANIFEST.md` — Added entries for files 26, 27, 28
+- `docs/framework/VERSION.md` — Bumped to 1.3.0
+
 ## [1.2.0] - 2026-03-22
 
 ### Added (non-breaking)
