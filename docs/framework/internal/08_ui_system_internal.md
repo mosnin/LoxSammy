@@ -17,7 +17,7 @@ The UI system is built on these libraries (see `docs/framework/templates/05_tech
 - **Motion (framer-motion)** — animations for page transitions, toast enter/exit, drawer slides, modal backdrop fade
 - **react-hook-form + zod** — form state and validation for all Form components
 - **Sonner** — toast notification component (used by Form success states, bulk action confirmations)
-- **Lucide** — icon set (consistent, tree-shakeable, shadcn default)
+- **Huge Icons** — icon library (@hugeicons/react + style packages). Tree-shakeable, modular architecture. Use stroke style for navigation/metadata (low emphasis), solid for active states/primary actions (high emphasis), duotone/bulk for empty states, onboarding, and feature highlights (decorative emphasis). Stick to one stroke shape (e.g., Stroke Rounded) across the app — use style weight for hierarchy, not shape.
 - **nuqs** — URL state for Tabs (deep linking), Table (sort/filter/page), and filter persistence
 - **next-themes** — dark mode toggle and system preference detection
 
@@ -160,7 +160,7 @@ When building any authenticated page, read this file for component behavior, the
 
 - **shadcn init**: Run `npx shadcn@latest init` during Phase 4 setup. Select "New York" style, CSS variables, and the project's primary color.
 - **Adding components**: Use `npx shadcn@latest add [component]` to scaffold, then customize to match framework specs. Never use shadcn components as-is without verifying they match the spec in `12_internal_component_specs.md`.
-- **Motion animations**: Define animation variants in a shared `lib/animations.ts` file. Use motion tokens from `10_design_tokens_internal.md` (fast: 150ms, normal: 250ms, slow: 350ms).
+- **Motion animations**: Define animation variants in a shared `lib/animations.ts` file. Use the internal motion timing table from `10_design_tokens_internal.md`. Motion is reserved for structural UI transitions (drawer slide, modal enter/exit, toast, page content entrance, staggered list reveals). Do not use Motion for table rows, inline text changes, form field focus, nav highlights, or skeleton shimmer — use CSS transitions for those. Always respect `prefers-reduced-motion`.
 - **Form pattern**: Every form uses `useForm` from react-hook-form with a zod schema via `zodResolver`. The zod schema is defined in a shared `lib/validations/` directory and reused in the corresponding API route or server action.
 - **Toast pattern**: Import `toast` from Sonner. Use after successful mutations (`toast.success("Saved")`), errors (`toast.error("Failed to save")`), and async operations (`toast.promise()`).
 - **URL state pattern**: Use `useQueryState` from nuqs for any state that should survive page refresh or be shareable — active tab, sort column, filter values, pagination page.

@@ -162,18 +162,45 @@ All other tokens remain the same on mobile.
 
 ## Motion Tokens
 
+The public website uses Motion (framer-motion) more expressively than the internal product. Animations serve conversion and delight — the website should feel alive and crafted.
+
+### Interaction Durations
+
 | Token | Duration | Easing | Usage |
 |-------|----------|--------|-------|
-| `duration-fast` | 150ms | `ease-out` | Hover states, button feedback |
+| `duration-fast` | 150ms | `ease-out` | Hover states, button feedback, nav underline |
 | `duration-normal` | 250ms | `ease-in-out` | Dropdowns, accordions, tab transitions |
-| `duration-slow` | 400ms | `ease-in-out` | Drawer open/close, page-level transitions |
+| `duration-slow` | 400ms | `ease-out` | Drawer open/close, mobile nav slide |
+| `duration-entrance` | 500ms | `ease-out` | Scroll-triggered section entrances |
+| `duration-hero` | 600ms | `ease-out` | Hero visual reveal, product screenshot entrance |
+| `duration-count` | 1200ms | `ease-out` | Stats band number count-up |
+
+### Marquee Durations
+
+| Token | Duration | Easing | Usage |
+|-------|----------|--------|-------|
 | `duration-marquee` | 30s | `linear` | Logo marquee scroll (per cycle) |
+| `duration-marquee-slow` | 45s | `linear` | Testimonial marquee, integration grid |
+| `duration-marquee-fast` | 20s | `linear` | Feature tags, secondary marquees |
+
+### Stagger Tokens
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `stagger-cards` | 80ms | Card grid reveal |
+| `stagger-lines` | 100ms | Headline line-by-line reveal |
+| `stagger-list` | 60ms | Feature bullet points, FAQ items |
 
 ### Motion Rules
 - Prefer opacity and transform transitions (GPU-accelerated)
-- No decorative animations that delay content visibility
-- Reduce motion: respect `prefers-reduced-motion` — disable marquee, simplify transitions
+- Scroll-triggered entrances fire once per element — not on every scroll direction change
+- Content must be readable within 800ms of entering viewport
+- Marquees use CSS `@keyframes` with `translateX` — not JS animation loops
+- Respect `prefers-reduced-motion` — pause marquees, remove transforms, show instant opacity
 - Accordion expand: height transition with `duration-normal`
+- Hero elements can use staggered entrance (headline → subheadline → CTAs → visual)
+- Cards hover: translateY(-4px) + shadow increase at `duration-fast`
+- CTA buttons hover: scale(1.02) at `duration-fast` — never shift position
 
 ---
 

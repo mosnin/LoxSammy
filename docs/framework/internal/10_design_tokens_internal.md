@@ -247,34 +247,64 @@ In dark mode, shadows are less visible. Compensate with stronger border-default 
 
 ## Motion and Animation
 
-### Timing
+### Motion Timing Table (Internal Product)
+
+These are the canonical durations and easings for every animated interaction in the authenticated app. Motion (framer-motion) handles structural transitions. CSS `transition` handles simple state changes.
+
+| Pattern | Duration | Easing | Implementation |
+|---------|----------|--------|----------------|
+| Hover feedback | 150ms | ease-out | CSS transition |
+| Toast enter/exit | 200ms | ease-out / ease-in | Motion |
+| Drawer slide | 250ms | ease-out | Motion |
+| Modal backdrop + content | 200ms | ease-out | Motion |
+| Page content fade-in | 300ms | ease-out | Motion (opacity 0→1, y: 8→0) |
+| Staggered list items | 300ms + 50ms stagger | ease-out | Motion (staggerChildren) |
+
+### Easing Tokens
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| ease-out | cubic-bezier(0, 0, 0.2, 1) | Elements entering view (primary easing) |
+| ease-in | cubic-bezier(0.4, 0, 1, 1) | Elements exiting view |
+| ease-default | cubic-bezier(0.4, 0, 0.2, 1) | CSS hover/focus transitions |
+
+### Legacy Duration Tokens (CSS transitions only)
 
 | Token | Value | Usage |
 |-------|-------|-------|
 | duration-instant | 0ms | Tab switches, immediate feedback |
-| duration-fast | 100ms | Button state changes, badge updates, tooltips |
-| duration-normal | 200ms | Dropdown open/close, accordion expand, sidebar hover |
-| duration-slow | 300ms | Modal open/close, drawer slide, page transitions |
-| duration-slower | 500ms | Skeleton shimmer cycle, loading pulse |
+| duration-fast | 150ms | Hover feedback, button state changes, tooltips |
+| duration-slower | 500ms | Skeleton shimmer cycle |
 
-### Easing
+### Where to Use Motion vs CSS
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| ease-default | cubic-bezier(0.4, 0, 0.2, 1) | General transitions |
-| ease-in | cubic-bezier(0.4, 0, 1, 1) | Elements exiting view |
-| ease-out | cubic-bezier(0, 0, 0.2, 1) | Elements entering view |
-| ease-bounce | cubic-bezier(0.34, 1.56, 0.64, 1) | Do not use in the internal product |
+**Use Motion (framer-motion):**
+- Page-level content entrance (fade + slight y shift on mount)
+- Staggered list/card reveals (dashboard stats, feature grid)
+- Drawer/modal enter/exit (AnimatePresence)
+- Toast notifications (slide in, fade out)
+- Empty state illustrations (gentle fade-in)
+- Hover lift on interactive cards (y: -2, shadow increase)
+- Layout animations (AnimatePresence for tab content swap)
+
+**Use CSS transitions (never Motion):**
+- Table row rendering (too many elements, performance)
+- Inline text changes (jittery)
+- Form field focus/validation states
+- Navigation active state highlights
+- Skeleton shimmer (CSS @keyframes, more performant)
+- Color/opacity changes on hover
 
 ### Motion Rules
 
-- Prefer opacity and transform transitions. Do not animate layout properties (width, height, padding).
-- Skeleton loaders use a horizontal shimmer at duration-slower, not a pulsing opacity.
-- Modals and drawers animate in with ease-out, animate out with ease-in.
-- Do not animate color changes on hover — make them instant (duration-instant).
-- No entrance animations on page load. Content appears immediately.
-- Toast notifications slide in from top-right with ease-out at duration-normal, auto-dismiss after 5 seconds.
-- Do not use spring physics or bounce easing in the internal product. Save that for the marketing site if at all.
+- Prefer opacity and transform. Do not animate layout properties (width, height, padding).
+- Skeleton loaders use a horizontal shimmer via CSS @keyframes at 1.5s duration, not Motion.
+- Do not animate color changes on hover — use CSS transition at duration-fast.
+- Page content entrance: opacity 0→1, y: 8→0, 300ms ease-out. Subtle — users should feel it, not notice it.
+- Never exceed 300ms for any internal product animation (excluding skeleton shimmer).
+- Do not use spring physics or bounce easing in the internal product.
+- Always respect `prefers-reduced-motion` — skip animation or reduce to simple opacity fade.
+- Define all Motion variants in a shared `lib/animations.ts` file for consistency.
 
 ## Layout Dimensions
 

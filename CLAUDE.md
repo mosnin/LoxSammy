@@ -255,7 +255,7 @@ When docs conflict, follow this priority:
 Unless the user specifies otherwise, assume:
 
 - **Frontend**: Next.js (app router) with TypeScript and Tailwind CSS
-- **UI Components**: shadcn/ui (Radix primitives, copy-paste ownership) with Lucide icons
+- **UI Components**: shadcn/ui (Radix primitives, copy-paste ownership) with Huge Icons (@hugeicons/react + style packages — stroke for low emphasis, solid for active/high emphasis, duotone/bulk for empty states and decorative)
 - **Styling Utilities**: tailwind-merge, class-variance-authority (CVA) for component variants
 - **Animation**: Motion (framer-motion) for page transitions, toasts, drawers
 - **Forms**: react-hook-form + zod for validation (shared schemas between client and API)

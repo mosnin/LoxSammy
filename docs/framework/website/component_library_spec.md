@@ -18,6 +18,7 @@ For detailed visual specs (dimensions, spacing, states, mobile behavior) of each
 - Hero Section (home + interior variants)
 - CTA Block (mid-page and final)
 - Logo Marquee
+- Testimonial Marquee (wall of love)
 - Case Study / Proof Card
 - Stat Card (stats band)
 - Feature Split Section
@@ -84,7 +85,7 @@ Every public page uses components from this library assembled according to page 
 - Touch targets minimum 44px on mobile
 - Skip-to-content link as first focusable element
 - ARIA labels on icon-only buttons
-- Reduced motion support (`prefers-reduced-motion`)
+- Reduced motion support (`prefers-reduced-motion`) — marquees pause, scroll entrances become instant, transforms removed
 
 ## Final Principle
 

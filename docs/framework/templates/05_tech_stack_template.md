@@ -19,9 +19,9 @@ Fill in each section with the specific technology choice and a brief justificati
 
 ### UI Components
 
-> Default: shadcn/ui (built on Radix UI primitives). Copy-paste component model — components are owned in the codebase, not imported from node_modules. Lucide for icons.
+> Default: shadcn/ui (built on Radix UI primitives). Copy-paste component model — components are owned in the codebase, not imported from node_modules. Huge Icons (@hugeicons/react + style packages) for icons.
 >
-> Justification: Full control over every component to match framework specs (file 12). Accessible primitives from Radix (focus trapping, keyboard nav, ARIA) without fighting an opinionated styling layer. Tailwind-native.
+> Justification: Full control over every component to match framework specs (file 12). Accessible primitives from Radix (focus trapping, keyboard nav, ARIA) without fighting an opinionated styling layer. Tailwind-native. Huge Icons provides multiple icon styles (stroke, solid, duotone, bulk) enabling visual hierarchy through icon weight — stroke for nav/metadata, solid for active states, duotone/bulk for empty states and illustrations. Tree-shakeable with modular style packages.
 >
 > Supporting libraries:
 > - **tailwind-merge** — resolves Tailwind class conflicts when composing components

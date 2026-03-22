@@ -150,10 +150,19 @@ First impression. Explain what, for whom, why.
 - Trust microcopy: body-small (14px), text-tertiary, margin-top space-3, checkmark icon (14px)
 - Product visual: max-width 100%, radius-xl, shadow-card, may be screenshot, illustration, or composed UI
 
+### Entrance Animation
+- Headline: staggered line reveal (opacity 0→1, y: 20→0), 400ms per line, 100ms stagger
+- Subheadline: fade in after headline completes, 400ms ease-out
+- CTA buttons: fade + y shift (12→0), 300ms, after subheadline
+- Product visual: fade + scale (0.96→1), 600ms ease-out, can begin simultaneously with text
+- Optional: subtle floating animation on product visual after entrance (y: 0 → -8 → 0, 4s cycle, ease-in-out)
+- Trust microcopy: simple opacity fade, 300ms, after CTAs
+
 ### Mobile
 - Stacked: text above, visual below
 - Visual: full width, margin-top space-8
 - CTAs: full width, stacked (primary on top), gap space-3
+- Same entrance animations, simplified: no line-by-line stagger on headline (fade entire block)
 
 ---
 
@@ -175,7 +184,7 @@ Shorter hero for non-home pages.
 ## Logo Marquee
 
 ### Role
-Trust signal. Scrolling logo strip.
+Trust signal. Scrolling logo strip that adds kinetic energy to the page.
 
 ### Visual Structure
 ```
@@ -187,13 +196,58 @@ Trust signal. Scrolling logo strip.
 - Logo height: 24-32px, grayscale by default, opacity 0.5
 - Logo hover: full color, opacity 1.0 (optional, not required)
 - Gap between logos: space-12 (48px)
-- Animation: continuous scroll left, duration-marquee (30s per cycle), linear
-- Duplicate logo set for seamless loop
+- Animation: continuous scroll left, duration-marquee (30s per cycle), linear, CSS @keyframes translateX
+- Duplicate the entire logo track to create seamless infinite loop
 - Padding: space-12 vertical
+- Optional: pause on hover (CSS `animation-play-state: paused`)
+
+### Implementation
+```css
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+```
+Render logos twice (two identical sets). Container uses `overflow: hidden`. Inner track uses `display: flex`, `width: max-content`, `animation: marquee 30s linear infinite`.
 
 ### Mobile
 - Same behavior, slightly smaller logos (20-28px)
 - Fewer visible at any time (overflow handles it)
+- Do not disable on mobile
+
+### Reduced Motion
+- `prefers-reduced-motion`: stop animation, show static centered row of logos
+
+---
+
+## Testimonial Marquee
+
+### Role
+Social proof wall. Multiple rows of testimonials scrolling creates a "wall of love" effect that implies volume and trust.
+
+### Visual Structure
+```
+→ [Card] [Card] [Card] [Card] [Card] →
+← [Card] [Card] [Card] [Card] [Card] ←
+```
+
+### Specs
+- Two rows scrolling in opposite directions
+- Row 1: scroll left, duration-marquee-slow (45s per cycle)
+- Row 2: scroll right, duration-marquee (30s per cycle) — different speed creates visual interest
+- Card width: 360px (desktop), 300px (mobile)
+- Card gap: space-4
+- Cards use the standard testimonial card spec (see Testimonial Card section)
+- Container: full width, overflow hidden, padding space-16 vertical
+- Optional: slight scale (0.98) and reduced opacity (0.8) for cards furthest from center, full scale/opacity at center
+- Implementation: same CSS @keyframes translateX technique as logo marquee, but applied to card rows
+
+### Mobile
+- Same behavior, card width reduces to 280px
+- Two rows maintained — the effect works on all screen sizes
+
+### Reduced Motion
+- Show static grid of 4-6 testimonials (2 columns), no scrolling
 
 ---
 
