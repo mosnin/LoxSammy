@@ -119,6 +119,66 @@ Build in this exact order. Do not skip ahead. Phase numbers match CLAUDE.md.
 - Accessibility audit per `28_accessibility.md` (axe-core, keyboard nav, screen reader, manual checklist)
 - Dark mode pass, mobile pass, responsive pass per `15_canonical_breakpoints.md`
 
+## Rate Limiting
+
+### Where to Apply
+
+| Endpoint | Limit | Window | Purpose |
+|----------|-------|--------|---------|
+| `/api/auth/login` | 5 attempts | 15 minutes | Prevent brute force (per `02_auth_and_onboarding.md`) |
+| `/api/auth/signup` | 3 attempts | 1 hour | Prevent spam account creation |
+| `/api/auth/forgot-password` | 3 attempts | 10 minutes | Prevent email spam |
+| `/api/auth/verify-email/resend` | 3 attempts | 10 minutes | Per `02_auth_and_onboarding.md` |
+| `/api/webhooks/*` | No limit | — | External services must not be rate limited |
+| All other API routes | 60 requests | 1 minute | General API protection |
+| Admin routes | 120 requests | 1 minute | Higher limit for admin operations |
+
+### Implementation Pattern
+
+Use Upstash Ratelimit (when included in tech stack) or a simple in-memory counter for development:
+
+```typescript
+// src/lib/rate-limit.ts
+import { Ratelimit } from "@upstash/ratelimit"
+import { Redis } from "@upstash/redis"
+
+export const authLimiter = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, "15 m"),
+  prefix: "ratelimit:auth",
+})
+
+export const apiLimiter = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(60, "1 m"),
+  prefix: "ratelimit:api",
+})
+```
+
+### Rate Limit Response
+
+Return HTTP 429 with a `Retry-After` header. Do not reveal rate limit details to unauthenticated users (prevents timing attacks on auth endpoints).
+
+```typescript
+const { success, reset } = await authLimiter.limit(identifier)
+if (!success) {
+  return new Response("Too many requests", {
+    status: 429,
+    headers: { "Retry-After": String(Math.ceil((reset - Date.now()) / 1000)) },
+  })
+}
+```
+
+### Rate Limit Identifier
+
+| Context | Identifier | Rationale |
+|---------|-----------|-----------|
+| Auth endpoints (unauthenticated) | IP address | Can't use userId — user isn't authenticated yet |
+| API endpoints (authenticated) | `userId` or `organizationId` | Per-user or per-org limits |
+| Webhook endpoints | Don't rate limit | External services retry on failure |
+
+---
+
 ## Reuse Rules
 
 - Reuse existing shell — never create a second shell layout

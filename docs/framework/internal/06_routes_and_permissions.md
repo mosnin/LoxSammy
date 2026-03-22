@@ -119,6 +119,189 @@ Hide navigation items, buttons, and actions the user cannot perform. This is a U
 4. Module pages require both feature availability (is the module enabled for this org) and role-based permission.
 5. Settings sub-pages have individual permission requirements (profile = all, workspace/billing = admin+).
 
+---
+
+## Multi-Tenancy Data Isolation
+
+Every query in a multi-tenant app must be scoped to the current organization. This is the most common source of data leakage bugs. Never rely on the UI to prevent cross-tenant access.
+
+### Organization-Scoped Query Helper
+
+Create a shared query helper at `src/lib/auth/scope.ts` during Phase 4:
+
+```typescript
+import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/db"
+
+/**
+ * Returns the current session's organizationId.
+ * Throws if not authenticated or no active membership.
+ * Use this in every API route and server action.
+ */
+export async function requireOrganization() {
+  const session = await auth()
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized")
+  }
+
+  const membership = await prisma.membership.findFirst({
+    where: {
+      userId: session.user.id,
+      status: "active",
+    },
+    select: {
+      organizationId: true,
+      role: true,
+    },
+  })
+
+  if (!membership) {
+    throw new Error("No active membership")
+  }
+
+  return {
+    userId: session.user.id,
+    organizationId: membership.organizationId,
+    role: membership.role,
+  }
+}
+```
+
+### Scoping Rules
+
+| Query Type | Required Filter | Example |
+|-----------|----------------|---------|
+| List (index) | `WHERE organizationId = ?` | `prisma.project.findMany({ where: { organizationId } })` |
+| Detail (show) | `WHERE id = ? AND organizationId = ?` | `prisma.project.findFirst({ where: { id, organizationId } })` |
+| Create | Set `organizationId` on insert | `prisma.project.create({ data: { ...input, organizationId } })` |
+| Update | `WHERE id = ? AND organizationId = ?` | `prisma.project.update({ where: { id, organizationId }, data })` |
+| Delete | `WHERE id = ? AND organizationId = ?` | `prisma.project.delete({ where: { id, organizationId } })` |
+
+**Critical rule:** Never query by entity `id` alone without also filtering by `organizationId`. A user could guess or enumerate IDs to access another organization's data.
+
+### "Own Data" Scoping
+
+For member-level users who should only see their own data (not all org data), add a secondary filter:
+
+```typescript
+const where = {
+  organizationId,
+  ...(role === "member" ? { createdBy: userId } : {}),
+}
+```
+
+Managers, admins, and owners see all org data. Members see only their own. This pattern must match the permissions matrix in `docs/project/06_permissions_matrix.md`.
+
+### API Route Pattern
+
+Every API route handler should follow this structure:
+
+```typescript
+export async function GET(req: Request) {
+  // 1. Authenticate and get org scope
+  const { userId, organizationId, role } = await requireOrganization()
+
+  // 2. Authorize (check role has permission for this action)
+  authorize(role, "projects", "read")
+
+  // 3. Query with org scope (NEVER without organizationId)
+  const projects = await prisma.project.findMany({
+    where: { organizationId },
+  })
+
+  return Response.json(projects)
+}
+```
+
+---
+
+## Permission Enforcement Patterns
+
+### `authorize()` Helper
+
+Create a shared authorization helper at `src/lib/auth/authorize.ts` during Phase 5:
+
+```typescript
+import type { Role } from "@prisma/client"
+
+/**
+ * Permission matrix: resource → action → minimum role required.
+ * Populated from docs/project/06_permissions_matrix.md during Phase 5.
+ */
+const PERMISSIONS: Record<string, Record<string, Role[]>> = {
+  // Example — replaced with real permissions from project docs:
+  dashboard:    { read: ["member", "manager", "admin", "owner"] },
+  analytics:    { read: ["manager", "admin", "owner"] },
+  projects:     { read: ["member", "manager", "admin", "owner"],
+                  create: ["member", "manager", "admin", "owner"],
+                  update: ["manager", "admin", "owner"],
+                  delete: ["admin", "owner"] },
+  settings:     { read: ["admin", "owner"],
+                  update: ["admin", "owner"] },
+  billing:      { read: ["admin", "owner"],
+                  update: ["owner"] },
+  admin:        { read: ["admin", "owner"] },
+}
+
+/**
+ * Throws 403 if the role doesn't have permission.
+ * Call after requireOrganization() in every API route.
+ */
+export function authorize(
+  role: Role,
+  resource: string,
+  action: string
+): void {
+  const resourcePerms = PERMISSIONS[resource]
+  if (!resourcePerms) {
+    throw new AuthorizationError(`Unknown resource: ${resource}`)
+  }
+
+  const allowedRoles = resourcePerms[action]
+  if (!allowedRoles || !allowedRoles.includes(role)) {
+    throw new AuthorizationError(
+      `Role '${role}' cannot '${action}' on '${resource}'`
+    )
+  }
+}
+
+export class AuthorizationError extends Error {
+  public readonly status = 403
+  constructor(message: string) {
+    super(message)
+    this.name = "AuthorizationError"
+  }
+}
+```
+
+### UI Permission Hook
+
+Create a client-side hook for conditional rendering:
+
+```typescript
+// src/hooks/use-permissions.ts
+"use client"
+import { useSession } from "@/lib/auth/client"
+
+export function usePermission(resource: string, action: string): boolean {
+  const { role } = useSession()
+  // Mirror the same PERMISSIONS map (import from shared location)
+  return checkPermission(role, resource, action)
+}
+
+// Usage in components:
+// const canDelete = usePermission("projects", "delete")
+// {canDelete && <DeleteButton />}
+```
+
+### Permission Rules
+
+1. **Always enforce at API layer** — the UI hook is for UX convenience, not security.
+2. **Deny by default** — if a resource/action pair isn't in the PERMISSIONS map, deny access.
+3. **Populate from project docs** — the PERMISSIONS map must match `docs/project/06_permissions_matrix.md` exactly. If they diverge, the code is wrong.
+4. **Log authorization failures** — use the logger from `26_observability.md` to track 403s for security monitoring.
+5. **Test permission boundaries** — every API route test should include a "wrong role gets 403" case.
+
 ## Final Principle
 
-Permissions must be enforced in both routing and UI visibility. Hiding a button is not real access control. Every layer assumes the other layers might fail.
+Permissions must be enforced in both routing and UI visibility. Hiding a button is not real access control. Every layer assumes the other layers might fail. Every query assumes the caller might be in the wrong organization.

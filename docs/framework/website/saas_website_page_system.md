@@ -243,6 +243,117 @@ Capture high intent leads.
 6. All pages must be mobile responsive.
 7. All pages should load fast.
 
+---
+
+## SEO Requirements
+
+### Per-Page Meta Tags
+
+Every public page must include:
+
+```tsx
+export function generateMetadata(): Metadata {
+  return {
+    title: "Page Title | App Name",
+    description: "Concise description under 160 characters",
+    openGraph: {
+      title: "Page Title | App Name",
+      description: "Concise description under 160 characters",
+      url: "https://example.com/page",
+      siteName: "App Name",
+      images: [{ url: "/og/page.png", width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Page Title | App Name",
+      description: "Concise description under 160 characters",
+      images: ["/og/page.png"],
+    },
+  }
+}
+```
+
+### Title Convention
+
+`[Page Name] | [App Name]` for interior pages. Home page: `[App Name] — [Tagline]`.
+
+### Required Meta Per Page
+
+| Page | Title Pattern | Description Focus |
+|------|--------------|-------------------|
+| Home | `App Name — Tagline` | Primary value prop |
+| Pricing | `Pricing | App Name` | Plans and pricing summary |
+| Features | `Features | App Name` | Capability overview |
+| About | `About | App Name` | Company/team identity |
+| Contact | `Contact | App Name` | How to reach the team |
+| Blog index | `Blog | App Name` | Content and resources |
+| Blog post | `Post Title | App Name` | Post-specific description |
+| Legal | `Privacy Policy | App Name` | Legal page type |
+
+### Open Graph Images
+
+- Default OG image: 1200×630px, app name + tagline on branded background
+- Per-page OG images when possible (pricing shows plan names, features shows product visual)
+- Place in `public/og/` directory
+- Use `ImageResponse` from `next/og` for dynamic OG images (blog posts)
+
+### Sitemap
+
+Generate `sitemap.xml` automatically using Next.js metadata API:
+
+```typescript
+// src/app/sitemap.ts
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://example.com"
+  return [
+    { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
+    { url: `${baseUrl}/pricing`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/features`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
+    // Blog posts: dynamically fetch from CMS/database
+  ]
+}
+```
+
+### Robots
+
+```typescript
+// src/app/robots.ts
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      { userAgent: "*", allow: "/", disallow: ["/api/", "/admin/", "/settings/"] },
+    ],
+    sitemap: "https://example.com/sitemap.xml",
+  }
+}
+```
+
+### Structured Data (JSON-LD)
+
+Add structured data to key pages:
+
+| Page | Schema Type | Data |
+|------|------------|------|
+| Home | `Organization` + `SoftwareApplication` | Company name, logo, app category |
+| Pricing | `Product` with `offers` | Plan names, prices |
+| Blog post | `Article` | Title, author, date, description |
+| FAQ section | `FAQPage` | Question/answer pairs |
+
+### Technical SEO Checklist
+
+- [ ] All pages have unique `<title>` and `<meta description>`
+- [ ] OG images exist for all public pages
+- [ ] `sitemap.xml` is generated and submitted
+- [ ] `robots.txt` blocks authenticated routes
+- [ ] Heading hierarchy is correct (one `<h1>` per page)
+- [ ] All images have descriptive `alt` text
+- [ ] Canonical URLs are set (Next.js handles this by default)
+- [ ] No duplicate content across pages
+- [ ] Page load time <3s (per `27_performance.md`)
+
 ## Final Principle
 
 A strong SaaS website is not just a home page plus random pages. It is a consistent public product communication system where each page has a clear job in the acquisition, education, and trust building flow.

@@ -4,6 +4,23 @@ All notable changes to this framework are documented here. Format follows [Keep 
 
 Each entry specifies: which files were added/changed/removed, what the change means for downstream projects, and whether it is **breaking** or **non-breaking**.
 
+## [1.4.0] - 2026-03-22
+
+### Added (non-breaking)
+- `docs/framework/GLOSSARY.md` — 30+ framework-specific term definitions (activation, archetype, canonical, core entity, first value event, four states, gate, module, organization, pattern snapshot, phase, v1 scope, workspace, etc.) to prevent terminology drift across agents and phases
+
+### Changed (non-breaking)
+- `docs/framework/internal/06_routes_and_permissions.md` — Added multi-tenancy data isolation section with `requireOrganization()` query helper, org-scoped query rules (list, detail, create, update, delete), "own data" scoping for member role, API route pattern. Added permission enforcement section with `authorize()` helper, UI permission hook, deny-by-default rules, and permission testing requirements
+- `docs/framework/internal/02_auth_and_onboarding.md` — Expanded onboarding branching logic with branch decision point table (role, OAuth, plan, team size), step registry pattern with conditional rendering, dynamic progress indicator, auto-skip and manual skip logic, OAuth pre-fill rules, and 5 branching rules
+- `docs/framework/internal/05_settings_billing_admin.md` — Added webhook reliability section: idempotency pattern with WebhookEvent model, event ordering rules (use embedded state, timestamp conflict resolution, handle missing entities), retry handling (400 for bad signature, 500 for processing failure), type-safe event routing switch, webhook monitoring rules
+- `docs/framework/internal/07_data_models.md` — Added schema migration strategy: initial migration workflow, post-Phase 4 migration naming conventions, rename vs drop guidance, required column on existing data rules, production migration command, when NOT to migrate
+- `docs/framework/internal/09_build_rules_internal.md` — Added rate limiting section: endpoint-specific limits table (auth, signup, API, admin), Upstash Ratelimit implementation pattern, rate limit response format (429 + Retry-After), identifier strategy per context (IP for unauth, userId for auth)
+- `docs/framework/website/saas_website_page_system.md` — Added SEO requirements section: per-page meta tag template, title conventions, Open Graph image spec (1200×630), sitemap.xml generation with Next.js metadata API, robots.txt configuration, JSON-LD structured data per page type, technical SEO checklist
+- `docs/framework/internal/20_subagent_dispatch.md` — Updated Phase 9 and Phase 13 agent prompts to include accessibility file (28), multi-tenancy enforcement (requireOrganization), permission enforcement (authorize), SEO requirements, and reduced-motion fallbacks
+- `docs/framework/phases/phase_04_foundation.md` — Added environment setup section (.env.example, T3 Env, setup instructions for README)
+- `CLAUDE.md` — Added GLOSSARY.md to repo structure
+- `docs/framework/MANIFEST.md` — Added GLOSSARY.md entry to framework root files
+
 ## [1.3.0] - 2026-03-22
 
 ### Added (non-breaking)

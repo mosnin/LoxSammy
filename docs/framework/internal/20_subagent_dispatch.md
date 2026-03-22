@@ -142,10 +142,17 @@ Read these framework files (DO NOT read other framework files):
 - docs/framework/internal/11_internal_screen_archetypes.md (page patterns)
 - docs/framework/internal/12_internal_component_specs.md (component visual specs)
 - docs/framework/internal/17_error_state_taxonomy.md (error handling)
+- docs/framework/internal/28_accessibility.md (keyboard nav, ARIA, focus management)
 
 Read these project files:
 - docs/project/02_feature_spec.md (find the [FEATURE_NAME] section)
 - docs/project/06_permissions_matrix.md (find [FEATURE_NAME] permissions)
+
+Enforcement:
+- Use authorize() helper from src/lib/auth/authorize.ts for all permission checks
+- Use requireOrganization() from src/lib/auth/scope.ts for all queries (multi-tenancy)
+- Every interactive element must be keyboard-accessible (see 28_accessibility.md)
+- Every new page must have proper heading hierarchy (one h1, no skipped levels)
 
 Build:
 1. Index/list view — table or card grid, filters, search, pagination
@@ -205,6 +212,8 @@ Read these framework files:
 - docs/framework/website/public_component_specs.md (component specs)
 - docs/framework/website/public_copy_conversion_rules.md (copy rules)
 - docs/framework/website/component_library_spec.md (component inventory)
+- docs/framework/website/saas_website_page_system.md (SEO requirements — meta tags, OG images, sitemap)
+- docs/framework/internal/28_accessibility.md (keyboard nav, reduced motion, ARIA)
 
 Read these project files:
 - docs/project/01_project_brief.md (app name, tagline, value prop)
@@ -214,8 +223,11 @@ Build the home page at src/app/(public)/page.tsx with:
 - All 14 sections from saas_home_page_system.md
 - Conversion-optimized copy following public_copy_conversion_rules.md
 - Public design tokens (NOT internal product tokens)
+- SEO metadata per saas_website_page_system.md SEO section
+- Structured data (JSON-LD) for Organization + SoftwareApplication
 - Mobile responsive
 - Dark mode support
+- prefers-reduced-motion fallbacks for all animations
 
 Output: Write all files. List component paths created.
 ```

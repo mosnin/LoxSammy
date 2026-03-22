@@ -357,6 +357,7 @@ docs/
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)
     MANIFEST.md                        # Quick reference — every file with one-line description and phase
+    GLOSSARY.md                        # Framework-specific terminology definitions
     VERSION.md                         # Semver version, versioning policy, merge strategy
     CHANGELOG.md                       # Version history with per-file change tracking
   project/                             # Generated app-specific docs (created during Phase 2)

@@ -40,6 +40,7 @@
 | File | One-line Description | Phase |
 |------|---------------------|-------|
 | `MANIFEST.md` | Quick reference — every file with one-line description and phase | all |
+| `GLOSSARY.md` | Framework-specific terminology definitions — prevents term drift across agents and phases | all |
 | `VERSION.md` | Semver version, versioning policy, merge strategy for downstream consumers | all |
 | `CHANGELOG.md` | Version history with per-file change descriptions and upgrade impact | all |
 
