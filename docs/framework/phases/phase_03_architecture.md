@@ -42,6 +42,11 @@ Produce an architecture summary covering:
 - Write custom gates to `docs/project/custom_gates.md`
 - Examples: tenant isolation checks, feature-specific structural checks
 
+### 6. Escape Hatches (if applicable)
+- If `docs/project/05_tech_stack.md` overrides any default (auth, billing, database, tenancy, email, hosting), read the relevant section of `docs/framework/internal/23_escape_hatches.md`
+- Adapt the entity plan, route plan, and validation gates accordingly
+- Write replacement gates to `docs/project/custom_gates.md`
+
 Present the full plan to the user for review.
 
 ## Exit Condition

@@ -205,3 +205,16 @@ These were evaluated and intentionally excluded from the default stack:
 ## Constraints
 
 > Example: Must deploy to Vercel (team already has a plan). Database must be PostgreSQL (existing data migration requirement). No self-hosted infrastructure — all managed services.
+
+## Swap Notes
+
+If any section above overrides the framework default, read the corresponding section of `docs/framework/internal/23_escape_hatches.md` during Phase 3:
+
+| Override | Escape Hatch Section |
+|---------|---------------------|
+| Single-tenant (no organizations) | Section A |
+| Non-Auth.js auth (Supabase, Clerk, Lucia) | Section B |
+| Non-Stripe billing (Lemon Squeezy, Paddle, none) | Section C |
+| Non-Prisma database (Supabase, Drizzle, MongoDB) | Section D |
+| Non-Resend email (SendGrid, SES, Postmark, none) | Section E |
+| Non-Vercel hosting (Netlify, Railway, Cloudflare) | Section F |

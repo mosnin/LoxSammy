@@ -28,6 +28,16 @@
 | 20 | `20_subagent_dispatch.md` | Pre-built agent recipes for parallelizing Phases 2, 9, 13, 14 — prompts, file lists, coordination | 2, 9, 13, 14 |
 | 21 | `21_validation_gates.md` | 46 machine-checkable structural assertions — per-phase gates, regression testing, custom gate system | 4–14 |
 | 22 | `22_pattern_snapshot.md` | Generated reference file capturing exact code conventions — prevents pattern drift across phases and agents | 7 (generate), 9+ (consume) |
+| 23 | `23_escape_hatches.md` | Technology swap guide — how to replace auth, billing, database, tenancy, email, hosting defaults | 2, 3 |
+| 24 | `24_error_recovery.md` | Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis, git safety | any |
+
+## Framework Root (`docs/framework/`)
+
+| File | One-line Description | Phase |
+|------|---------------------|-------|
+| `MANIFEST.md` | Quick reference — every file with one-line description and phase | all |
+| `VERSION.md` | Semver version, versioning policy, merge strategy for downstream consumers | all |
+| `CHANGELOG.md` | Version history with per-file change descriptions and upgrade impact | all |
 
 ## Public Website (`docs/framework/website/`)
 

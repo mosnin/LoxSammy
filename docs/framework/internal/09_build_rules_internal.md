@@ -170,6 +170,10 @@ Before marking any build phase complete:
 4. No TypeScript errors, no console warnings in production build
 5. Navigation between pages works correctly (no dead ends, no broken links)
 
+## Recovery
+
+If a quality gate fails during regression testing, or an error from a completed phase is discovered during a later phase, consult `24_error_recovery.md` for the recovery protocol. Do not proceed to the next phase until all regressions are resolved. Do not silently fix and move on — announce the issue, diagnose the scope, and follow the appropriate recovery tier.
+
 ## Final Principle
 
 The framework exists to reduce ambiguity, reduce drift, and reduce bugs. Build inside it first. Extend it only when the product actually requires extension.

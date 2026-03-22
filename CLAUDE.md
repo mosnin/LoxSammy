@@ -4,6 +4,10 @@
 
 This is a reusable SaaS framework pack. It contains no code — only structured documentation that guides Claude Code through planning and building SaaS products. It is designed to be cloned into `docs/framework/` of any new project repository.
 
+## Framework Version
+
+See `docs/framework/VERSION.md` for the current version and `docs/framework/CHANGELOG.md` for what changed. If you cloned this framework into a project, check these files against upstream to see if updates are available.
+
 ## How It Works
 
 This framework uses a **phased, interactive process**. Claude does not read all files upfront or try to do everything at once. Instead, it works through phases, reads only the files needed for each phase, and pauses between phases for user input.
@@ -80,6 +84,7 @@ Cover these areas (skip any the user already addressed):
 - **Dashboard shape**: When a user logs in, what do they see? A queue? Analytics? A feed?
 - **Monetization**: Free? Freemium? Paid tiers? Per-seat pricing?
 - **Integrations**: Does it connect to anything external? (Slack, email, APIs)
+- **Tech constraints**: Any required technologies or things to avoid? (e.g., must use Supabase, no billing needed, single-user app)
 - **Non-goals for v1**: Anything explicitly out of scope?
 
 Keep the interview conversational and concise — 2-4 questions at a time, not a wall of questions. Adapt based on answers. When you have enough to fill the project docs confidently, tell the user you're ready to move to Phase 2 and ask for confirmation.
@@ -265,6 +270,9 @@ Unless the user specifies otherwise, assume:
 - **Billing**: Stripe (Checkout + Customer Portal), stripe-event-types for typed webhooks
 - **Email**: Resend for delivery, React Email for JSX templates
 - **Hosting**: Vercel
+
+For swap guidance when overriding any default, see `docs/framework/internal/23_escape_hatches.md`.
+
 - **Dark Mode**: next-themes for toggle and system preference detection
 - **Env Validation**: T3 Env for type-safe environment variables with runtime checks
 - **Toasts**: Sonner (shadcn default toast component)
@@ -293,6 +301,8 @@ These apply to every build phase:
 - Do not modify files in `docs/framework/` — those are reusable defaults
 - English-first for v1
 - **Run validation gates** (`docs/framework/internal/21_validation_gates.md`) after every build phase — all gates must pass before proceeding
+- If an error from a previous phase is discovered, follow the recovery protocol in `docs/framework/internal/24_error_recovery.md` — do not silently fix and move on, announce the issue and its scope
+- Tag phase completions in git (`git tag phase-N-complete`) for restore points
 - **Read the pattern snapshot** (`docs/project/pattern_snapshot.md`) before writing code in Phase 8+ — follow established conventions exactly
 - **All sub-agents** must read the pattern snapshot before building (see `docs/framework/internal/22_pattern_snapshot.md`)
 
@@ -334,10 +344,14 @@ docs/
       20_subagent_dispatch.md          # Sub-agent recipes for parallel phases
       21_validation_gates.md           # 46 machine-checkable structural assertions per phase
       22_pattern_snapshot.md           # Pattern capture system — prevents drift across phases
+      23_escape_hatches.md             # Technology swap guide — auth, billing, database, tenancy, email, hosting
+      24_error_recovery.md             # Phase re-run protocol — detection, diagnosis, recovery tiers, cascade analysis
     templates/                         # Blank templates with examples for project docs
     prompts/                           # Kickoff sequence and master execution prompt
     phases/                            # Phase-specific index files (what to read, build, verify per phase)
     MANIFEST.md                        # Quick reference — every file with one-line description and phase
+    VERSION.md                         # Semver version, versioning policy, merge strategy
+    CHANGELOG.md                       # Version history with per-file change tracking
   project/                             # Generated app-specific docs (created during Phase 2)
 ```
 

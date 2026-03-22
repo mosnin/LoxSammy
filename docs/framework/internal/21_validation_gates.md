@@ -39,7 +39,9 @@ If a gate fails:
 3. **Re-run regression gates** to confirm the fix didn't break prior work
 4. Only then present the phase as complete
 
-If a gate is genuinely inapplicable (e.g., no Stripe in v1), document the skip with a reason — don't silently ignore.
+If a gate is genuinely inapplicable (e.g., no Stripe in v1, or a technology swap from `23_escape_hatches.md`), document the skip with a reason — don't silently ignore. If the swap has a replacement gate, add it to `docs/project/custom_gates.md`.
+
+If a regression gate fails and the issue traces to a completed phase, follow the recovery protocol in `24_error_recovery.md` to determine whether a patch, partial re-run, or full phase re-run is needed.
 
 ## Gate Interpretation Rules
 
